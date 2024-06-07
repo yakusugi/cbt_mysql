@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_spending"
+        android:icon="@drawable/shopping_online"
+        android:title="Spending" />
+    <item
+        android:id="@+id/nav_converter"
+        android:icon="@drawable/transfer"
+        android:title="Converter" />
+    <item
+        android:id="@+id/nav_income"
+        android:icon="@drawable/rich"
+        android:title="Income" />
+    <item
+        android:id="@+id/nav_bank"
+        android:icon="@drawable/bank_color"
+        android:title="Banks" />
+    <item
+        android:id="@+id/nav_upload"
+        android:icon="@drawable/cloud_upload"
+        android:title="Cloud" />
+</menu>

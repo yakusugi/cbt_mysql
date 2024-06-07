@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_mysql_dash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/diced20"
+        android:title="Dash" />
+    <item
+        android:id="@+id/nav_mysql_stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/chartpie"
+        android:title="Stats" />
+    <item
+        android:id="@+id/nav_mysql_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/add"
+        android:title="Add" />
+    <item
+        android:id="@+id/nav_mysql_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/search"
+        android:title="Search" />
+    <item
+        android:id="@+id/nav_mysql_exchange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/exchangealt"
+        android:title="Exchange" />
+</menu>
