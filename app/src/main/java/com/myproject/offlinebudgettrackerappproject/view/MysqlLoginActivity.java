@@ -39,7 +39,7 @@ public class MysqlLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mysql_login);
-
+        //test
         enterEmail = (EditText) findViewById(R.id.mysql_login_email);
         enterPassword = (EditText) findViewById(R.id.mysql_login_password);
         loginButton = (Button) findViewById(R.id.mysql_login_btn);
