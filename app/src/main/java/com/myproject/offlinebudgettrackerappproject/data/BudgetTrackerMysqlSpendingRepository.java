@@ -1,13 +1,13 @@
 package com.myproject.offlinebudgettrackerappproject.data;
 
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
-import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
+import com.myproject.offlinebudgettrackerappproject.util.SpendingListCallback;
 
 import java.util.List;
 
 public class BudgetTrackerMysqlSpendingRepository {
 
-    private BudgetTrackerMysqlSpendingDao budgetTrackerMysqlSpendingDao;
+    private BudgetTrackerMysqlSpendingStoreNameDao budgetTrackerMysqlSpendingStoreNameDao;
 
     private List<BudgetTrackerMysqlSpendingDto> radioSearchStoreNameList;
     private List<BudgetTrackerMysqlSpendingDto> radioSearchProductNameList;
@@ -18,33 +18,43 @@ public class BudgetTrackerMysqlSpendingRepository {
 
     Double searchProductNameSum;
 
-    public List<BudgetTrackerMysqlSpendingDto> getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-        radioSearchStoreNameList = budgetTrackerMysqlSpendingDao.getSearchStoreNameList(budgetTrackerMysqlSpendingDto);
-        return radioSearchStoreNameList;
+    public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, SpendingListCallback callback) {
+        budgetTrackerMysqlSpendingStoreNameDao.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new SpendingListCallback() {
+            @Override
+            public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+                radioSearchStoreNameList = spendingList;
+                callback.onSuccess(spendingList);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
     }
 
     public double getSearchStoreSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-        searchStoreSum = budgetTrackerMysqlSpendingDao.getSearchStoreSum(budgetTrackerMysqlSpendingDto);
+        searchStoreSum = budgetTrackerMysqlSpendingStoreNameDao.getSearchStoreSum(budgetTrackerMysqlSpendingDto);
         return searchStoreSum;
     }
 
     public List<BudgetTrackerMysqlSpendingDto> getSearchProductNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-        radioSearchProductNameList = budgetTrackerMysqlSpendingDao.getSearchStoreNameList(budgetTrackerMysqlSpendingDto);
+        radioSearchProductNameList = budgetTrackerMysqlSpendingStoreNameDao.getSearchProductNameList(budgetTrackerMysqlSpendingDto);
         return radioSearchProductNameList;
     }
 
     public double getSearchProductNameSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-        searchStoreSum = budgetTrackerMysqlSpendingDao.getSearchStoreSum(budgetTrackerMysqlSpendingDto);
+        searchStoreSum = budgetTrackerMysqlSpendingStoreNameDao.getSearchProductNameSum(budgetTrackerMysqlSpendingDto);
         return searchStoreSum;
     }
 
     public List<BudgetTrackerMysqlSpendingDto> getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-        radioSearchProductTypeList = budgetTrackerMysqlSpendingDao.getSearchStoreNameList(budgetTrackerMysqlSpendingDto);
+        radioSearchProductTypeList = budgetTrackerMysqlSpendingStoreNameDao.getSearchProductTypeList(budgetTrackerMysqlSpendingDto);
         return radioSearchProductTypeList;
     }
 
     public double getSearchProductTypeSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-        searchProductNameSum = budgetTrackerMysqlSpendingDao.getSearchStoreSum(budgetTrackerMysqlSpendingDto);
+        searchProductNameSum = budgetTrackerMysqlSpendingStoreNameDao.getSearchProductTypeSum(budgetTrackerMysqlSpendingDto);
         return searchProductNameSum;
     }
 

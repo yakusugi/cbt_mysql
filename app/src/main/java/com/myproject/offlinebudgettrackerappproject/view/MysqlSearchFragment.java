@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.myproject.offlinebudgettrackerappproject.R;
 import com.myproject.offlinebudgettrackerappproject.adapter.SearchListViewAdapter;
@@ -28,6 +29,7 @@ import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpen
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
+import com.myproject.offlinebudgettrackerappproject.util.SpendingListCallback;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -197,8 +199,20 @@ public class MysqlSearchFragment extends Fragment {
                 budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(searchKey, date1, date2);
 
                 if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_store_name) {
-                    searchedSpendingList = budgetTrackerMysqlSpendingViewModel.getSearchStoreNameList(budgetTrackerMysqlSpendingDto);
-                    spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlSpendingDto));
+                    budgetTrackerMysqlSpendingViewModel.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new SpendingListCallback() {
+                        @Override
+                        public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+                            searchedSpendingList = spendingList;
+                            spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlSpendingDto));
+                            // Update the UI with the search results
+//                            searchListView.setAdapter(new SearchListViewAdapter((Context) getActivity(), searchedSpendingList));
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_product_name) {
                     searchedSpendingList = budgetTrackerMysqlSpendingViewModel.getSearchProductNameList(budgetTrackerMysqlSpendingDto);
                     spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchProductNameSum(budgetTrackerMysqlSpendingDto));

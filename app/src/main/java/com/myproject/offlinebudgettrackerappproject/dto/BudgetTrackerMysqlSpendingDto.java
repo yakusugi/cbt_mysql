@@ -1,5 +1,6 @@
 package com.myproject.offlinebudgettrackerappproject.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class BudgetTrackerMysqlSpendingDto {
@@ -56,6 +57,18 @@ public class BudgetTrackerMysqlSpendingDto {
         this.currencyCode = currencyCode;
         this.quantity = quantity;
         this.creationDate = creationDate;
+    }
+
+    public BudgetTrackerMysqlSpendingDto(Date date, String storeName, String productName, String productType, Double price, Double taxRate, String notes, String currencyCode, int quantity) {
+        this.date = date;
+        this.storeName = storeName;
+        this.productName = productName;
+        this.productType = productType;
+        this.price = price;
+        this.taxRate = taxRate;
+        this.notes = notes;
+        this.currencyCode = currencyCode;
+        this.quantity = quantity;
     }
 
     public Date getDate() {

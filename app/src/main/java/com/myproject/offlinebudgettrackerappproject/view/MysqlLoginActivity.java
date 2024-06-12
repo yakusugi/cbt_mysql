@@ -20,6 +20,8 @@ import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMySqlView
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.util.Callback;
 import com.myproject.offlinebudgettrackerappproject.util.LoginCallback;
+import com.myproject.offlinebudgettrackerappproject.util.SharedPreferencesManager;
+
 import androidx.fragment.app.Fragment;
 import android.content.SharedPreferences;
 
@@ -65,6 +67,7 @@ public class MysqlLoginActivity extends AppCompatActivity {
                         SharedPreferences sharedPref = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("user_email", email);
+                        SharedPreferencesManager.saveUserEmail(MysqlLoginActivity.this, email);
                         editor.apply();
 
                         // Navigate to another activity if needed
