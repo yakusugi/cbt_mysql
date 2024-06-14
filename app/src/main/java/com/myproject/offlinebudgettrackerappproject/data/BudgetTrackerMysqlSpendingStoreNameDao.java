@@ -47,8 +47,8 @@ public class BudgetTrackerMysqlSpendingStoreNameDao {
     public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, SpendingListCallback callback) {
 
         String storeName = budgetTrackerMysqlSpendingDto.getStoreName();
-        Date dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
-        Date dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
+        String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
+        String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
 
         Log.d("TAG", "getSearchStoreNameList: " + storeName + " " + dateFrom + " " + dateTo);
 
@@ -99,10 +99,9 @@ public class BudgetTrackerMysqlSpendingStoreNameDao {
                                             String priceString = jsonObjectItem.getString("price");
                                             String note = jsonObjectItem.getString("note");
                                             String currencyCode = jsonObjectItem.getString("currency_code");
-                                            String quantityString = jsonObjectItem.getString("quantity");
+                                            int quantity = Integer.parseInt(jsonObjectItem.getString("quantity"));
                                             double vatRate = vatRateString.isEmpty() ? 0.0 : Double.parseDouble(vatRateString);
                                             double price = priceString.isEmpty() ? 0.0 : Double.parseDouble(priceString);
-                                            int quantity = quantityString.isEmpty() ? 0 : Integer.parseInt(quantityString);
 
                                             BudgetTrackerMysqlSpendingDto spendingDto = new BudgetTrackerMysqlSpendingDto(
                                                     date,
@@ -168,8 +167,8 @@ public class BudgetTrackerMysqlSpendingStoreNameDao {
     public Double getSearchStoreSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
 
         String storeName = budgetTrackerMysqlSpendingDto.getStoreName();
-        Date dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
-        Date dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
+        String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
+        String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
 
         Log.d("TAG", "getSearchStoreNameList: " + storeName + " " + dateFrom + " " + dateTo);
 
@@ -179,8 +178,8 @@ public class BudgetTrackerMysqlSpendingStoreNameDao {
     public List<BudgetTrackerMysqlSpendingDto> getSearchProductNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
 
         String storeName = budgetTrackerMysqlSpendingDto.getStoreName();
-        Date dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
-        Date dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
+        String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
+        String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
 
         Log.d("TAG", "getSearchStoreNameList: " + storeName + " " + dateFrom + " " + dateTo);
 
@@ -190,8 +189,8 @@ public class BudgetTrackerMysqlSpendingStoreNameDao {
     public Double getSearchProductNameSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
 
         String storeName = budgetTrackerMysqlSpendingDto.getStoreName();
-        Date dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
-        Date dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
+        String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
+        String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
 
         Log.d("TAG", "getSearchStoreNameList: " + storeName + " " + dateFrom + " " + dateTo);
 
@@ -201,8 +200,8 @@ public class BudgetTrackerMysqlSpendingStoreNameDao {
     public List<BudgetTrackerMysqlSpendingDto> getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
 
         String storeName = budgetTrackerMysqlSpendingDto.getStoreName();
-        Date dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
-        Date dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
+        String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
+        String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
 
         Log.d("TAG", "getSearchStoreNameList: " + storeName + " " + dateFrom + " " + dateTo);
 
@@ -212,8 +211,8 @@ public class BudgetTrackerMysqlSpendingStoreNameDao {
     public Double getSearchProductTypeSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
 
         String storeName = budgetTrackerMysqlSpendingDto.getStoreName();
-        Date dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
-        Date dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
+        String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
+        String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
 
         Log.d("TAG", "getSearchStoreNameList: " + storeName + " " + dateFrom + " " + dateTo);
 

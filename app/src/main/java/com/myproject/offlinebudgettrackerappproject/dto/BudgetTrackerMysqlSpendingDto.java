@@ -7,9 +7,9 @@ public class BudgetTrackerMysqlSpendingDto {
 
     private Date date;
 
-    private Date dateFrom;
+    private String dateFrom;
 
-    private Date dateTo;
+    private String dateTo;
 
     private String storeName;
 
@@ -36,14 +36,14 @@ public class BudgetTrackerMysqlSpendingDto {
     public BudgetTrackerMysqlSpendingDto() {
     }
 
-    public BudgetTrackerMysqlSpendingDto(String storeName, Date dateFrom, Date dateTo) {
+    public BudgetTrackerMysqlSpendingDto(String storeName, String dateFrom, String dateTo) {
         this.storeName = storeName;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
 
     }
 
-    public BudgetTrackerMysqlSpendingDto(Date date, Date dateFrom, Date dateTo, String storeName, String productName, String productType, Double price, Boolean isTax, Double taxRate, String notes, String currencyCode, int quantity, String creationDate) {
+    public BudgetTrackerMysqlSpendingDto(Date date, String dateFrom, String dateTo, String storeName, String productName, String productType, Double price, Boolean isTax, Double taxRate, String notes, String currencyCode, int quantity, String creationDate) {
         this.date = date;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
@@ -79,19 +79,19 @@ public class BudgetTrackerMysqlSpendingDto {
         this.date = date;
     }
 
-    public Date getDateFrom() {
+    public String getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(Date dateFrom) {
+    public void setDateFrom(String dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public Date getDateTo() {
+    public String getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(Date dateTo) {
+    public void setDateTo(String dateTo) {
         this.dateTo = dateTo;
     }
 

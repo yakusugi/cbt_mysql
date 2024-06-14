@@ -1,5 +1,7 @@
 package com.myproject.offlinebudgettrackerappproject.data;
 
+import android.app.Application;
+
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.util.SpendingListCallback;
 
@@ -17,6 +19,10 @@ public class BudgetTrackerMysqlSpendingRepository {
     Double searchStoreSum;
 
     Double searchProductNameSum;
+
+    public BudgetTrackerMysqlSpendingRepository(Application application) {
+        budgetTrackerMysqlSpendingStoreNameDao = new BudgetTrackerMysqlSpendingStoreNameDao(application);
+    }
 
     public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, SpendingListCallback callback) {
         budgetTrackerMysqlSpendingStoreNameDao.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new SpendingListCallback() {

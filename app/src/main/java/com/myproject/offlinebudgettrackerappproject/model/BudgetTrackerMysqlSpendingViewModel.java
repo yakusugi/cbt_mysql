@@ -30,6 +30,7 @@ public class BudgetTrackerMysqlSpendingViewModel extends AndroidViewModel {
 
     public BudgetTrackerMysqlSpendingViewModel(@NonNull Application application) {
         super(application);
+        repository = new BudgetTrackerMysqlSpendingRepository(application);
     }
 
 //    budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto();
@@ -49,29 +50,29 @@ public class BudgetTrackerMysqlSpendingViewModel extends AndroidViewModel {
         });
     }
 
-    public double getSearchStoreSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-        searchStoreSum = repository.getSearchStoreSum(budgetTrackerMysqlSpendingDto);
-        return searchStoreSum;
-    }
-
-    public List<BudgetTrackerMysqlSpendingDto> getSearchProductNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-        radioSearchProductNameList = repository.getSearchProductNameList(budgetTrackerMysqlSpendingDto);
-        return radioSearchStoreNameList;
-    }
-
-    public double getSearchProductNameSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-        searchProductSum = repository.getSearchProductNameSum(budgetTrackerMysqlSpendingDto);
-        return searchProductSum;
-    }
-
-    public List<BudgetTrackerMysqlSpendingDto> getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-        radioSearchProductTypeList = repository.getSearchProductTypeList(budgetTrackerMysqlSpendingDto);
-        return radioSearchProductTypeList;
-    }
-
-    public double getSearchProductTypeSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-        searchProductTypeSum = repository.getSearchProductTypeSum(budgetTrackerMysqlSpendingDto);
-        return searchProductTypeSum;
-    }
+//    public double getSearchStoreSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
+//        searchStoreSum = repository.getSearchStoreSum(budgetTrackerMysqlSpendingDto);
+//        return searchStoreSum;
+//    }
+//
+//    public List<BudgetTrackerMysqlSpendingDto> getSearchProductNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
+//        radioSearchProductNameList = repository.getSearchProductNameList(budgetTrackerMysqlSpendingDto);
+//        return radioSearchStoreNameList;
+//    }
+//
+//    public double getSearchProductNameSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
+//        searchProductSum = repository.getSearchProductNameSum(budgetTrackerMysqlSpendingDto);
+//        return searchProductSum;
+//    }
+//
+//    public List<BudgetTrackerMysqlSpendingDto> getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
+//        radioSearchProductTypeList = repository.getSearchProductTypeList(budgetTrackerMysqlSpendingDto);
+//        return radioSearchProductTypeList;
+//    }
+//
+//    public double getSearchProductTypeSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
+//        searchProductTypeSum = repository.getSearchProductTypeSum(budgetTrackerMysqlSpendingDto);
+//        return searchProductTypeSum;
+//    }
 
 }
