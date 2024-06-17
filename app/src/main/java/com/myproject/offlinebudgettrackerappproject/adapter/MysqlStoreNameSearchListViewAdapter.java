@@ -1,6 +1,7 @@
 package com.myproject.offlinebudgettrackerappproject.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,8 @@ public class MysqlStoreNameSearchListViewAdapter extends ArrayAdapter<BudgetTrac
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         BudgetTrackerMysqlSpendingDto spending = getItem(position);
+        // Add logging to check if the adapter is getting the correct data
+        Log.d("AdapterResponse", "Position: " + position + ", Data: " + spending.toString());
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.mysql_search_list_item, parent, false);
