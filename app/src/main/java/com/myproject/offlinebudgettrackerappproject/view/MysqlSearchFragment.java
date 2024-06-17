@@ -117,7 +117,7 @@ public class MysqlSearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_mysql_search, container, false);
         radioGroup = (RadioGroup) view.findViewById(R.id.mysql_search_radio_group);
         searchListView = (ListView) view.findViewById(R.id.mysql_search_listview);
-        view = inflater.inflate(R.layout.fragment_mysql_search, container, false);
+//        view = inflater.inflate(R.layout.fragment_mysql_search, container, false);
         EditText searchName = (EditText) view.findViewById(R.id.mysql_search_name);
         EditText searchDateFrom = (EditText) view.findViewById(R.id.mysql_search_date_from_txt);
         EditText searchDateTo = (EditText) view.findViewById(R.id.mysql_search_date_to_txt);
