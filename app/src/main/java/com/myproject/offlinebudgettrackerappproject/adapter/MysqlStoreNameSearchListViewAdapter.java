@@ -14,27 +14,30 @@ import androidx.lifecycle.LiveData;
 
 import com.myproject.offlinebudgettrackerappproject.R;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
-import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 
 import java.util.List;
 
-public class MysqlSearchListViewAdapter extends ArrayAdapter<BudgetTrackerMysqlSpendingDto> {
+public class MysqlStoreNameSearchListViewAdapter extends ArrayAdapter<BudgetTrackerMysqlSpendingDto> {
 
     private static final Object INVALID_POSITION = -1;
     private LiveData<List<BudgetTrackerMysqlSpendingDto>> budgetTrackerMysqlSpendingDto;
     private Context context;
     private View.OnClickListener listener;
 
-    public MysqlSearchListViewAdapter(Context context, List<BudgetTrackerMysqlSpendingDto> budgetTrackerMysqlSpendingDtoList) {
-        super(context, R.layout.mysql_search_list_item, budgetTrackerMysqlSpendingDtoList);
+    private List<BudgetTrackerMysqlSpendingDto> spendingList;
+
+    public MysqlStoreNameSearchListViewAdapter(Context context, List<BudgetTrackerMysqlSpendingDto> spendingList) {
+        super(context, R.layout.mysql_search_list_item, spendingList);
+        this.context = context;
+        this.spendingList = spendingList;
     }
 
     //TODO Someday, I need to adapt LiveData data transactions instead of the traditional List data transactions.
-    public MysqlSearchListViewAdapter(Context context, LiveData<List<BudgetTrackerMysqlSpendingDto>> budgetTrackerMysqlSpendingDtoList) {
+    public MysqlStoreNameSearchListViewAdapter(Context context, LiveData<List<BudgetTrackerMysqlSpendingDto>> budgetTrackerMysqlSpendingDtoList) {
         super(context, R.layout.mysql_search_list_item, (List<BudgetTrackerMysqlSpendingDto>) budgetTrackerMysqlSpendingDtoList);
     }
 
-    public MysqlSearchListViewAdapter(Context context, int num) {
+    public MysqlStoreNameSearchListViewAdapter(Context context, int num) {
         super(context, num);
     }
 
@@ -47,8 +50,8 @@ public class MysqlSearchListViewAdapter extends ArrayAdapter<BudgetTrackerMysqlS
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto = getItem(position);
-
+//        BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto = getItem(position);
+        BudgetTrackerMysqlSpendingDto spending = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.mysql_search_list_item, parent, false);
@@ -66,15 +69,15 @@ public class MysqlSearchListViewAdapter extends ArrayAdapter<BudgetTrackerMysqlS
         TextView searchQuantity = convertView.findViewById(R.id.mysql_search_quantity_text_row);
 
         searchImageViewRow.setImageResource(R.drawable.search_icon);
-        searchStoreNameRow.setText(budgetTrackerMysqlSpendingDto.getStoreName());
-        searchDateRow.setText((CharSequence) budgetTrackerMysqlSpendingDto.getDate());
-        searchProductRow.setText(budgetTrackerMysqlSpendingDto.getProductName());
-        searchProductTypeRow.setText(budgetTrackerMysqlSpendingDto.getProductType());
-        searchPriceRow.setText(String.valueOf(budgetTrackerMysqlSpendingDto.getPrice()));
-        searchVatRow.setText(String.valueOf(budgetTrackerMysqlSpendingDto.getTaxRate()));
-        searchNote.setText(String.valueOf(budgetTrackerMysqlSpendingDto.getNotes()));
-        searchCurrencyCode.setText(String.valueOf(budgetTrackerMysqlSpendingDto.getCurrencyCode()));
-        searchQuantity.setText(String.valueOf(budgetTrackerMysqlSpendingDto.getQuantity()));
+        searchStoreNameRow.setText(spending.getStoreName());
+        searchDateRow.setText((CharSequence) spending.getDate());
+        searchProductRow.setText(spending.getProductName());
+        searchProductTypeRow.setText(spending.getProductType());
+        searchPriceRow.setText(String.valueOf(spending.getPrice()));
+        searchVatRow.setText(String.valueOf(spending.getTaxRate()));
+        searchNote.setText(String.valueOf(spending.getNotes()));
+        searchCurrencyCode.setText(String.valueOf(spending.getCurrencyCode()));
+        searchQuantity.setText(String.valueOf(spending.getQuantity()));
 
         return convertView;
     }

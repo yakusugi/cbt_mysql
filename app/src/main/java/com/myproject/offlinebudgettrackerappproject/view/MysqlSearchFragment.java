@@ -22,20 +22,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.myproject.offlinebudgettrackerappproject.R;
-import com.myproject.offlinebudgettrackerappproject.adapter.MysqlSearchListViewAdapter;
-import com.myproject.offlinebudgettrackerappproject.adapter.SearchListViewAdapter;
+import com.myproject.offlinebudgettrackerappproject.adapter.MysqlStoreNameSearchListViewAdapter;
 import com.myproject.offlinebudgettrackerappproject.databinding.ActivityMainBinding;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
-import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
 import com.myproject.offlinebudgettrackerappproject.util.SpendingListCallback;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,7 +72,7 @@ public class MysqlSearchFragment extends Fragment {
 
     public MysqlSearchFragment() {
         // Required empty public constructor
-        
+
     }
 
     /**
@@ -106,7 +101,7 @@ public class MysqlSearchFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
 
             // Retrieve email from SharedPreferences
-            
+
         }
     }
 
@@ -183,19 +178,6 @@ public class MysqlSearchFragment extends Fragment {
                 String searchKey = searchName.getText().toString();
                 String dateFrom = searchDateFrom.getText().toString();
                 String dateTo = searchDateTo.getText().toString();
-//                Date date1;
-//                Date date2;
-//                try {
-//                    date1=new SimpleDateFormat("yyyy-MM-dd").parse(dateFrom);
-//                } catch (ParseException e) {
-//                    throw new RuntimeException(e);
-//                }
-//                try {
-//                    date2=new SimpleDateFormat("yyyy-MM-dd").parse(dateTo);
-//                } catch (ParseException e) {
-//                    throw new RuntimeException(e);
-//                }
-
 
                 budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(searchKey, dateFrom, dateTo);
 
@@ -206,7 +188,9 @@ public class MysqlSearchFragment extends Fragment {
                             searchedSpendingList = spendingList;
 //                            spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlSpendingDto));
                             // Update the UI with the search results
-                            searchListView.setAdapter(new MysqlSearchListViewAdapter((Context) getActivity(), searchedSpendingList));
+                            MysqlStoreNameSearchListViewAdapter adapter = new MysqlStoreNameSearchListViewAdapter(getActivity(), searchedSpendingList);
+                            searchListView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged(); // Notify the adapter about the data change
                         }
 
                         @Override
@@ -225,7 +209,7 @@ public class MysqlSearchFragment extends Fragment {
 //                    searchMode = 2;
 //                }
 
-//                searchListView.setAdapter(new SearchListViewAdapter(getActivity(), searchedSpendingList));
+//                searchListView.setAdapter(new MysqlStoreNameSearchListViewAdapter(getActivity(), searchedSpendingList));
                 searchCalcResultTxt.setText(spendingSum);
                 searchListView.setOnItemClickListener((adapterView, view1, position, id) -> {
                     MainActivity mainActivity = ((MainActivity)getActivity());
