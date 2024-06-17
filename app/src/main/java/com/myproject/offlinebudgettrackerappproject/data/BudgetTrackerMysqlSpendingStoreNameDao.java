@@ -11,8 +11,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.SharedPreferencesManager;
-import com.myproject.offlinebudgettrackerappproject.util.SpendingListCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +44,7 @@ public class BudgetTrackerMysqlSpendingStoreNameDao {
         this.context = context.getApplicationContext();
     }
 
-    public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, SpendingListCallback callback) {
+    public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
 
         String storeName = budgetTrackerMysqlSpendingDto.getStoreName();
         String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();

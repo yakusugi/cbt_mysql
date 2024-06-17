@@ -3,7 +3,7 @@ package com.myproject.offlinebudgettrackerappproject.data;
 import android.app.Application;
 
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
-import com.myproject.offlinebudgettrackerappproject.util.SpendingListCallback;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 
 import java.util.List;
 
@@ -24,8 +24,8 @@ public class BudgetTrackerMysqlSpendingRepository {
         budgetTrackerMysqlSpendingStoreNameDao = new BudgetTrackerMysqlSpendingStoreNameDao(application);
     }
 
-    public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, SpendingListCallback callback) {
-        budgetTrackerMysqlSpendingStoreNameDao.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new SpendingListCallback() {
+    public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+        budgetTrackerMysqlSpendingStoreNameDao.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
             @Override
             public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
                 radioSearchStoreNameList = spendingList;

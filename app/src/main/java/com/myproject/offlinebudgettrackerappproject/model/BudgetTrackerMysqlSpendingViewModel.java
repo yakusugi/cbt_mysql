@@ -8,7 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import com.myproject.offlinebudgettrackerappproject.data.BudgetTrackerMysqlSpendingRepository;
 import com.myproject.offlinebudgettrackerappproject.data.BudgetTrackerSpendingRepository;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
-import com.myproject.offlinebudgettrackerappproject.util.SpendingListCallback;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 
 import java.util.List;
 
@@ -35,8 +35,8 @@ public class BudgetTrackerMysqlSpendingViewModel extends AndroidViewModel {
 
 //    budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto();
 
-    public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, SpendingListCallback callback) {
-        repository.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new SpendingListCallback() {
+    public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+        repository.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
             @Override
             public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
                 radioSearchStoreNameList = spendingList;

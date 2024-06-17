@@ -50,7 +50,6 @@ public class MysqlStoreNameSearchListViewAdapter extends ArrayAdapter<BudgetTrac
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-//        BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto = getItem(position);
         BudgetTrackerMysqlSpendingDto spending = getItem(position);
 
         if (convertView == null) {

@@ -28,7 +28,7 @@ import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendi
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
-import com.myproject.offlinebudgettrackerappproject.util.SpendingListCallback;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -182,7 +182,7 @@ public class MysqlSearchFragment extends Fragment {
                 budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(searchKey, dateFrom, dateTo);
 
                 if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_store_name) {
-                    budgetTrackerMysqlSpendingViewModel.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new SpendingListCallback() {
+                    budgetTrackerMysqlSpendingViewModel.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
                         @Override
                         public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
                             searchedSpendingList = spendingList;

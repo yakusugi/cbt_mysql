@@ -4,7 +4,7 @@ import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendi
 
 import java.util.List;
 
-public interface SpendingListCallback {
+public interface MysqlSpendingListCallback {
     void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList);
     void onError(String error);
 }
