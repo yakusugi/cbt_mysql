@@ -60,7 +60,7 @@ public class MysqlStoreNameSearchListViewAdapter extends ArrayAdapter<BudgetTrac
         }
 
         ImageView searchImageViewRow = convertView.findViewById(R.id.mysql_search_circle_image_view);
-        TextView searchStoreNameRow = convertView.findViewById(R.id.mysql_search_store_name_linear_layout);
+        TextView searchStoreNameRow = convertView.findViewById(R.id.mysql_search_store_name_text_row);
         TextView searchDateRow = convertView.findViewById(R.id.mysql_search_date_text_row);
         TextView searchProductRow = convertView.findViewById(R.id.mysql_search_product_name_text_row);
         TextView searchProductTypeRow = convertView.findViewById(R.id.mysql_search_product_type_text_row);
@@ -72,7 +72,7 @@ public class MysqlStoreNameSearchListViewAdapter extends ArrayAdapter<BudgetTrac
 
         searchImageViewRow.setImageResource(R.drawable.search_icon);
         searchStoreNameRow.setText(spending.getStoreName());
-        searchDateRow.setText((CharSequence) spending.getDate());
+        searchDateRow.setText(spending.getDate().toString());
         searchProductRow.setText(spending.getProductName());
         searchProductTypeRow.setText(spending.getProductType());
         searchPriceRow.setText(String.valueOf(spending.getPrice()));
