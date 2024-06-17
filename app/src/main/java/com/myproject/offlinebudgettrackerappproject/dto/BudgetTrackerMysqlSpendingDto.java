@@ -174,4 +174,24 @@ public class BudgetTrackerMysqlSpendingDto {
     public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
+
+
+    @Override
+    public String toString() {
+        return "BudgetTrackerMysqlSpendingDto{" +
+                "date=" + date +
+                ", dateFrom='" + dateFrom + '\'' +
+                ", dateTo='" + dateTo + '\'' +
+                ", storeName='" + storeName + '\'' +
+                ", productName='" + productName + '\'' +
+                ", productType='" + productType + '\'' +
+                ", price=" + price +
+                ", isTax=" + isTax +
+                ", taxRate=" + taxRate +
+                ", notes='" + notes + '\'' +
+                ", currencyCode='" + currencyCode + '\'' +
+                ", quantity=" + quantity +
+                ", creationDate='" + creationDate + '\'' +
+                '}';
+    }
 }
