@@ -55,15 +55,31 @@ public class BudgetTrackerMysqlSpendingViewModel extends AndroidViewModel {
         });
     }
 
+    public void getSearchProductNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+        repository.getSearchProductNameList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+            @Override
+            public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+//                Log.d("ViewModelResponse", spendingList.toString());
+                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                    Log.d("ViewModelResponse", dto.toString());
+                }
+                radioSearchStoreNameList = spendingList;
+                callback.onSuccess(spendingList);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
+    }
+
 //    public double getSearchStoreSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
 //        searchStoreSum = repository.getSearchStoreSum(budgetTrackerMysqlSpendingDto);
 //        return searchStoreSum;
 //    }
 //
-//    public List<BudgetTrackerMysqlSpendingDto> getSearchProductNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-//        radioSearchProductNameList = repository.getSearchProductNameList(budgetTrackerMysqlSpendingDto);
-//        return radioSearchStoreNameList;
-//    }
+
 //
 //    public double getSearchProductNameSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
 //        searchProductSum = repository.getSearchProductNameSum(budgetTrackerMysqlSpendingDto);

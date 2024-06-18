@@ -18,7 +18,7 @@ import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendi
 
 import java.util.List;
 
-public class MysqlStoreNameSearchListViewAdapter extends ArrayAdapter<BudgetTrackerMysqlSpendingDto> {
+public class MysqlSearchListViewAdapter extends ArrayAdapter<BudgetTrackerMysqlSpendingDto> {
 
     private static final Object INVALID_POSITION = -1;
     private LiveData<List<BudgetTrackerMysqlSpendingDto>> budgetTrackerMysqlSpendingDto;
@@ -27,18 +27,18 @@ public class MysqlStoreNameSearchListViewAdapter extends ArrayAdapter<BudgetTrac
 
     private List<BudgetTrackerMysqlSpendingDto> spendingList;
 
-    public MysqlStoreNameSearchListViewAdapter(Context context, List<BudgetTrackerMysqlSpendingDto> spendingList) {
+    public MysqlSearchListViewAdapter(Context context, List<BudgetTrackerMysqlSpendingDto> spendingList) {
         super(context, R.layout.mysql_search_list_item, spendingList);
         this.context = context;
         this.spendingList = spendingList;
     }
 
     //TODO Someday, I need to adapt LiveData data transactions instead of the traditional List data transactions.
-    public MysqlStoreNameSearchListViewAdapter(Context context, LiveData<List<BudgetTrackerMysqlSpendingDto>> budgetTrackerMysqlSpendingDtoList) {
+    public MysqlSearchListViewAdapter(Context context, LiveData<List<BudgetTrackerMysqlSpendingDto>> budgetTrackerMysqlSpendingDtoList) {
         super(context, R.layout.mysql_search_list_item, (List<BudgetTrackerMysqlSpendingDto>) budgetTrackerMysqlSpendingDtoList);
     }
 
-    public MysqlStoreNameSearchListViewAdapter(Context context, int num) {
+    public MysqlSearchListViewAdapter(Context context, int num) {
         super(context, num);
     }
 

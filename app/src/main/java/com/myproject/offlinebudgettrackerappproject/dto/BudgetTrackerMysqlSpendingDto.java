@@ -1,5 +1,7 @@
 package com.myproject.offlinebudgettrackerappproject.dto;
 
+import com.myproject.offlinebudgettrackerappproject.enums.SpendingType;
+
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -36,12 +38,30 @@ public class BudgetTrackerMysqlSpendingDto {
     public BudgetTrackerMysqlSpendingDto() {
     }
 
+    public BudgetTrackerMysqlSpendingDto(SpendingType type, String name, String dateFrom, String dateTo) {
+        if (type == SpendingType.STORE) {
+            this.storeName = name;
+        } else if (type == SpendingType.PRODUCT_NAME) {
+            this.productName = name;
+        } else if (type == SpendingType.PRODUCT_TYPE) {
+            this.productType = name;
+        }
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+    }
+
     public BudgetTrackerMysqlSpendingDto(String storeName, String dateFrom, String dateTo) {
         this.storeName = storeName;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
 
     }
+
+//    public BudgetTrackerMysqlSpendingDto(String productName, String dateFrom, String dateTo) {
+//        this.storeName = productName;
+//        this.dateFrom = dateFrom;
+//        this.dateTo = dateTo;
+//    }
 
     public BudgetTrackerMysqlSpendingDto(Date date, String dateFrom, String dateTo, String storeName, String productName, String productType, Double price, Boolean isTax, Double taxRate, String notes, String currencyCode, int quantity, String creationDate) {
         this.date = date;

@@ -23,13 +23,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.myproject.offlinebudgettrackerappproject.R;
-import com.myproject.offlinebudgettrackerappproject.adapter.MysqlStoreNameSearchListViewAdapter;
+import com.myproject.offlinebudgettrackerappproject.adapter.MysqlSearchListViewAdapter;
 import com.myproject.offlinebudgettrackerappproject.databinding.ActivityMainBinding;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
+import com.myproject.offlinebudgettrackerappproject.enums.SpendingType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,10 +182,11 @@ public class MysqlSearchFragment extends Fragment {
                 String dateFrom = searchDateFrom.getText().toString();
                 String dateTo = searchDateTo.getText().toString();
 
-                budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(searchKey, dateFrom, dateTo);
+//                budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(searchKey, dateFrom, dateTo);
 
                 if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_store_name) {
-                    budgetTrackerMysqlSpendingViewModel.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+                    BudgetTrackerMysqlSpendingDto storeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.STORE, searchKey, dateFrom, dateTo);
+                    budgetTrackerMysqlSpendingViewModel.getSearchStoreNameList(storeDto, new MysqlSpendingListCallback() {
                         @Override
                         public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
 //                            Log.d("FragmentResponse", spendingList.toString());
@@ -194,7 +196,7 @@ public class MysqlSearchFragment extends Fragment {
                             searchedSpendingList = spendingList;
 //                            spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlSpendingDto));
                             // Update the UI with the search results
-                            MysqlStoreNameSearchListViewAdapter adapter = new MysqlStoreNameSearchListViewAdapter(getActivity(), searchedSpendingList);
+                            MysqlSearchListViewAdapter adapter = new MysqlSearchListViewAdapter(getActivity(), searchedSpendingList);
                             searchListView.setAdapter(adapter);
                             adapter.notifyDataSetChanged(); // Notify the adapter about the data change
                         }
@@ -205,15 +207,34 @@ public class MysqlSearchFragment extends Fragment {
                         }
                     });
                 }
-//                else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_product_name) {
-//                    searchedSpendingList = budgetTrackerMysqlSpendingViewModel.getSearchProductNameList(budgetTrackerMysqlSpendingDto);
-//                    spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchProductNameSum(budgetTrackerMysqlSpendingDto));
-//                    searchMode = 1;
+                else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_product_name) {
+
+                    BudgetTrackerMysqlSpendingDto productDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_NAME, searchKey, dateFrom, dateTo);
+                    budgetTrackerMysqlSpendingViewModel.getSearchProductNameList(productDto, new MysqlSpendingListCallback() {
+                        @Override
+                        public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+//                            Log.d("FragmentResponse", spendingList.toString());
+                            for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                                Log.d("FragmentResponse", dto.toString());
+                            }
+                            searchedSpendingList = spendingList;
+//                            spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlSpendingDto));
+                            // Update the UI with the search results
+                            MysqlSearchListViewAdapter adapter = new MysqlSearchListViewAdapter(getActivity(), searchedSpendingList);
+                            searchListView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged(); // Notify the adapter about the data change
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
 //                } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_product_type) {
 //                    searchedSpendingList = budgetTrackerMysqlSpendingViewModel.getSearchProductTypeList(budgetTrackerMysqlSpendingDto);
 //                    spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchProductTypeSum(budgetTrackerMysqlSpendingDto));
 //                    searchMode = 2;
-//                }
+                }
 
 //                searchListView.setAdapter(new MysqlStoreNameSearchListViewAdapter(getActivity(), searchedSpendingList));
                 searchCalcResultTxt.setText(spendingSum);
