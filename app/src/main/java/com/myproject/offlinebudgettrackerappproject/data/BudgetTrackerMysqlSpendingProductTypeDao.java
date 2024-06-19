@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-public class BudgetTrackerMysqlSpendingProductNameDao {
+public class BudgetTrackerMysqlSpendingProductTypeDao {
 
     private final Context context;
     private List<BudgetTrackerMysqlSpendingDto> radioSearchStoreNameList;
@@ -40,31 +40,31 @@ public class BudgetTrackerMysqlSpendingProductNameDao {
     Double searchProductNameSum;
     Double searchProductTypeSum;
 
-    public BudgetTrackerMysqlSpendingProductNameDao(Context context) {
+    public BudgetTrackerMysqlSpendingProductTypeDao(Context context) {
         this.context = context.getApplicationContext();
     }
 
-    public void getSearchProductNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+    public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
 
-        String productName = budgetTrackerMysqlSpendingDto.getProductName();
+        String productType = budgetTrackerMysqlSpendingDto.getProductType();
         String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
         String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
 
-        Log.d("TAG", "getSearchStoreNameList: " + productName + " " + dateFrom + " " + dateTo);
+        Log.d("TAG", "getSearchStoreNameList: " + productType + " " + dateFrom + " " + dateTo);
 
         try {
             Properties properties = new Properties();
             InputStream inputStream = context.getAssets().open("server_config.properties");
             properties.load(inputStream);
             String serverUrl = properties.getProperty("server_url");
-            String phpSelectFile = properties.getProperty("spending_product_name_search_php_file");
+            String phpSelectFile = properties.getProperty("spending_product_type_search_php_file");
             String selectUrl = serverUrl + phpSelectFile;
             Log.d("select_url", selectUrl);
 
             // Create a map of parameters to send in the POST request
             final Map<String, String> params = new HashMap<>();
             params.put("email", SharedPreferencesManager.getUserEmail(context));
-            params.put("product_name", budgetTrackerMysqlSpendingDto.getProductName());
+            params.put("product_type", budgetTrackerMysqlSpendingDto.getProductType());
             params.put("date_from", budgetTrackerMysqlSpendingDto.getDateFrom().toString());
             params.put("date_to", budgetTrackerMysqlSpendingDto.getDateTo().toString());
 

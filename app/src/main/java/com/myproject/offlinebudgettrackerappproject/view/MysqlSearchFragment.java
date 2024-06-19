@@ -230,10 +230,28 @@ public class MysqlSearchFragment extends Fragment {
                             Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
                         }
                     });
-//                } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_product_type) {
-//                    searchedSpendingList = budgetTrackerMysqlSpendingViewModel.getSearchProductTypeList(budgetTrackerMysqlSpendingDto);
-//                    spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchProductTypeSum(budgetTrackerMysqlSpendingDto));
-//                    searchMode = 2;
+                } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_product_type) {
+                    BudgetTrackerMysqlSpendingDto productDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_TYPE, searchKey, dateFrom, dateTo);
+                    budgetTrackerMysqlSpendingViewModel.getSearchProductTypeList(productDto, new MysqlSpendingListCallback() {
+                        @Override
+                        public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+//                            Log.d("FragmentResponse", spendingList.toString());
+                            for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                                Log.d("FragmentResponse", dto.toString());
+                            }
+                            searchedSpendingList = spendingList;
+//                            spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlSpendingDto));
+                            // Update the UI with the search results
+                            MysqlSearchListViewAdapter adapter = new MysqlSearchListViewAdapter(getActivity(), searchedSpendingList);
+                            searchListView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged(); // Notify the adapter about the data change
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
 
 //                searchListView.setAdapter(new MysqlStoreNameSearchListViewAdapter(getActivity(), searchedSpendingList));

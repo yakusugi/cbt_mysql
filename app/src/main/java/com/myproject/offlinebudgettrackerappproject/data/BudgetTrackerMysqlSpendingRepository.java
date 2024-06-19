@@ -12,6 +12,7 @@ public class BudgetTrackerMysqlSpendingRepository {
 
     private BudgetTrackerMysqlSpendingStoreNameDao budgetTrackerMysqlSpendingStoreNameDao;
     private BudgetTrackerMysqlSpendingProductNameDao budgetTrackerMysqlSpendingProductNameDao;
+    private BudgetTrackerMysqlSpendingProductTypeDao budgetTrackerMysqlSpendingProductTypeDao;
 
     private List<BudgetTrackerMysqlSpendingDto> radioSearchStoreNameList;
     private List<BudgetTrackerMysqlSpendingDto> radioSearchProductNameList;
@@ -25,6 +26,7 @@ public class BudgetTrackerMysqlSpendingRepository {
     public BudgetTrackerMysqlSpendingRepository(Application application) {
         budgetTrackerMysqlSpendingStoreNameDao = new BudgetTrackerMysqlSpendingStoreNameDao(application);
         budgetTrackerMysqlSpendingProductNameDao = new BudgetTrackerMysqlSpendingProductNameDao(application);
+        budgetTrackerMysqlSpendingProductTypeDao = new BudgetTrackerMysqlSpendingProductTypeDao(application);
     }
 
     public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
@@ -80,9 +82,23 @@ public class BudgetTrackerMysqlSpendingRepository {
         return searchStoreSum;
     }
 
-    public List<BudgetTrackerMysqlSpendingDto> getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-        radioSearchProductTypeList = budgetTrackerMysqlSpendingStoreNameDao.getSearchProductTypeList(budgetTrackerMysqlSpendingDto);
-        return radioSearchProductTypeList;
+    public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+        budgetTrackerMysqlSpendingProductTypeDao.getSearchProductTypeList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+            @Override
+            public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+//                Log.d("RepositoryResponse", spendingList.toString());
+                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                    Log.d("RepositoryResponse", dto.toString());
+                }
+                radioSearchStoreNameList = spendingList;
+                callback.onSuccess(spendingList);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
     }
 
     public double getSearchProductTypeSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
