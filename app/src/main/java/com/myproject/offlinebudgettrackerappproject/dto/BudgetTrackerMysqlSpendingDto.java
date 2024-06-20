@@ -1,6 +1,7 @@
 package com.myproject.offlinebudgettrackerappproject.dto;
 
 import com.myproject.offlinebudgettrackerappproject.enums.SpendingType;
+import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -214,4 +215,21 @@ public class BudgetTrackerMysqlSpendingDto {
                 ", creationDate='" + creationDate + '\'' +
                 '}';
     }
+
+    public BudgetTrackerSpending toEntity() {
+        return new BudgetTrackerSpending(
+                this.date.toString(),
+                this.storeName,
+                this.productName,
+                this.productType,
+                this.price,
+                this.isTax,
+                this.taxRate,
+                this.notes,
+                this.currencyCode,
+                this.quantity,
+                this.creationDate
+        );
+    }
+
 }

@@ -268,6 +268,41 @@ public class MysqlSearchFragment extends Fragment {
             }
         });
 
+        syncBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                String searchKey = searchName.getText().toString();
+                String dateFrom = searchDateFrom.getText().toString();
+                String dateTo = searchDateTo.getText().toString();
+
+                if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_store_name) {
+                    BudgetTrackerMysqlSpendingDto storeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.STORE, searchKey, dateFrom, dateTo);
+                    budgetTrackerMysqlSpendingViewModel.getSyncStoreNameList(storeDto, new MysqlSpendingListCallback() {
+                        @Override
+                        public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+//                            Log.d("FragmentResponse", spendingList.toString());
+                            for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                                Log.d("FragmentResponse", dto.toString());
+                            }
+                            searchedSpendingList = spendingList;
+//                            spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlSpendingDto));
+                            // Update the UI with the search results
+                            MysqlSearchListViewAdapter adapter = new MysqlSearchListViewAdapter(getActivity(), searchedSpendingList);
+                            searchListView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged(); // Notify the adapter about the data change
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }

@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 
 import java.util.List;
@@ -18,6 +19,9 @@ public interface BudgetTrackerSpendingDao {
     //CRUD
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(BudgetTrackerSpending budgetTrackerSpending);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertFromMysql(List<BudgetTrackerSpending> budgetTrackerSpending);
 
     @Query("DELETE FROM budget_tracker_spending_table")
     void deleteAll();

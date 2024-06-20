@@ -110,4 +110,32 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
         return searchProductTypeSum;
     }
 
+    public void getSyncStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+        repository.insertFromMysql(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+            @Override
+            public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+//                Log.d("ViewModelResponse", spendingList.toString());
+                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                    Log.d("ViewModelResponse", dto.toString());
+                }
+//                radioSearchStoreNameList = spendingList;
+                callback.onSuccess(spendingList);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
+    }
+
+//    public void syncFromMysql(List<BudgetTrackerMysqlSpendingDto> dtoList) {
+//        repository.insertFromMysql(dtoList);
+//    }
+
 }
+
+
+
+
+
