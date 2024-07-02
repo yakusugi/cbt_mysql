@@ -20,7 +20,7 @@
             android:layout_marginRight="20dp">
 
             <TextView
-                android:id="@+id/title_dash"
+                android:id="@+id/mysql_title_dash"
                 android:text="Power Budget Tracker"
                 android:textSize="22sp"
                 android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
 
             <TextView
                 android:layout_marginTop="6dp"
-                android:layout_below="@+id/title_dash"
+                android:layout_below="@+id/mysql_title_dash"
                 android:text="Your money, your life"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
                 android:layout_height="match_parent">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/spending_card"
+                    android:id="@+id/mysql_spending_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -89,7 +89,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/income_card"
+                    android:id="@+id/mysql_income_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -122,7 +122,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/bank_card"
+                    android:id="@+id/mysql_bank_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -155,7 +155,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/date_card"
+                    android:id="@+id/mysql_date_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -188,7 +188,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/replace_card"
+                    android:id="@+id/mysql_replace_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -221,7 +221,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/replace_card_income"
+                    android:id="@+id/mysql_replace_card_income"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -254,7 +254,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/settings_card"
+                    android:id="@+id/mysql_settings_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -287,7 +287,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/about_card"
+                    android:id="@+id/mysql_about_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"

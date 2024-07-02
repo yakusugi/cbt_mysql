@@ -1,7 +1,9 @@
 package com.myproject.offlinebudgettrackerappproject.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -15,7 +17,9 @@ import com.myproject.offlinebudgettrackerappproject.R;
  * Use the {@link MysqlDashFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MysqlDashFragment extends Fragment {
+public class MysqlDashFragment extends Fragment implements View.OnClickListener {
+
+    private CardView spendingCard, incomeCard, bankCard, dateCard, bulkExpensecard, bulkIncomeCard, settingsCard, aboutCard;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +65,67 @@ public class MysqlDashFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mysql_dash, container, false);
+        View view = inflater.inflate(R.layout.fragment_mysql_dash, container, false);
+        spendingCard = (CardView) view.findViewById(R.id.mysql_spending_card);
+        incomeCard = (CardView) view.findViewById(R.id.mysql_income_card);
+        bankCard = (CardView) view.findViewById(R.id.mysql_bank_card);
+        dateCard = (CardView) view.findViewById(R.id.mysql_date_card);
+        bulkExpensecard = (CardView) view.findViewById(R.id.mysql_replace_card);
+        bulkIncomeCard = (CardView) view.findViewById(R.id.mysql_replace_card_income);
+        settingsCard = (CardView) view.findViewById(R.id.mysql_settings_card);
+        aboutCard = (CardView) view.findViewById(R.id.mysql_about_card);
+
+        spendingCard.setOnClickListener(this);
+        incomeCard.setOnClickListener(this);
+        bankCard.setOnClickListener(this);
+        dateCard.setOnClickListener(this);
+        bulkExpensecard.setOnClickListener(this);
+        bulkIncomeCard.setOnClickListener(this);
+        settingsCard.setOnClickListener(this);
+        aboutCard.setOnClickListener(this);
+
+        return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        Fragment mF = getParentFragment();
+        switch (view.getId()) {
+            case R.id.mysql_spending_card:
+//                i = new Intent(view.getContext(), SpendingTrackerActivity.class);
+//                startActivity(i);
+                break;
+            case R.id.mysql_income_card:
+//                i = new Intent(view.getContext(), BudgetTrackerIncomesActivity.class);
+//                startActivity(i);
+                break;
+            case R.id.mysql_bank_card:
+//                i = new Intent(view.getContext(), BudgetTrackerBankingActivity.class);
+//                startActivity(i);
+                break;
+            case R.id.mysql_date_card:
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.mysql_main_container, new MysqlSearchFragment())
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case R.id.mysql_replace_card:
+//                i = new Intent(view.getContext(), MysqlLoginActivity.class);
+//                startActivity(i);
+                break;
+            case R.id.mysql_replace_card_income:
+//                i = new Intent(view.getContext(), SpendingReplacementActivity.class);
+//                startActivity(i);
+                break;
+            case R.id.mysql_settings_card:
+//                i = new Intent(view.getContext(), IncomeReplacementActivity.class);
+//                startActivity(i);
+                break;
+            case R.id.mysql_about_card:
+//                i = new Intent(view.getContext(), BudgetTrackerSettingsActivity.class);
+//                startActivity(i);
+                break;
+        }
+
     }
 }

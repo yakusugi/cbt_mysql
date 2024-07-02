@@ -8,9 +8,13 @@ import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendi
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 import com.myproject.offlinebudgettrackerappproject.util.BudgetTrackerDatabase;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
+import com.myproject.offlinebudgettrackerappproject.util.DateUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class BudgetTrackerMysqlSpendingRepository {
@@ -50,9 +54,22 @@ public class BudgetTrackerMysqlSpendingRepository {
             @Override
             public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
 //                Log.d("RepositoryResponse", spendingList.toString());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+//                    Log.d("RepositoryResponse", dto.toString());
+//                }
+
                 for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                    try {
+                        Date date = dto.getDate();
+                        String formattedDate = DateUtils.dateToString(date);
+                        dto.setDate(DateUtils.stringToDate(formattedDate));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     Log.d("RepositoryResponse", dto.toString());
                 }
+
                 radioSearchStoreNameList = spendingList;
                 callback.onSuccess(spendingList);
             }
