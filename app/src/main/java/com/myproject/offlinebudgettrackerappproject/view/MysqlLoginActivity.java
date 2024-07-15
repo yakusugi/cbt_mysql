@@ -82,7 +82,7 @@ public class MysqlLoginActivity extends AppCompatActivity {
 //                    return;
 //                }
 
-                BudgetTrackerUserDto budgetTrackerUserDto = new BudgetTrackerUserDto(email, password);
+                budgetTrackerUserDto = new BudgetTrackerUserDto(email, password);
 
                 budgetTrackerMySqlViewModel.login(budgetTrackerUserDto, new LoginCallback() {
                     @Override
