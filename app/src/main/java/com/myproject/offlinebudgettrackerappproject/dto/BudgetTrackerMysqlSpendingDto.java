@@ -92,6 +92,11 @@ public class BudgetTrackerMysqlSpendingDto {
         this.quantity = quantity;
     }
 
+    public BudgetTrackerMysqlSpendingDto(String dateFrom, String dateTo) {
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+    }
+
     public Date getDate() {
         return date;
     }

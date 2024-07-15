@@ -105,7 +105,7 @@ public class MysqlDashFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.mysql_date_card:
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.mysql_main_container, new MysqlSearchFragment())
+                        .replace(R.id.mysql_main_container, new MysqlDateSearchFragment())
                         .addToBackStack(null)
                         .commit();
                 break;

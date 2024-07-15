@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="15dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
         <RelativeLayout
             android:id="@+id/mysql_search_banner"
@@ -77,25 +78,25 @@
 
         </RadioGroup>
 
-        <EditText
-            android:id="@+id/mysql_search_name"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/custom_input"
-            android:drawableStart="@drawable/ic_search"
-            android:drawablePadding="12dp"
-            android:ems="10"
-            android:hint="@string/radio_search_name"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_radio_group" />
+            android:layout_marginTop="10dp"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/search_18"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/mysql_search_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Search"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textCursorDrawable="@null" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -107,49 +108,49 @@
 
             <TableRow>
 
-                <EditText
-                    android:id="@+id/mysql_search_date_from_txt"
-                    android:layout_width="180sp"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_input"
-                    android:drawableStart="@drawable/ic_calendar"
-                    android:drawablePadding="12dp"
-                    android:ems="10"
-                    android:focusableInTouchMode="false"
-                    android:hint="@string/enter_date_from"
-                    android:inputType="date"
-                    android:minHeight="48dp"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/home_radio_search_date_from_txt"
-                    app:layout_constraintTop_toBottomOf="@+id/home_radio_search_name"
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    android:layout_marginTop="10dp"
+                    app:boxStrokeColor="@color/black"
+                    app:hintTextColor="@color/black"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:startIconDrawable="@drawable/calendar_day_18"
+                    >
 
-                <EditText
-                    android:id="@+id/mysql_search_date_to_txt"
-                    android:layout_width="180sp"
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/mysql_search_date_from_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Date"
+                        android:inputType="none"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black"
+                        android:textCursorDrawable="@null"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_input"
-                    android:drawableStart="@drawable/ic_calendar"
-                    android:drawablePadding="12dp"
-                    android:ems="10"
-                    android:focusableInTouchMode="false"
-                    android:hint="@string/enter_date_to"
-                    android:inputType="date"
-                    android:minHeight="48dp"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    app:layout_constraintEnd_toStartOf="@+id/stats_search_date_from_txt"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/stats_search_name"
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    android:layout_marginTop="10dp"
+                    app:boxStrokeColor="@color/black"
+                    app:hintTextColor="@color/black"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:startIconDrawable="@drawable/calendar_day_18"
+                    >
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/mysql_search_date_to_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Date"
+                        android:inputType="none"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black"
+                        android:textCursorDrawable="@null"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
             </TableRow>
             <TableRow android:layout_marginTop="8dp">
 

@@ -27,6 +27,8 @@ public class BudgetTrackerMysqlSpendingRepository {
     BudgetTrackerDatabase budgetTrackerDatabase;
     private BudgetTrackerSpendingDao budgetTrackerSpendingDao;
 
+    private BudgetTrackerMysqlSpendingDateDao budgetTrackerMysqlSpendingDateDao;
+
     private List<BudgetTrackerMysqlSpendingDto> radioSearchStoreNameList;
 
     private List<BudgetTrackerSpending> budgetTrackerSpendingList;
@@ -51,6 +53,38 @@ public class BudgetTrackerMysqlSpendingRepository {
 
     public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
         budgetTrackerMysqlSpendingStoreNameDao.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+            @Override
+            public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+//                Log.d("RepositoryResponse", spendingList.toString());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+//                    Log.d("RepositoryResponse", dto.toString());
+//                }
+
+                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                    try {
+                        Date date = dto.getDate();
+                        String formattedDate = DateUtils.dateToString(date);
+                        dto.setDate(DateUtils.stringToDate(formattedDate));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("RepositoryResponse", dto.toString());
+                }
+
+                radioSearchStoreNameList = spendingList;
+                callback.onSuccess(spendingList);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
+    }
+
+    public void getDateList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+        budgetTrackerMysqlSpendingDateDao.getSearchDateList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
             @Override
             public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
 //                Log.d("RepositoryResponse", spendingList.toString());
