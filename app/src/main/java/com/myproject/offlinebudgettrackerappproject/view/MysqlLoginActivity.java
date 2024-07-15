@@ -3,7 +3,9 @@ package com.myproject.offlinebudgettrackerappproject.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,26 +43,51 @@ public class MysqlLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mysql_login);
-        //test
+
         enterEmail = (EditText) findViewById(R.id.mysql_login_email);
         enterPassword = (EditText) findViewById(R.id.mysql_login_password);
         loginButton = (Button) findViewById(R.id.mysql_login_btn);
         registerButton = (Button) findViewById(R.id.mysql_register_btn);
 
-        budgetTrackerMySqlViewModel = new ViewModelProvider.AndroidViewModelFactory(MysqlLoginActivity.this
-                .getApplication())
-                .create(BudgetTrackerMySqlViewModel.class);
+        Log.d("LOGIN_TAG", "Views initialized");
+
+        budgetTrackerMySqlViewModel = new ViewModelProvider.AndroidViewModelFactory(MysqlLoginActivity.this.getApplication()).create(BudgetTrackerMySqlViewModel.class);
+
+        Log.d("LOGIN_TAG", "onCreate: ViewModel and views initialized");
+
+        if (enterEmail != null && enterPassword != null) {
+            enterEmail.setError("Email cannot be empty");
+            enterPassword.setError("Password cannot be empty");
+        }
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("LOGIN_TAG", "Login button clicked");
+
                 String email = enterEmail.getText().toString();
                 String password = enterPassword.getText().toString();
+
+                Log.d("LOGIN_TAG", "Email: " + email + ", Password: " + password);
+
+//                if (email.isEmpty()) {
+//                    enterEmail.setTextColor(Color.BLUE);
+//                    enterEmail.setError("Email cannot be empty");
+//                    return;
+//                }
+//
+//                if (password.isEmpty()) {
+//                    enterEmail.setTextColor(Color.RED);
+//                    enterPassword.setError("Password cannot be empty");
+//                    return;
+//                }
+
                 BudgetTrackerUserDto budgetTrackerUserDto = new BudgetTrackerUserDto(email, password);
 
                 budgetTrackerMySqlViewModel.login(budgetTrackerUserDto, new LoginCallback() {
                     @Override
                     public void onSuccess() {
+                        Log.d("LOGIN_TAG", "Login successful");
                         Toast.makeText(MysqlLoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
 
                         //Share and contain user email info
@@ -78,32 +105,12 @@ public class MysqlLoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(String errorMessage) {
+                        Log.d("LOGIN_TAG", "Login failed: " + errorMessage);
                         Toast.makeText(MysqlLoginActivity.this, "Login failed: " + errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
-
-
-
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MysqlLoginActivity.this, MysqlRegistrationActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-
-
     }
 
-//    private void replaceFragment(Fragment fragment) {
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.activity_mysql_login, fragment);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
-//    }
 }
