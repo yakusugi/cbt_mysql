@@ -17,6 +17,7 @@ import com.myproject.offlinebudgettrackerappproject.R;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MysqlSearchListViewAdapter extends ArrayAdapter<BudgetTrackerMysqlSpendingDto> {
 
@@ -70,7 +71,13 @@ public class MysqlSearchListViewAdapter extends ArrayAdapter<BudgetTrackerMysqlS
         TextView searchCurrencyCode = convertView.findViewById(R.id.mysql_search_currency_code_text_row);
         TextView searchQuantity = convertView.findViewById(R.id.mysql_search_quantity_text_row);
 
-        searchImageViewRow.setImageResource(R.drawable.search_icon);
+        if (Objects.equals(spending.getStoreName(), "Amazon")) {
+            searchImageViewRow.setImageResource(R.drawable.amazon);
+        } else if (Objects.equals(spending.getStoreName(), "Starbucks")) {
+            searchImageViewRow.setImageResource(R.drawable.starbucks);
+        } else {
+            searchImageViewRow.setImageResource(R.drawable.search_icon);
+        }
         searchStoreNameRow.setText(spending.getStoreName());
         searchDateRow.setText(spending.getDate().toString());
         searchProductRow.setText(spending.getProductName());
