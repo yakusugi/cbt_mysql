@@ -16,6 +16,9 @@
         android:theme="@style/Theme.OfflineBudgetTrackerAppProject"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.MysqlDateSearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.MainActivity2"
             android:exported="false" />
         <activity

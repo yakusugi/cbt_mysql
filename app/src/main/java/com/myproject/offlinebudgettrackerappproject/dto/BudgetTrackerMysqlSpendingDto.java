@@ -46,6 +46,8 @@ public class BudgetTrackerMysqlSpendingDto {
             this.productName = name;
         } else if (type == SpendingType.PRODUCT_TYPE) {
             this.productType = name;
+        } else if (type == SpendingType.CURRENCY) {
+            this.currencyCode = name;
         }
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;

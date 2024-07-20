@@ -46,10 +46,11 @@ public class BudgetTrackerMysqlSpendingDateDao {
 
     public void getSearchDateList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
 
+        String currencyCode = budgetTrackerMysqlSpendingDto.getCurrencyCode();
         String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
         String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
 
-        Log.d("TAG", "getSearchStoreNameList: " +  dateFrom + " " + dateTo);
+        Log.d("TAG", "getSearchDateList: " +  currencyCode + " " +dateFrom + " " + dateTo);
 
         try {
             Properties properties = new Properties();
@@ -63,6 +64,7 @@ public class BudgetTrackerMysqlSpendingDateDao {
             // Create a map of parameters to send in the POST request
             final Map<String, String> params = new HashMap<>();
             params.put("email", SharedPreferencesManager.getUserEmail(context));
+            params.put("currency_code", budgetTrackerMysqlSpendingDto.getCurrencyCode().toString());
             params.put("date_from", budgetTrackerMysqlSpendingDto.getDateFrom().toString());
             params.put("date_to", budgetTrackerMysqlSpendingDto.getDateTo().toString());
 

@@ -84,6 +84,8 @@ public class BudgetTrackerMysqlSpendingRepository {
     }
 
     public void getDateList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+
+        Log.d("TAG_DTO", "getDateList: " + budgetTrackerMysqlSpendingDto);
         budgetTrackerMysqlSpendingDateDao.getSearchDateList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
             @Override
             public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
