@@ -120,7 +120,7 @@ public class MysqlDateSearchActivity extends AppCompatActivity {
 //                dateQuery(searchKey, dateFrom, dateTo);
 //                //todo clicking each item to intent to add activity
                 budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(SpendingType.CURRENCY, searchKey, dateFrom, dateTo);
-                budgetTrackerMysqlSpendingViewModel.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+                budgetTrackerMysqlSpendingViewModel.getDateList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
                     @Override
                     public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
 //                            Log.d("FragmentResponse", spendingList.toString());

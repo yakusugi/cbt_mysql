@@ -44,6 +44,7 @@ public class BudgetTrackerMysqlSpendingRepository {
         budgetTrackerMysqlSpendingStoreNameDao = new BudgetTrackerMysqlSpendingStoreNameDao(application);
         budgetTrackerMysqlSpendingProductNameDao = new BudgetTrackerMysqlSpendingProductNameDao(application);
         budgetTrackerMysqlSpendingProductTypeDao = new BudgetTrackerMysqlSpendingProductTypeDao(application);
+        budgetTrackerMysqlSpendingDateDao = new BudgetTrackerMysqlSpendingDateDao(application);
 //        budgetTrackerMysqlSpendingStoreNameSyncDao = new BudgetTrackerMysqlSpendingStoreNameSyncDao(application);
 
         budgetTrackerDatabase = BudgetTrackerDatabase.getDatabase(application);
