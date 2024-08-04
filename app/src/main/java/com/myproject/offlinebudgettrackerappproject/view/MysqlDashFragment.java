@@ -93,8 +93,8 @@ public class MysqlDashFragment extends Fragment implements View.OnClickListener 
         Intent i;
         switch (view.getId()) {
             case R.id.mysql_spending_card:
-//                i = new Intent(view.getContext(), SpendingTrackerActivity.class);
-//                startActivity(i);
+                i = new Intent(view.getContext(), MysqlExpenseActivity.class);
+                startActivity(i);
                 break;
             case R.id.mysql_income_card:
 //                i = new Intent(view.getContext(), BudgetTrackerIncomesActivity.class);
@@ -105,10 +105,6 @@ public class MysqlDashFragment extends Fragment implements View.OnClickListener 
 //                startActivity(i);
                 break;
             case R.id.mysql_date_card:
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.mysql_main_container, new MysqlDateSearchFragment())
-//                        .addToBackStack(null)
-//                        .commit();
                 i = new Intent(view.getContext(), MysqlDateSearchActivity.class);
                 startActivity(i);
                 break;

@@ -1,14 +1,12 @@
 package com.myproject.offlinebudgettrackerappproject.model;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "budget_tracker_mysql_spending_cache_table")
-public class BudgetTrackerMysqlSpendingEntity {
-    @ColumnInfo(name = "spending_id")
+public class BudgetTrackerMysqlSpendingCacheEntity {
+    @PrimaryKey(autoGenerate = true)
     private int spendingId;
     @ColumnInfo(name = "date")
     private String date;
@@ -33,10 +31,10 @@ public class BudgetTrackerMysqlSpendingEntity {
     @ColumnInfo(name = "quantity")
     private int quantity;
 
-    public BudgetTrackerMysqlSpendingEntity() {
+    public BudgetTrackerMysqlSpendingCacheEntity() {
     }
 
-    public BudgetTrackerMysqlSpendingEntity(int spendingId, String date, String storeName, String productName, String productType, double price, double taxRate, String notes, String currencyCode, int quantity) {
+    public BudgetTrackerMysqlSpendingCacheEntity(int spendingId, String date, String storeName, String productName, String productType, double price, double taxRate, String notes, String currencyCode, int quantity) {
         this.spendingId = spendingId;
         this.date = date;
         this.storeName = storeName;
