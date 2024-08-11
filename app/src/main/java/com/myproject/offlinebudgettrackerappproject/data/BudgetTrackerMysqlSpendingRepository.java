@@ -5,6 +5,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
+import com.myproject.offlinebudgettrackerappproject.enums.SpendingType;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 import com.myproject.offlinebudgettrackerappproject.util.BudgetTrackerDatabase;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
@@ -22,12 +23,11 @@ public class BudgetTrackerMysqlSpendingRepository {
     private BudgetTrackerMysqlSpendingStoreNameDao budgetTrackerMysqlSpendingStoreNameDao;
     private BudgetTrackerMysqlSpendingProductNameDao budgetTrackerMysqlSpendingProductNameDao;
     private BudgetTrackerMysqlSpendingProductTypeDao budgetTrackerMysqlSpendingProductTypeDao;
+    private BudgetTrackerMysqlSpendingDateDao budgetTrackerMysqlSpendingDateDao;
 //    private BudgetTrackerMysqlSpendingStoreNameSyncDao budgetTrackerMysqlSpendingStoreNameSyncDao;
 
     BudgetTrackerDatabase budgetTrackerDatabase;
     private BudgetTrackerSpendingDao budgetTrackerSpendingDao;
-
-    private BudgetTrackerMysqlSpendingDateDao budgetTrackerMysqlSpendingDateDao;
 
     private List<BudgetTrackerMysqlSpendingDto> radioSearchStoreNameList;
 
@@ -177,45 +177,96 @@ public class BudgetTrackerMysqlSpendingRepository {
     }
 
     public void insertFromMysql(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
-        budgetTrackerMysqlSpendingStoreNameDao.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
-            @Override
-            public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
-//                Log.d("RepositoryResponse", spendingList.toString());
-                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
-                    Log.d("RepositoryResponse", dto.toString());
-                }
-                radioSearchStoreNameList = spendingList;
 
-                List<BudgetTrackerSpending> entityList = new ArrayList<>();
+        SpendingType spendingType = determineSpendingType(budgetTrackerMysqlSpendingDto);
 
-                for (BudgetTrackerMysqlSpendingDto dto : radioSearchStoreNameList) {
-                    entityList.add(dto.toEntity());
-                }
+        switch (spendingType) {
+            case STORE:
+                budgetTrackerMysqlSpendingStoreNameDao.getSearchStoreNameList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+                    public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+                        handleSuccess(spendingList, callback);
+                    }
 
-//                budgetTrackerSpendingList = Collections.singletonList((BudgetTrackerSpending) spendingList);
-
-                BudgetTrackerDatabase.dataWritableExecutor.execute(() -> {
-                    budgetTrackerSpendingDao.insertFromMysql(entityList);
+                    @Override
+                    public void onError(String error) {
+                        callback.onError(error);
+                    }
                 });
+                break;
 
-                callback.onSuccess(spendingList);
-            }
+            case PRODUCT_NAME:
+                budgetTrackerMysqlSpendingProductNameDao.getSearchProductNameList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+                    public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+                        handleSuccess(spendingList, callback);
+                    }
 
-            @Override
-            public void onError(String error) {
-                callback.onError(error);
-            }
-        });
+                    @Override
+                    public void onError(String error) {
+                        callback.onError(error);
+                    }
+                });
+                break;
+
+            case PRODUCT_TYPE:
+                budgetTrackerMysqlSpendingProductTypeDao.getSearchProductTypeList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+                    public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+                        handleSuccess(spendingList, callback);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        callback.onError(error);
+                    }
+                });
+                break;
+
+            case CURRENCY:
+                budgetTrackerMysqlSpendingDateDao.getSearchDateList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+
+                    public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+                        handleSuccess(spendingList, callback);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        callback.onError(error);
+                    }
+                });
+                break;
+
+        }
     }
 
-//    public void insertFromMysql(List<BudgetTrackerMysqlSpendingDto> dtoList) {
-//        List<BudgetTrackerSpending> entityList = new ArrayList<>();
-//        for (BudgetTrackerMysqlSpendingDto dto : dtoList) {
-//            entityList.add(dto.toEntity());
-//        }
-//        BudgetTrackerDatabase.dataWritableExecutor.execute(() -> {
-//            budgetTrackerSpendingDao.insertFromMysql(entityList);
-//        });
-//    }
+    private void handleSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList, MysqlSpendingListCallback callback) {
+        for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+            Log.d("RepositoryResponse", dto.toString());
+        }
 
+        List<BudgetTrackerSpending> entityList = new ArrayList<>();
+
+        for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+            entityList.add(dto.toEntity());
+        }
+
+        BudgetTrackerDatabase.dataWritableExecutor.execute(() -> {
+            budgetTrackerSpendingDao.insertFromMysql(entityList);
+        });
+
+        callback.onSuccess(spendingList);
+    }
+
+    private SpendingType determineSpendingType(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
+        if (budgetTrackerMysqlSpendingDto.getStoreName() != null) {
+            return SpendingType.STORE;
+        } else if (budgetTrackerMysqlSpendingDto.getProductName() != null) {
+            return SpendingType.PRODUCT_NAME;
+        } else if (budgetTrackerMysqlSpendingDto.getProductType() != null) {
+            return SpendingType.PRODUCT_TYPE;
+        } else if (budgetTrackerMysqlSpendingDto.getCurrencyCode() != null) {
+            return SpendingType.CURRENCY;
+        } else {
+            return null;
+        }
+
+    }
 }

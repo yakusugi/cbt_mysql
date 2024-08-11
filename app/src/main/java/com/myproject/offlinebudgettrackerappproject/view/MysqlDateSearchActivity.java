@@ -33,6 +33,8 @@ import java.util.List;
 
 public class MysqlDateSearchActivity extends AppCompatActivity {
 
+    List<BudgetTrackerMysqlSpendingDto> searchedSpendingList = new ArrayList<>();
+
     SharedPreferences sharedPreferences;
 
     BudgetTrackerMysqlSpendingViewModel budgetTrackerMysqlSpendingViewModel;
@@ -46,6 +48,7 @@ public class MysqlDateSearchActivity extends AppCompatActivity {
 
     private static final String PREF_CURRENCY_FILENAME = "CURRENCY_SHARED";
     private static final String PREF_CURRENCY_VALUE = "currencyValue";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,27 +113,65 @@ public class MysqlDateSearchActivity extends AppCompatActivity {
             }
         });
 
-        searchBtn.setOnClickListener(new View.OnClickListener() {
+
+
+            searchBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String searchKey = currencyTxt.getText().toString();
+                    String dateFrom = searchDateFrom.getText().toString();
+                    String dateTo = searchDateTo.getText().toString();
+
+//                dateQuery(searchKey, dateFrom, dateTo);
+//                //todo clicking each item to intent to add activity
+                    budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(SpendingType.CURRENCY, searchKey, dateFrom, dateTo);
+                    budgetTrackerMysqlSpendingViewModel.getDateList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+                        @Override
+                        public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+//                            Log.d("FragmentResponse", spendingList.toString());
+                            for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                                Log.d("FragmentResponse", dto.toString());
+                            }
+                            budgetTrackerMysqlSpendingDtoList = spendingList;
+//                            spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlSpendingDto));
+                            // Update the UI with the search results
+                            MysqlSearchListViewAdapter adapter = new MysqlSearchListViewAdapter(MysqlDateSearchActivity.this, budgetTrackerMysqlSpendingDtoList);
+                            searchListView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged(); // Notify the adapter about the data change
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(MysqlDateSearchActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                            Log.d("Error Now", "onError: " + error);
+                        }
+                    });
+
+                }
+            });
+
+        syncBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String searchKey = currencyTxt.getText().toString();
                 String dateFrom = searchDateFrom.getText().toString();
                 String dateTo = searchDateTo.getText().toString();
 
-//                dateQuery(searchKey, dateFrom, dateTo);
-//                //todo clicking each item to intent to add activity
+
                 budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(SpendingType.CURRENCY, searchKey, dateFrom, dateTo);
-                budgetTrackerMysqlSpendingViewModel.getDateList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+                budgetTrackerMysqlSpendingViewModel.getSyncSpendingList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
                     @Override
                     public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
 //                            Log.d("FragmentResponse", spendingList.toString());
                         for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
                             Log.d("FragmentResponse", dto.toString());
                         }
-                        budgetTrackerMysqlSpendingDtoList = spendingList;
+                        searchedSpendingList = spendingList;
 //                            spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlSpendingDto));
                         // Update the UI with the search results
-                        MysqlSearchListViewAdapter adapter = new MysqlSearchListViewAdapter(MysqlDateSearchActivity.this, budgetTrackerMysqlSpendingDtoList);
+                        MysqlSearchListViewAdapter adapter = new MysqlSearchListViewAdapter(MysqlDateSearchActivity.this, searchedSpendingList);
                         searchListView.setAdapter(adapter);
                         adapter.notifyDataSetChanged(); // Notify the adapter about the data change
                     }
@@ -138,41 +179,12 @@ public class MysqlDateSearchActivity extends AppCompatActivity {
                     @Override
                     public void onError(String error) {
                         Toast.makeText(MysqlDateSearchActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
-                        Log.d("Error Now", "onError: "+ error);
                     }
                 });
 
-            }
-        });
-
-
-    }
-
-
-    private void dateQuery(String searchKey, String dateFrom, String dateTo) {
-        budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(SpendingType.CURRENCY, searchKey, dateFrom, dateTo);
-
-        budgetTrackerMysqlSpendingViewModel.getDateList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
-            @Override
-            public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
-                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
-                    Log.d("FragmentResponse", dto.toString());
-                }
-                budgetTrackerMysqlSpendingDtoList = spendingList;
-//                            spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlSpendingDto));
-                // Update the UI with the search results
-                MysqlSearchListViewAdapter adapter = new MysqlSearchListViewAdapter(MysqlDateSearchActivity.this, budgetTrackerMysqlSpendingDtoList);
-                searchListView.setAdapter(adapter);
-                adapter.notifyDataSetChanged(); // Notify the adapter about the data change
-            }
-
-            @Override
-            public void onError(String error) {
-                Toast.makeText(MysqlDateSearchActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
-                Log.d("Error Now", "onError: "+ error);
-
 
             }
         });
+        }
+
     }
-}

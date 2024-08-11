@@ -129,7 +129,7 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
         });
     }
 
-    public void getSyncStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+    public void getSyncSpendingList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
         repository.insertFromMysql(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
             @Override
             public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {

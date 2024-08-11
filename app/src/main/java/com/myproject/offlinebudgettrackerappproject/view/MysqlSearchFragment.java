@@ -278,7 +278,51 @@ public class MysqlSearchFragment extends Fragment {
 
                 if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_store_name) {
                     BudgetTrackerMysqlSpendingDto storeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.STORE, searchKey, dateFrom, dateTo);
-                    budgetTrackerMysqlSpendingViewModel.getSyncStoreNameList(storeDto, new MysqlSpendingListCallback() {
+                    budgetTrackerMysqlSpendingViewModel.getSyncSpendingList(storeDto, new MysqlSpendingListCallback() {
+                        @Override
+                        public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+//                            Log.d("FragmentResponse", spendingList.toString());
+                            for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                                Log.d("FragmentResponse", dto.toString());
+                            }
+                            searchedSpendingList = spendingList;
+//                            spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlSpendingDto));
+                            // Update the UI with the search results
+                            MysqlSearchListViewAdapter adapter = new MysqlSearchListViewAdapter(getActivity(), searchedSpendingList);
+                            searchListView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged(); // Notify the adapter about the data change
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_product_name) {
+                    BudgetTrackerMysqlSpendingDto productNameDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_NAME, searchKey, dateFrom, dateTo);
+                    budgetTrackerMysqlSpendingViewModel.getSyncSpendingList(productNameDto, new MysqlSpendingListCallback() {
+                        @Override
+                        public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+//                            Log.d("FragmentResponse", spendingList.toString());
+                            for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                                Log.d("FragmentResponse", dto.toString());
+                            }
+                            searchedSpendingList = spendingList;
+//                            spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlSpendingDto));
+                            // Update the UI with the search results
+                            MysqlSearchListViewAdapter adapter = new MysqlSearchListViewAdapter(getActivity(), searchedSpendingList);
+                            searchListView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged(); // Notify the adapter about the data change
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_product_type) {
+                    BudgetTrackerMysqlSpendingDto productTypeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_TYPE, searchKey, dateFrom, dateTo);
+                    budgetTrackerMysqlSpendingViewModel.getSyncSpendingList(productTypeDto, new MysqlSpendingListCallback() {
                         @Override
                         public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
 //                            Log.d("FragmentResponse", spendingList.toString());
