@@ -132,6 +132,10 @@ public class MysqlDashFragment extends Fragment implements View.OnClickListener 
 //                i = new Intent(view.getContext(), SpendingReplacementActivity.class);
 //                startActivity(i);
                 break;
+            case R.id.mysql_admin_card:
+                i = new Intent(view.getContext(), AdminDashActivity.class);
+                startActivity(i);
+                break;
             case R.id.mysql_settings_card:
 //                i = new Intent(view.getContext(), IncomeReplacementActivity.class);
 //                startActivity(i);
