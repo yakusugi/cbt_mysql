@@ -20,6 +20,7 @@ import com.myproject.offlinebudgettrackerappproject.R;
 import com.myproject.offlinebudgettrackerappproject.adapter.MysqlSearchListViewAdapter;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.enums.SpendingType;
+import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingCacheViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
@@ -31,7 +32,7 @@ public class MysqlExpenseActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
-    BudgetTrackerMysqlSpendingViewModel budgetTrackerMysqlSpendingViewModel;
+    BudgetTrackerMysqlSpendingCacheViewModel budgetTrackerMysqlSpendingCacheViewModel;
 
     BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto;
 
@@ -50,9 +51,9 @@ public class MysqlExpenseActivity extends AppCompatActivity {
 
         searchListView = (ListView) findViewById(R.id.mysql_expense_listview);
 
-        budgetTrackerMysqlSpendingViewModel = new ViewModelProvider.AndroidViewModelFactory(MysqlExpenseActivity.this
+        budgetTrackerMysqlSpendingCacheViewModel = new ViewModelProvider.AndroidViewModelFactory(MysqlExpenseActivity.this
                 .getApplication())
-                .create(BudgetTrackerMysqlSpendingViewModel.class);
+                .create(BudgetTrackerMysqlSpendingCacheViewModel.class);
 
         sharedPreferences = getSharedPreferences(PREF_CURRENCY_FILENAME, 0);
 
@@ -61,43 +62,21 @@ public class MysqlExpenseActivity extends AppCompatActivity {
 //        Currency currency = Currency.getCurrencyArrayList().get(currentCurrencyNum);
 //        searchCalcResultTxt.setCompoundDrawablesWithIntrinsicBounds(currency.getCurrencyImage(), 0, 0, 0);
 
+        ListView listView = findViewById(R.id.mysql_expense_listview);
+        final MysqlSearchListViewAdapter adapter = new MysqlSearchListViewAdapter(this, new ArrayList<>());
+        listView.setAdapter(adapter);
+
+//        budgetTrackerMysqlSpendingCacheViewModel.getAllItems().observe(this, items -> {
+//            // Update the cached copy of the items in the adapter.
+//            adapter.setAdapter(items);
+//        });
+
+//        adapter = new MysqlSearchListViewAdapter(MysqlExpenseActivity.this, budgetTrackerMysqlSpendingDtoList);
+        searchListView.setAdapter(adapter);
+
+        // Trigger refresh from backend
+        budgetTrackerMysqlSpendingCacheViewModel.refreshItemsFromBackend();
 
 
-
-
-
-
-
-
-
-
-    }
-
-
-    private void dateQuery(String searchKey, String dateFrom, String dateTo) {
-        budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(SpendingType.CURRENCY, searchKey, dateFrom, dateTo);
-
-        budgetTrackerMysqlSpendingViewModel.getDateList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
-            @Override
-            public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
-                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
-                    Log.d("FragmentResponse", dto.toString());
-                }
-                budgetTrackerMysqlSpendingDtoList = spendingList;
-//                            spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlSpendingDto));
-                // Update the UI with the search results
-                MysqlSearchListViewAdapter adapter = new MysqlSearchListViewAdapter(MysqlExpenseActivity.this, budgetTrackerMysqlSpendingDtoList);
-                searchListView.setAdapter(adapter);
-                adapter.notifyDataSetChanged(); // Notify the adapter about the data change
-            }
-
-            @Override
-            public void onError(String error) {
-                Toast.makeText(MysqlExpenseActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
-                Log.d("Error Now", "onError: "+ error);
-
-
-            }
-        });
     }
 }

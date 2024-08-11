@@ -15,7 +15,7 @@ import java.util.List;
 public interface BudgetTrackerMysqlSpendingCacheDao {
 
     @Query("SELECT * FROM budget_tracker_mysql_spending_cache_table ORDER BY product_name ASC")
-    LiveData<List<BudgetTracker>> getAllBudgetTrackerMysqlList();
+    LiveData<List<BudgetTrackerMysqlSpendingCacheEntity>> getAllBudgetTrackerMysqlList();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<BudgetTrackerMysqlSpendingCacheEntity> budgetTrackerMysqlSpendingCacheEntity);

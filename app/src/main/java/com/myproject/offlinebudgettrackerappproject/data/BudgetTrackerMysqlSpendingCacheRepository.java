@@ -1,6 +1,7 @@
 package com.myproject.offlinebudgettrackerappproject.data;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Room;
@@ -11,7 +12,10 @@ import com.myproject.offlinebudgettrackerappproject.service.MySQLApiService;
 import com.myproject.offlinebudgettrackerappproject.util.BudgetTrackerMysqlCacheDatabase;
 import com.myproject.offlinebudgettrackerappproject.util.RetrofitClient;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,20 +26,39 @@ public class BudgetTrackerMysqlSpendingCacheRepository {
 
     private BudgetTrackerMysqlSpendingCacheDao budgetTrackerMysqlSpendingCacheDao;
     private MySQLApiService mySQLApiService;
-    private LiveData<List<BudgetTracker>> allItems;
+    private LiveData<List<BudgetTrackerMysqlSpendingCacheEntity>> allItems;
 
-    public BudgetTrackerMysqlSpendingCacheRepository(Application application) {
+    private Context context = null;
+
+    public BudgetTrackerMysqlSpendingCacheRepository(Context context) throws IOException {
+        this.context = context.getApplicationContext();
+    }
+
+
+
+
+    public BudgetTrackerMysqlSpendingCacheRepository(Application application) throws IOException {
         BudgetTrackerMysqlCacheDatabase db = Room.databaseBuilder(application, BudgetTrackerMysqlCacheDatabase.class, "item_database")
                 .build();
         budgetTrackerMysqlSpendingCacheDao = db.budgetTrackerMysqlSpendingCacheDao();
 
-        Retrofit retrofit = RetrofitClient.getClient("https://your-api-url.com/");
-        mySQLApiService = retrofit.create(MySQLApiService.class);
+
 
         allItems = budgetTrackerMysqlSpendingCacheDao.getAllBudgetTrackerMysqlList();
+
+        Properties properties = new Properties();
+        try (InputStream inputStream = context.getAssets().open("server_config.properties")) {
+            properties.load(inputStream);
+        }
+        String serverUrl = properties.getProperty("server_url");
+        String phpSelectFile = properties.getProperty("spending_all_php_file");
+        String selectUrl = serverUrl + phpSelectFile;
+
+        Retrofit retrofit = RetrofitClient.getClient(selectUrl);
+        mySQLApiService = retrofit.create(MySQLApiService.class);
     }
 
-    public LiveData<List<BudgetTracker>> getAllItems() {
+    public LiveData<List<BudgetTrackerMysqlSpendingCacheEntity>> getAllItems() {
         return allItems;
     }
 

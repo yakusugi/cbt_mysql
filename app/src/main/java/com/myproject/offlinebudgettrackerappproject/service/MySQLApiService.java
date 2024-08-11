@@ -14,7 +14,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface MySQLApiService {
-    @GET("your_endpoint_here")
+    @GET("budget_tracker_db_search_all.php")
     Call<List<BudgetTrackerMysqlSpendingCacheEntity>> getAllItems();
 
     @POST("items")
