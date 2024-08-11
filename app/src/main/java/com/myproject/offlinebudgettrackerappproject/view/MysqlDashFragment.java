@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.myproject.offlinebudgettrackerappproject.R;
+import com.myproject.offlinebudgettrackerappproject.util.ConfigManager;
+import com.myproject.offlinebudgettrackerappproject.util.SharedPreferencesManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,7 +21,7 @@ import com.myproject.offlinebudgettrackerappproject.R;
  */
 public class MysqlDashFragment extends Fragment implements View.OnClickListener {
 
-    private CardView spendingCard, incomeCard, bankCard, dateCard, bulkExpensecard, bulkIncomeCard, settingsCard, aboutCard;
+    private CardView spendingCard, incomeCard, bankCard, dateCard, bulkExpensecard, bulkIncomeCard, adminCard, settingsCard, aboutCard;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,6 +74,7 @@ public class MysqlDashFragment extends Fragment implements View.OnClickListener 
         dateCard = (CardView) view.findViewById(R.id.mysql_date_card);
         bulkExpensecard = (CardView) view.findViewById(R.id.mysql_replace_card);
         bulkIncomeCard = (CardView) view.findViewById(R.id.mysql_replace_card_income);
+        adminCard = (CardView) view.findViewById(R.id.mysql_admin_card);
         settingsCard = (CardView) view.findViewById(R.id.mysql_settings_card);
         aboutCard = (CardView) view.findViewById(R.id.mysql_about_card);
 
@@ -81,8 +84,17 @@ public class MysqlDashFragment extends Fragment implements View.OnClickListener 
         dateCard.setOnClickListener(this);
         bulkExpensecard.setOnClickListener(this);
         bulkIncomeCard.setOnClickListener(this);
+        adminCard.setOnClickListener(this);
         settingsCard.setOnClickListener(this);
         aboutCard.setOnClickListener(this);
+
+        boolean isAdmin = checkIfUserIsAdmin();
+        if (isAdmin) {
+            adminCard.setVisibility(View.VISIBLE);
+        } else {
+            adminCard.setVisibility(View.GONE);
+            settingsCard.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
@@ -130,5 +142,13 @@ public class MysqlDashFragment extends Fragment implements View.OnClickListener 
                 break;
         }
 
+    }
+
+    private boolean checkIfUserIsAdmin() {
+        String adminEmail = SharedPreferencesManager.getUserEmail(getContext());
+        ConfigManager configManager = new ConfigManager(getContext());
+        String storedAdminEmail = configManager.getAdminEmail(getContext());
+
+        return adminEmail != null && adminEmail.equals(storedAdminEmail);
     }
 }
