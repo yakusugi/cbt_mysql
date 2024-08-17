@@ -22,7 +22,7 @@
             android:name=".view.MysqlDateSearchActivity"
             android:exported="false" />
         <activity
-            android:name=".view.MainActivity2"
+            android:name=".view.AdminUsersActivity"
             android:exported="false" />
         <activity
             android:name=".view.MysqlMainActivity"
