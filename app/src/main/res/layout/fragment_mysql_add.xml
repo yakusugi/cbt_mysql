@@ -9,7 +9,8 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:paddingBottom="80dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -151,6 +152,49 @@
                 android:textCursorDrawable="@null" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/isTaxTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:inputType="number"
+            android:text="Is VAT included?"
+            android:minHeight="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spd_enter_price"
+            android:paddingEnd="5dp"
+            android:drawablePadding="12dp"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <RadioGroup
+            android:id="@+id/mysql_add_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/isTaxTextView"
+            tools:ignore="MissingConstraints">
+
+            <RadioButton
+                android:id="@+id/mysql_vat_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="No" />
+
+            <RadioButton
+                android:id="@+id/mysql_vat_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes" />
+
+
+        </RadioGroup>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -272,9 +316,6 @@
                 android:text="UPDATE"
                 android:layout_marginStart="16dp"/>
         </LinearLayout>
-
-
-
 
     </LinearLayout>
 
