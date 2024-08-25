@@ -154,28 +154,28 @@ public class MysqlAddFragment extends Fragment {
             enterVatRate.setEnabled(true);
         }
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Date date = (Date) enterDate.getText();
-                String storeName = enterStoreName.getText().toString();
-                String productName = enterProductName.getText().toString();
-                String productType = enterProductType.getText().toString();
-                vatRate = Double.parseDouble(enterVatRate.getText().toString());
-                double price = Double.parseDouble(enterPrice.getText().toString());
-                if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_vat_no) {
-                    vatRate = 0.0;
-                    enterVatRate.setEnabled(false);
-                } else {
-                    spdBool = true;
-                    vatRate = Double.parseDouble(enterVatRate.getText().toString());
-                    price = price * vatRate;
-                }
-                String notes = enterNotes.getText().toString();
-                String currencyCode = enterCurrencyCode.getText().toString();
-                int quantity = Integer.parseInt(enterQuantity.getText().toString());
-
-                BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(date, storeName, productName, productType, price, vatRate, notes, currencyCode, quantity);
+//        saveButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Date date = (Date) enterDate.getText();
+//                String storeName = enterStoreName.getText().toString();
+//                String productName = enterProductName.getText().toString();
+//                String productType = enterProductType.getText().toString();
+//                vatRate = Double.parseDouble(enterVatRate.getText().toString());
+//                double price = Double.parseDouble(enterPrice.getText().toString());
+//                if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_vat_no) {
+//                    vatRate = 0.0;
+//                    enterVatRate.setEnabled(false);
+//                } else {
+//                    spdBool = true;
+//                    vatRate = Double.parseDouble(enterVatRate.getText().toString());
+//                    price = price * vatRate;
+//                }
+//                String notes = enterNotes.getText().toString();
+//                String currencyCode = enterCurrencyCode.getText().toString();
+//                int quantity = Integer.parseInt(enterQuantity.getText().toString());
+//
+//                BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(date, storeName, productName, productType, price, vatRate, notes, currencyCode, quantity);
 //                budgetTrackerSpendingViewModel.insert(budgetTrackerSpending);
 //                if (spinnerText != null) {
 //                    double spendingNum = budgetTrackerSpending.getPrice();
@@ -184,9 +184,9 @@ public class MysqlAddFragment extends Fragment {
 //                    //Todo Need to make this a snackbar
 //                    Toast.makeText(getActivity(), "Insert a bank record", Toast.LENGTH_SHORT).show();
 //                }
-                getActivity().finish();
-            }
-        });
+//                getActivity().finish();
+//            }
+//        });
 
         // Inflate the layout for this fragment
         return view;
@@ -221,7 +221,6 @@ public class MysqlAddFragment extends Fragment {
         int quantity = Integer.parseInt(enterQuantity.getText().toString());
 
         BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(date, storeName, productName, productType, price, vatRate, notes, currencyCode, quantity);
-//        budgetTrackerMysqlSpendingViewModel.insert(budgetTrackerMysqlSpendingDto, );
 
         budgetTrackerMysqlSpendingViewModel.insert(budgetTrackerMysqlSpendingDto, new MysqlSpendingInsertCallback() {
             @Override

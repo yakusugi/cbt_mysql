@@ -149,7 +149,7 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
     }
 
     public void insert(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingInsertCallback callback) {
-        repository.insertFromMysql(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+        repository.insert(budgetTrackerMysqlSpendingDto, new MysqlSpendingInsertCallback() {
             @Override
             public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
 //                Log.d("ViewModelResponse", spendingList.toString());
