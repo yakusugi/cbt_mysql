@@ -147,6 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="VAT rate"
+                android:inputType="number"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textCursorDrawable="@null" />
@@ -210,6 +211,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Price"
+                android:inputType="number"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textCursorDrawable="@null" />
@@ -270,6 +272,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Quantity"
+                android:inputType="number"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textCursorDrawable="@null" />

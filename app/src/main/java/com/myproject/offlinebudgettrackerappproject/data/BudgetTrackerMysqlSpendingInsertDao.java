@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,8 +94,13 @@ public class BudgetTrackerMysqlSpendingInsertDao {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
+
+                    // Format the date to "yyyy-MM-dd"
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String formattedDate = dateFormat.format(budgetTrackerMysqlSpendingDto.getDate());
+
                     params.put("email", SharedPreferencesManager.getUserEmail(context).toString());
-                    params.put("date", budgetTrackerMysqlSpendingDto.getDate().toString());
+                    params.put("date", formattedDate);
                     params.put("store_name", budgetTrackerMysqlSpendingDto.getStoreName());
                     params.put("product_name", budgetTrackerMysqlSpendingDto.getProductName());
                     params.put("product_type", budgetTrackerMysqlSpendingDto.getProductType());
@@ -102,6 +108,7 @@ public class BudgetTrackerMysqlSpendingInsertDao {
                     params.put("price", budgetTrackerMysqlSpendingDto.getPrice().toString());
                     params.put("note", budgetTrackerMysqlSpendingDto.getNotes());
                     params.put("currency_code", budgetTrackerMysqlSpendingDto.getCurrencyCode());
+                    params.put("quantity", String.valueOf(budgetTrackerMysqlSpendingDto.getQuantity()));
 
                     return params;
                 }
@@ -123,7 +130,7 @@ public class BudgetTrackerMysqlSpendingInsertDao {
             JSONObject spendingObject = jsonArray.getJSONObject(i);
             BudgetTrackerMysqlSpendingDto spendingDto = new BudgetTrackerMysqlSpendingDto();
             dateUtil = new DateUtil();
-            spendingDto.setDate(dateUtil.stringToDate(spendingObject.getString("date"), "yyyy-MM-dd"));
+            spendingDto.setDate(DateUtil.stringToDate(spendingObject.getString("date"), "yyyy-MM-dd"));
             spendingDto.setStoreName(spendingObject.getString("store_name"));
             spendingDto.setProductName(spendingObject.getString("product_name"));
             spendingDto.setProductType(spendingObject.getString("product_type"));
@@ -131,6 +138,7 @@ public class BudgetTrackerMysqlSpendingInsertDao {
             spendingDto.setPrice(Double.parseDouble(spendingObject.getString("price")));
             spendingDto.setNotes(spendingObject.getString("note"));
             spendingDto.setCurrencyCode(spendingObject.getString("currency_code"));
+            spendingDto.setQuantity(Integer.parseInt(spendingObject.getString("quantity")));
             spendingList.add(spendingDto);
         }
         return spendingList;

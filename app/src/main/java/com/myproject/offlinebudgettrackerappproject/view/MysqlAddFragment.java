@@ -27,9 +27,12 @@ import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingV
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingInsertCallback;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -147,6 +150,18 @@ public class MysqlAddFragment extends Fragment {
 
         budgetTrackerMysqlSpendingViewModel = new ViewModelProvider(requireActivity()).get(BudgetTrackerMysqlSpendingViewModel.class);
 
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.mysql_vat_no) {
+                    enterVatRate.setEnabled(false);
+                    enterVatRate.setText("");  // Optionally clear the VAT rate if disabled
+                } else if (checkedId == R.id.mysql_vat_yes) {
+                    enterVatRate.setEnabled(true);
+                }
+            }
+        });
+
         //        todo: July 27th, 2022: Gray out VAT EditText (It disables when yes is chosen)
         if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_vat_no) {
             enterVatRate.setEnabled(false);
@@ -210,7 +225,23 @@ public class MysqlAddFragment extends Fragment {
     };
 
     private void handleSaveButtonClick() {
-        Date date = (Date) enterDate.getText();
+        // Get the date string from the EditText
+        String dateString = enterDate.getText().toString();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        Date date = null;
+        try {
+            // Parse the date string into a Date object
+            date = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Show an error message to the user if parsing fails
+            Toast.makeText(getActivity(), "Invalid date format", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+//        date = (Date) enterDate.getText();
         String storeName = enterStoreName.getText().toString();
         String productName = enterProductName.getText().toString();
         String productType = enterProductType.getText().toString();
