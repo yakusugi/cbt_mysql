@@ -10,6 +10,7 @@ import com.myproject.offlinebudgettrackerappproject.data.BudgetTrackerMysqlSpend
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingInsertCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
 
 import java.util.List;
 
@@ -144,6 +145,22 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
             @Override
             public void onError(String error) {
                 callback.onError(error);
+            }
+        });
+    }
+
+    public void getCalculatedDateSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingSumCallback callback) {
+        repository.getCalculatedDateSum(budgetTrackerMysqlSpendingDto, new MysqlSpendingSumCallback() {
+
+            @Override
+            public void onSuccess(Double spendingSum) {
+                Log.d("RepositoryResponse", "Total Spending: " + spendingSum);
+                callback.onSuccess(spendingSum); // Pass the total spending to the callback
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error); // Pass the error to the callback
             }
         });
     }

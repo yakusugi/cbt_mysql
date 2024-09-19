@@ -27,6 +27,7 @@ import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,6 +146,20 @@ public class MysqlDateSearchActivity extends AppCompatActivity {
                         public void onError(String error) {
                             Toast.makeText(MysqlDateSearchActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
                             Log.d("Error Now", "onError: " + error);
+                        }
+                    });
+
+                    budgetTrackerMysqlSpendingViewModel.getCalculatedDateSum(budgetTrackerMysqlSpendingDto, new MysqlSpendingSumCallback(){
+
+                        @Override
+                        public void onSuccess(Double spendingSum) {
+                            String spendingSumString = String.valueOf(spendingSum);
+                            searchCalcResultTxt.setText(spendingSumString);
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
                         }
                     });
 
