@@ -113,8 +113,8 @@ public class MysqlDashFragment extends Fragment implements View.OnClickListener 
 //                startActivity(i);
                 break;
             case R.id.mysql_bank_card:
-//                i = new Intent(view.getContext(), BudgetTrackerBankingActivity.class);
-//                startActivity(i);
+                i = new Intent(view.getContext(), MysqlBankActivity.class);
+                startActivity(i);
                 break;
             case R.id.mysql_date_card:
 //                getActivity().getSupportFragmentManager().beginTransaction()
