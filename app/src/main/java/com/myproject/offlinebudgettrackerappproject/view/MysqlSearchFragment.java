@@ -268,6 +268,21 @@ public class MysqlSearchFragment extends Fragment {
                             Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
                         }
                     });
+
+                    budgetTrackerMysqlSpendingViewModel.getCalculatedProductTypeSum(productDto, new MysqlSpendingSumCallback(){
+
+                        @Override
+                        public void onSuccess(Double spendingSum) {
+                            String spendingSumString = String.valueOf(spendingSum);
+                            searchCalcResultTxt.setText(spendingSumString);
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    });
+
                 }
 
 //                searchListView.setAdapter(new MysqlStoreNameSearchListViewAdapter(getActivity(), searchedSpendingList));

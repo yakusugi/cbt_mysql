@@ -34,6 +34,8 @@ public class BudgetTrackerMysqlSpendingRepository {
 
     private BudgetTrackerMysqlSpendingInsertDao budgetTrackerMysqlSpendingInsertDao;
 
+    private BudgetTrackerMysqlSpendingProductTypeSumDao budgetTrackerMysqlSpendingProductTypeSumDao;
+
     BudgetTrackerDatabase budgetTrackerDatabase;
     private BudgetTrackerSpendingDao budgetTrackerSpendingDao;
 
@@ -63,6 +65,8 @@ public class BudgetTrackerMysqlSpendingRepository {
         budgetTrackerMysqlSpendingDateSumDao = new BudgetTrackerMysqlSpendingDateSumDao(application);
 
         budgetTrackerMysqlSpendingStoreNameSumDao = new BudgetTrackerMysqlSpendingStoreNameSumDao(application);
+
+        budgetTrackerMysqlSpendingProductTypeSumDao = new BudgetTrackerMysqlSpendingProductTypeSumDao(application);
     }
 
     public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
@@ -179,6 +183,23 @@ public class BudgetTrackerMysqlSpendingRepository {
     public void getCalculatedStoreNameSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingSumCallback callback) {
         Log.d("STORE_TAG", "getCalculatedStoreNameSum: " + budgetTrackerMysqlSpendingDto);
         budgetTrackerMysqlSpendingStoreNameSumDao.getSearchStoreNameSum(budgetTrackerMysqlSpendingDto, new MysqlSpendingSumCallback() {
+
+            @Override
+            public void onSuccess(Double spendingSum) {
+                Log.d("RepositoryResponse", "Total Spending: " + spendingSum);
+                callback.onSuccess(spendingSum); // Pass the total spending to the callback
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error); // Pass the error to the callback
+            }
+        });
+    }
+
+    public void getCalculatedProductTypeSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingSumCallback callback) {
+        Log.d("STORE_TAG", "getCalculatedStoreNameSum: " + budgetTrackerMysqlSpendingDto);
+        budgetTrackerMysqlSpendingProductTypeSumDao.getSearchProductTypeSum(budgetTrackerMysqlSpendingDto, new MysqlSpendingSumCallback() {
 
             @Override
             public void onSuccess(Double spendingSum) {
