@@ -165,6 +165,24 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
         });
     }
 
+    public void getCalculatedStoreNameSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingSumCallback callback) {
+        Log.d("STORE_TAG", "getCalculatedStoreNameSum: " + budgetTrackerMysqlSpendingDto);
+        repository.getCalculatedStoreNameSum(budgetTrackerMysqlSpendingDto, new MysqlSpendingSumCallback() {
+
+            @Override
+            public void onSuccess(Double spendingSum) {
+                Log.d("RepositoryResponse", "Total Spending: " + spendingSum);
+                callback.onSuccess(spendingSum); // Pass the total spending to the callback
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error); // Pass the error to the callback
+            }
+        });
+    }
+
+
     public void insert(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingInsertCallback callback) {
         repository.insert(budgetTrackerMysqlSpendingDto, new MysqlSpendingInsertCallback() {
             @Override
