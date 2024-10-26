@@ -57,6 +57,10 @@ public class BudgetTrackerMysqlBankInsertDao {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+                            if (response == null || response.trim().isEmpty()) {
+                                callback.onError("No data received from the server");
+                                return;
+                            }
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
                                 String success = jsonObject.getString("success");

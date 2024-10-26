@@ -39,12 +39,14 @@ public class BudgetTrackerMysqlBankRepository {
     }
 
     public void insert(BudgetTrackerMysqlBankDto budgetTrackerMysqlBankDto, MysqlBankInsertCallback callback) {
+        Log.d("Repository", "Initiating insert with DTO: " + budgetTrackerMysqlBankDto);
         budgetTrackerMysqlBankInsertDao.insertIntoBank(budgetTrackerMysqlBankDto, new MysqlBankInsertCallback() {
             @Override
             public void onSuccess(List<BudgetTrackerMysqlBankDto> bankList) {
-//                Log.d("ViewModelResponse", spendingList.toString());
+                Log.d("Repository", "Insert success. Received bank list with size: " + bankList.size());
                 for (BudgetTrackerMysqlBankDto dto : bankList) {
                     Log.d("ViewModelResponse", dto.toString());
+                    Log.d("Repository", "Callback success executed.");
                 }
 //                radioSearchStoreNameList = spendingList;
                 callback.onSuccess(bankList);
@@ -52,8 +54,11 @@ public class BudgetTrackerMysqlBankRepository {
 
             @Override
             public void onError(String error) {
+                Log.e("Repository", "Error in insert: " + error);
                 callback.onError(error);
             }
+
         });
+        Log.d("Repository", "Insert request submitted.");
     }
 }
