@@ -9,106 +9,62 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp">
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
                 android:orientation="horizontal">
-
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/mysql_search_circle_image_view"
+                    android:id="@+id/mysql_bank_circle_image_view"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginStart="20dp"
-                    android:src="@drawable/search_icon"
+                    android:src="@drawable/bank_icon"
                     tools:ignore="DuplicateIds" />
 
                 <LinearLayout
-                    android:id="@+id/mysql_search_store_name_linear_layout"
+                    android:id="@+id/mysql_bank_name_linear_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/mysql_search_store_name_text_row"
+                        android:id="@+id/mysql_bank_name_text_row"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Store name"
+                        android:text="Bank name"
                         android:textColor="@color/black"
                         android:textSize="26sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/mysql_search_date_text_row"
+                        android:id="@+id/mysql_bank_balance_text_row"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="date here"
+                        android:text="bank balance here"
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:id="@+id/mysql_search_product_name_text_row"
+                        android:id="@+id/mysql_bank_notes_text_row"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="product name here"
+                        android:text="bank notes here"
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:id="@+id/mysql_search_product_type_text_row"
+                        android:id="@+id/mysql_bank_currency_code_text_row"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="product type here"
+                        android:text="bank currency code here"
                         android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/mysql_search_price_text_row"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="price here"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/mysql_search_vat_text_row"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="VAT rate here"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/mysql_search_note_text_row"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Note here"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/mysql_search_currency_code_text_row"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Currency code here"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/mysql_search_quantity_text_row"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Quantity here"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -116,16 +72,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:orientation="vertical">
-
-
                 </LinearLayout>
-
-
             </LinearLayout>
-
-
         </RelativeLayout>
-
     </LinearLayout>
-
 </LinearLayout>

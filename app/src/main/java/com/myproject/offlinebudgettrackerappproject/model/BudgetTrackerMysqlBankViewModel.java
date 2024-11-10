@@ -19,7 +19,7 @@ import java.util.List;
 
 public class BudgetTrackerMysqlBankViewModel extends AndroidViewModel {
 
-    public List<BudgetTrackerMysqlSpendingDto> radioSearchStoreNameList;
+    public List<BudgetTrackerMysqlBankDto> bankNameList;
     public List<BudgetTrackerMysqlSpendingDto> radioSearchProductNameList;
 
     public List<BudgetTrackerMysqlSpendingDto> radioSearchProductTypeList;
@@ -30,15 +30,12 @@ public class BudgetTrackerMysqlBankViewModel extends AndroidViewModel {
 
     Double searchStoreSum;
     Double searchProductSum;
-
     Double searchProductTypeSum;
 
     public BudgetTrackerMysqlBankViewModel(@NonNull Application application) {
         super(application);
         repository = new BudgetTrackerMysqlBankRepository(application);
     }
-
-
 
     public void insert(BudgetTrackerMysqlBankDto budgetTrackerMysqlBankDto, MysqlBankInsertCallback callback) {
         repository.insert(budgetTrackerMysqlBankDto, new MysqlBankInsertCallback() {
@@ -50,6 +47,25 @@ public class BudgetTrackerMysqlBankViewModel extends AndroidViewModel {
                 }
 //                radioSearchStoreNameList = spendingList;
                 callback.onSuccess(bankInsertList);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
+    }
+
+    public void getBankList(BudgetTrackerMysqlBankDto budgetTrackerMysqlBankDto, MysqlBankListCallback callback) {
+        repository.getBankList(budgetTrackerMysqlBankDto, new MysqlBankListCallback() {
+            @Override
+            public void onSuccess(List<BudgetTrackerMysqlBankDto> bankgList) {
+//                Log.d("ViewModelResponse", spendingList.toString());
+                for (BudgetTrackerMysqlBankDto dto : bankgList) {
+                    Log.d("ViewModelResponse", dto.toString());
+                }
+                bankNameList = bankgList;
+                callback.onSuccess(bankgList);
             }
 
             @Override

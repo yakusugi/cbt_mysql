@@ -35,6 +35,10 @@ public class BudgetTrackerMysqlBankDto {
         this.creationDate = creationDate;
     }
 
+    public BudgetTrackerMysqlBankDto(String bankName) {
+        this.bankName = bankName;
+    }
+
     public String getBankName() {
         return bankName;
     }

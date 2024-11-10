@@ -22,20 +22,17 @@ import java.util.Date;
 import java.util.List;
 
 public class BudgetTrackerMysqlBankRepository {
-
     private BudgetTrackerMysqlBankInsertDao budgetTrackerMysqlBankInsertDao;
-
     BudgetTrackerDatabase budgetTrackerDatabase;
-
     BudgetTrackerBankDao budgetTrackerBankDao;
-
+    BudgetTrackerMysqlBankNameDao budgetTrackerMysqlSpendingDao;
+    public List<BudgetTrackerMysqlBankDto> bankNameList;
 
     public BudgetTrackerMysqlBankRepository(Application application) {
         budgetTrackerMysqlBankInsertDao = new BudgetTrackerMysqlBankInsertDao(application);
-
         budgetTrackerDatabase = BudgetTrackerDatabase.getDatabase(application);
-
         budgetTrackerBankDao = budgetTrackerDatabase.budgetTrackerBankDao();
+        budgetTrackerMysqlSpendingDao = new BudgetTrackerMysqlBankNameDao(application);
     }
 
     public void insert(BudgetTrackerMysqlBankDto budgetTrackerMysqlBankDto, MysqlBankInsertCallback callback) {
@@ -60,5 +57,26 @@ public class BudgetTrackerMysqlBankRepository {
 
         });
         Log.d("Repository", "Insert request submitted.");
+    }
+
+    public void getBankList(BudgetTrackerMysqlBankDto budgetTrackerMysqlBankDto, MysqlBankListCallback callback) {
+
+        Log.d("TAG_DTO", "getDateList: " + budgetTrackerMysqlBankDto);
+        budgetTrackerMysqlSpendingDao.getSearchBankNameList(budgetTrackerMysqlBankDto, new MysqlBankListCallback() {
+            @Override
+            public void onSuccess(List<BudgetTrackerMysqlBankDto> bankList) {
+                for (BudgetTrackerMysqlBankDto dto : bankList) {
+                    Log.d("RepositoryResponse", dto.toString());
+                }
+
+                bankNameList = bankList;
+                callback.onSuccess(bankList);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
     }
 }
