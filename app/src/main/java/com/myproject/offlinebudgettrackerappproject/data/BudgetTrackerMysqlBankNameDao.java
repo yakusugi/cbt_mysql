@@ -60,6 +60,7 @@ public class BudgetTrackerMysqlBankNameDao {
             final Map<String, String> params = new HashMap<>();
             params.put("email", SharedPreferencesManager.getUserEmail(context));
             params.put("bank_name", budgetTrackerMysqlBankDto.getBankName());
+            Log.d("bank_name", "getSearchBankNameList: " + budgetTrackerMysqlBankDto.getBankName());
 
             StringRequest stringRequest = new StringRequest(
                     Request.Method.POST, selectUrl,
@@ -124,17 +125,6 @@ public class BudgetTrackerMysqlBankNameDao {
             e.printStackTrace();
             callback.onError("Error loading server configuration");
         }
-    }
-
-    public Date dateTypeReturner(String dateStr) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = null;
-        try {
-            date = dateFormat.parse(dateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
     }
 
 
