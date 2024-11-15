@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import com.myproject.offlinebudgettrackerappproject.data.BudgetTrackerMysqlSpendingRepository;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
+import com.myproject.offlinebudgettrackerappproject.util.ListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingInsertCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
@@ -227,6 +228,40 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
 
 //    public void syncFromMysql(List<BudgetTrackerMysqlSpendingDto> dtoList) {
 //        repository.insertFromMysql(dtoList);
+//    }
+
+    /**
+     *
+     * @param callback
+     */
+//    public void getAllMysqlSpendingAliasList(ListCallback callback) {
+//        Log.d("noifuji", "BudgetTrackerSpendingAliasViewModel.getAllBudgetTrackerSpendingAliasList start");
+//        repository.getAllMysqlSpendingAliasList(callback);
+//        Log.d("noifuji", "BudgetTrackerSpendingAliasViewModel.getAllBudgetTrackerSpendingAliasList end");
+//    }
+
+    /**
+     *
+     * @param budgetTrackerMysqlSpendingDto
+     * @param callback
+     */
+//    public void getAllMysqlSpendingAliasList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+//        repository.getAllMysqlSpendingAliasList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+//            @Override
+//            public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+////                Log.d("ViewModelResponse", spendingList.toString());
+//                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+//                    Log.d("ViewModelResponse", dto.toString());
+//                }
+//                radioSearchStoreNameList = spendingList;
+//                callback.onSuccess(spendingList);
+//            }
+//
+//            @Override
+//            public void onError(String error) {
+//                callback.onError(error);
+//            }
+//        });
 //    }
 
 }

@@ -211,16 +211,10 @@ public class StatsFragment extends Fragment {
                             PieEntry pieEntry = new PieEntry(value, productType);
                             pieEntries.add(pieEntry);
                         }
-
                         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Product Type Percentage");
                         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                         pieDataSet.setValueTextSize(20f);
-                        pieChart.notifyDataSetChanged();
-                        pieChart.invalidate();
-                        pieChart.setData(new PieData(pieDataSet));
-                        pieChart.animateXY(5000, 5000);
-                        pieChart.setEntryLabelColor(Color.BLACK);
-                        pieChart.getDescription().setEnabled(false);
+                        pirChartAnimation(pieDataSet);
                     });
 
         });
@@ -243,16 +237,10 @@ public class StatsFragment extends Fragment {
                             PieEntry pieEntry = new PieEntry(value, storeName);
                             pieEntries.add(pieEntry);
                         }
-
                         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Store Name Percentage");
                         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                         pieDataSet.setValueTextSize(20f);
-                        pieChart.notifyDataSetChanged();
-                        pieChart.invalidate();
-                        pieChart.setData(new PieData(pieDataSet));
-                        pieChart.animateXY(5000, 5000);
-                        pieChart.setEntryLabelColor(Color.BLACK);
-                        pieChart.getDescription().setEnabled(false);
+                        pirChartAnimation(pieDataSet);
                     });
 
         });
@@ -279,15 +267,19 @@ public class StatsFragment extends Fragment {
                         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Store Name Percentage");
                         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                         pieDataSet.setValueTextSize(20f);
-                        pieChart.notifyDataSetChanged();
-                        pieChart.invalidate();
-                        pieChart.setData(new PieData(pieDataSet));
-                        pieChart.animateXY(5000, 5000);
-                        pieChart.setEntryLabelColor(Color.BLACK);
-                        pieChart.getDescription().setEnabled(false);
+                        pirChartAnimation(pieDataSet);
                     });
 
         });
 
+    }
+
+    private void pirChartAnimation(PieDataSet pieDataSet) {
+        pieChart.notifyDataSetChanged();
+        pieChart.invalidate();
+        pieChart.setData(new PieData(pieDataSet));
+        pieChart.animateXY(5000, 5000);
+        pieChart.setEntryLabelColor(Color.BLACK);
+        pieChart.getDescription().setEnabled(false);
     }
 }
