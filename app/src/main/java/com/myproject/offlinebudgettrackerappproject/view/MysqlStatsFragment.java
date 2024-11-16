@@ -1,12 +1,15 @@
 package com.myproject.offlinebudgettrackerappproject.view;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +19,22 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.myproject.offlinebudgettrackerappproject.R;
+import com.myproject.offlinebudgettrackerappproject.adapter.MysqlSearchListViewAdapter;
 import com.myproject.offlinebudgettrackerappproject.databinding.ActivityMainBinding;
+import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
+import com.myproject.offlinebudgettrackerappproject.enums.SpendingType;
+import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingAlias;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingAliasViewModel;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +52,8 @@ public class MysqlStatsFragment extends Fragment {
     RadioButton radioProductNameButton;
     RadioButton radioProductTypeButton;
     EditText searchName;
+
+    EditText currencyCode;
     EditText dateFrom;
     EditText dateTo;
     Button searchBtn;
@@ -47,6 +61,8 @@ public class MysqlStatsFragment extends Fragment {
     List<BudgetTrackerSpendingAlias> spendingAliasList;
     PieChart pieChart;
     ArrayList<PieEntry> pieEntries;
+
+    BudgetTrackerMysqlSpendingViewModel budgetTrackerMysqlSpendingViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -98,12 +114,14 @@ public class MysqlStatsFragment extends Fragment {
         radioProductNameButton = (RadioButton) view.findViewById(R.id.mysql_stats_radio_product_name);
         radioProductTypeButton = (RadioButton) view.findViewById(R.id.mysql_stats_radio_product_type);
         searchName = (EditText) view.findViewById(R.id.mysql_stats_name);
+        currencyCode = (EditText) view.findViewById(R.id.mysql_stats_currency_code);
         dateFrom = (EditText) view.findViewById(R.id.mysql_stats_date_from_txt);
         dateTo = (EditText) view.findViewById(R.id.mysql_stats_date_to_txt);
         searchBtn = (Button) view.findViewById(R.id.mysql_stats_search_btn);
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         pieChart = (PieChart) view.findViewById(R.id.mysql_stats_pie_chart);
         budgetTrackerSpendingAliasViewModel = new ViewModelProvider(requireActivity()).get(BudgetTrackerSpendingAliasViewModel.class);
+        budgetTrackerMysqlSpendingViewModel = new ViewModelProvider(requireActivity()).get(BudgetTrackerMysqlSpendingViewModel.class);
 
         pieEntries = new ArrayList<>();
 
@@ -148,19 +166,33 @@ public class MysqlStatsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String searchKey = searchName.getText().toString();
+                String searchCurrencyCode = currencyCode.getText().toString();
                 String searchDateFrom = dateFrom.getText().toString();
                 String searchDateTo = dateTo.getText().toString();
-                if (radioGroup.getCheckedRadioButtonId() == R.id.stats_radio_store_name) {
-//                    deleteAliasSpendingTable(() ->
-//                            deleteSequence(() ->
-//                                    insertStoreDataSpendingAlias(searchDateFrom, searchDateTo, searchKey, ()->storePieChartShow())));
+                if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_store_name) {
+                    BudgetTrackerMysqlSpendingDto storeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.STORE, searchKey, searchCurrencyCode, searchDateFrom, searchDateTo);
+                    budgetTrackerMysqlSpendingViewModel.getSearchStoreStatsList(storeDto, new MysqlSpendingListCallback() {
+                        @Override
+                        public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+//                            Log.d("FragmentResponse", spendingList.toString());
+                            if (spendingList == null || spendingList.isEmpty()) {
+                                Toast.makeText(getContext(), "No data found!", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            storePieChartShow(spendingList);
+                        }
 
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-                } else if (radioGroup.getCheckedRadioButtonId() == R.id.stats_radio_product_name){
+                } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_product_name){
 //                    deleteAliasSpendingTable(() ->
 //                            deleteSequence(() ->
 //                                    insertProductNameDataSpendingAlias(searchDateFrom, searchDateTo, searchKey, ()->productPieChartShow())));
-                } else if (radioGroup.getCheckedRadioButtonId() == R.id.stats_radio_product_type){
+                } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_product_type){
 //                    deleteAliasSpendingTable(() ->
 //                            deleteSequence(() ->
 //                                    insertProductTypeDataSpendingAlias(searchDateFrom, searchDateTo, searchKey, ()->productTypePieChartShow())));
@@ -171,5 +203,27 @@ public class MysqlStatsFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void storePieChartShow(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+        pieEntries = new ArrayList<>();
+        for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+            float value = (float) dto.getAliasPercentage();
+            String label = dto.getProductType();
+            pieEntries.add(new PieEntry(value, label));
+        }
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Store Percentage");
+        pieChartAnimation(pieDataSet);
+    }
+
+    private void pieChartAnimation(PieDataSet pieDataSet) {
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieDataSet.setValueTextSize(20f);
+        pieChart.notifyDataSetChanged();
+        pieChart.invalidate();
+        pieChart.setData(new PieData(pieDataSet));
+        pieChart.animateXY(5000, 5000);
+        pieChart.setEntryLabelColor(Color.BLACK);
+        pieChart.getDescription().setEnabled(false);
     }
 }

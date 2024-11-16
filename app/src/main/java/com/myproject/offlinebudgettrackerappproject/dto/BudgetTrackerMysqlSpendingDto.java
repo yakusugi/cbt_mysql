@@ -36,6 +36,8 @@ public class BudgetTrackerMysqlSpendingDto {
     //new column
     private String creationDate;
 
+    private double aliasPercentage;
+
     public BudgetTrackerMysqlSpendingDto() {
     }
 
@@ -49,6 +51,19 @@ public class BudgetTrackerMysqlSpendingDto {
         } else if (type == SpendingType.CURRENCY) {
             this.currencyCode = name;
         }
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+    }
+
+    public BudgetTrackerMysqlSpendingDto(SpendingType type, String name, String currencyCode, String dateFrom, String dateTo) {
+        if (type == SpendingType.STORE) {
+            this.storeName = name;
+        } else if (type == SpendingType.PRODUCT_NAME) {
+            this.productName = name;
+        } else if (type == SpendingType.PRODUCT_TYPE) {
+            this.productType = name;
+        }
+        this.currencyCode = currencyCode;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
     }
@@ -97,6 +112,18 @@ public class BudgetTrackerMysqlSpendingDto {
     public BudgetTrackerMysqlSpendingDto(String dateFrom, String dateTo) {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
+    }
+
+    public BudgetTrackerMysqlSpendingDto(Date date, String storeName, String productName, String productType, Double price, Double taxRate, String currencyCode, int quantity, double aliasPercentage) {
+        this.date = date;
+        this.storeName = storeName;
+        this.productName = productName;
+        this.productType = productType;
+        this.price = price;
+        this.taxRate = taxRate;
+        this.currencyCode = currencyCode;
+        this.quantity = quantity;
+        this.aliasPercentage = aliasPercentage;
     }
 
     public Date getDate() {
@@ -203,6 +230,33 @@ public class BudgetTrackerMysqlSpendingDto {
         this.creationDate = creationDate;
     }
 
+    public double getAliasPercentage() {
+        return aliasPercentage;
+    }
+
+    public void setAliasPercentage(double aliasPercentage) {
+        this.aliasPercentage = aliasPercentage;
+    }
+
+    //    @Override
+//    public String toString() {
+//        return "BudgetTrackerMysqlSpendingDto{" +
+//                "date=" + date +
+//                ", dateFrom='" + dateFrom + '\'' +
+//                ", dateTo='" + dateTo + '\'' +
+//                ", storeName='" + storeName + '\'' +
+//                ", productName='" + productName + '\'' +
+//                ", productType='" + productType + '\'' +
+//                ", price=" + price +
+//                ", isTax=" + isTax +
+//                ", taxRate=" + taxRate +
+//                ", notes='" + notes + '\'' +
+//                ", currencyCode='" + currencyCode + '\'' +
+//                ", quantity=" + quantity +
+//                ", creationDate='" + creationDate + '\'' +
+//                '}';
+//    }
+
 
     @Override
     public String toString() {
@@ -220,6 +274,7 @@ public class BudgetTrackerMysqlSpendingDto {
                 ", currencyCode='" + currencyCode + '\'' +
                 ", quantity=" + quantity +
                 ", creationDate='" + creationDate + '\'' +
+                ", aliasPercentage=" + aliasPercentage +
                 '}';
     }
 

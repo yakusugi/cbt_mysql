@@ -224,6 +224,30 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
         });
     }
 
+    /**
+     * PieChart animation (store name)
+     * @param budgetTrackerMysqlSpendingDto
+     * @param callback
+     */
+    public void getSearchStoreStatsList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+        repository.getSearchStoreStatsList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+            @Override
+            public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+//                Log.d("ViewModelResponse", spendingList.toString());
+                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                    Log.d("ViewModelResponse", dto.toString());
+                }
+                radioSearchStoreNameList = spendingList;
+                callback.onSuccess(spendingList);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
+    }
+
 
 
 //    public void syncFromMysql(List<BudgetTrackerMysqlSpendingDto> dtoList) {
