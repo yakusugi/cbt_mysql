@@ -87,33 +87,87 @@
 
         </RadioGroup>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            app:boxStrokeColor="@color/black"
-            app:hintTextColor="@color/black"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:startIconDrawable="@drawable/search_18"
-            >
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="300dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            app:boxStrokeColor="@color/black"-->
+<!--            app:hintTextColor="@color/black"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--            app:startIconDrawable="@drawable/search_18"-->
+<!--            >-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mysql_stats_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Search"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:textCursorDrawable="@null" />
-        </com.google.android.material.textfield.TextInputLayout>
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/mysql_stats_name"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Search"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textColorHint="@color/black"-->
+<!--                android:textCursorDrawable="@null" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/stats_table_row"
+            android:id="@+id/stats_table_row_1"
+            >
+
+            <TableRow>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:boxStrokeColor="@color/black"
+                    app:hintTextColor="@color/black"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:startIconDrawable="@drawable/search_18"
+                    >
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/mysql_stats_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Search"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black"
+                        android:textCursorDrawable="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:boxStrokeColor="@color/black"
+                    app:hintTextColor="@color/black"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:startIconDrawable="@drawable/usd_circle_18"
+                    >
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/mysql_stats_currency_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Currency"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black"
+                        android:textCursorDrawable="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </TableRow>
+            <TableRow android:layout_marginTop="8dp">
+            </TableRow>
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/stats_table_row_2"
             >
 
             <TableRow>
@@ -163,7 +217,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </TableRow>
             <TableRow android:layout_marginTop="8dp">
-
             </TableRow>
         </TableLayout>
 

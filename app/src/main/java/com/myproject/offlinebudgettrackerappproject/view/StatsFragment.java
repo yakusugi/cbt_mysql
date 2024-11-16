@@ -263,7 +263,6 @@ public class StatsFragment extends Fragment {
                         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Store Name Percentage");
                         pieChartAnimation(pieDataSet);
                     });
-
         });
 
     }
