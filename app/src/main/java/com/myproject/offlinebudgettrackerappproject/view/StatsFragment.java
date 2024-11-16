@@ -212,9 +212,7 @@ public class StatsFragment extends Fragment {
                             pieEntries.add(pieEntry);
                         }
                         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Product Type Percentage");
-                        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                        pieDataSet.setValueTextSize(20f);
-                        pirChartAnimation(pieDataSet);
+                        pieChartAnimation(pieDataSet);
                     });
 
         });
@@ -238,9 +236,7 @@ public class StatsFragment extends Fragment {
                             pieEntries.add(pieEntry);
                         }
                         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Store Name Percentage");
-                        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                        pieDataSet.setValueTextSize(20f);
-                        pirChartAnimation(pieDataSet);
+                        pieChartAnimation(pieDataSet);
                     });
 
         });
@@ -265,16 +261,16 @@ public class StatsFragment extends Fragment {
                         }
 
                         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Store Name Percentage");
-                        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                        pieDataSet.setValueTextSize(20f);
-                        pirChartAnimation(pieDataSet);
+                        pieChartAnimation(pieDataSet);
                     });
 
         });
 
     }
 
-    private void pirChartAnimation(PieDataSet pieDataSet) {
+    private void pieChartAnimation(PieDataSet pieDataSet) {
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieDataSet.setValueTextSize(20f);
         pieChart.notifyDataSetChanged();
         pieChart.invalidate();
         pieChart.setData(new PieData(pieDataSet));
