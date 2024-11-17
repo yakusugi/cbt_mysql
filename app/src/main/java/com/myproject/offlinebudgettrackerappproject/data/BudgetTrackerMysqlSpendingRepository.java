@@ -56,18 +56,13 @@ public class BudgetTrackerMysqlSpendingRepository {
         budgetTrackerMysqlSpendingDateDao = new BudgetTrackerMysqlSpendingDateDao(application);
 //        budgetTrackerMysqlSpendingStoreNameSyncDao = new BudgetTrackerMysqlSpendingStoreNameSyncDao(application);
         budgetTrackerMysqlSpendingInsertDao = new BudgetTrackerMysqlSpendingInsertDao(application);
-
         budgetTrackerDatabase = BudgetTrackerDatabase.getDatabase(application);
-
         budgetTrackerSpendingDao = budgetTrackerDatabase.budgetTrackerSpendingDao();
-
         budgetTrackerMysqlSpendingDateSumDao = new BudgetTrackerMysqlSpendingDateSumDao(application);
-
         budgetTrackerMysqlSpendingStoreNameSumDao = new BudgetTrackerMysqlSpendingStoreNameSumDao(application);
-
         budgetTrackerMysqlSpendingProductTypeSumDao = new BudgetTrackerMysqlSpendingProductTypeSumDao(application);
-
         budgetTrackerMysqlSpendingStoreStatsDao = new BudgetTrackerMysqlSpendingStoreStatsDao(application);
+        budgetTrackerMysqlSpendingProductTypeStatsDao = new BudgetTrackerMysqlSpendingProductTypeStatsDao(application);
     }
 
     public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {

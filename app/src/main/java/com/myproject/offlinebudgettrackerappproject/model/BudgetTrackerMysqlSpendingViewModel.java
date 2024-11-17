@@ -254,7 +254,7 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
      * @param callback
      */
     public void getSearchProductTypeStatsList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
-        repository.getSearchStoreStatsList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+        repository.getSearchProductTypeStatsList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
             @Override
             public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
                 //todo make this part a method

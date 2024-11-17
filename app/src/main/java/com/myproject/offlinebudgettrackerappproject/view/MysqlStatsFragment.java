@@ -37,7 +37,9 @@ import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingA
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -186,6 +188,8 @@ public class MysqlStatsFragment extends Fragment {
                         }
                     });
                 } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_product_name){
+
+                } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_product_type){
                     BudgetTrackerMysqlSpendingDto storeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_TYPE, searchKey, searchCurrencyCode, searchDateFrom, searchDateTo);
                     budgetTrackerMysqlSpendingViewModel.getSearchProductTypeStatsList(storeDto, new MysqlSpendingListCallback() {
                         @Override
@@ -195,7 +199,7 @@ public class MysqlStatsFragment extends Fragment {
                                 Toast.makeText(getContext(), "No data found!", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            storePieChartShow(spendingList);
+                            productTypePieChartShow(spendingList);
                         }
 
                         @Override
@@ -203,25 +207,50 @@ public class MysqlStatsFragment extends Fragment {
                             Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
                         }
                     });
-                } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_product_type){
-//                    deleteAliasSpendingTable(() ->
-//                            deleteSequence(() ->
-//                                    insertProductTypeDataSpendingAlias(searchDateFrom, searchDateTo, searchKey, ()->productTypePieChartShow())));
                 }
-
             }
         });
-
         // Inflate the layout for this fragment
         return view;
     }
 
     private void storePieChartShow(List<BudgetTrackerMysqlSpendingDto> spendingList) {
-        pieEntries = new ArrayList<>();
+        Map<String, Float> aggregatedData = new HashMap<>();
         for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
             float value = (float) dto.getAliasPercentage();
             String label = dto.getProductType();
             pieEntries.add(new PieEntry(value, label));
+
+            if (aggregatedData.containsKey(label)) {
+                aggregatedData.put(label, aggregatedData.get(label) + value);
+            } else {
+                aggregatedData.put(label, value);
+            }
+        }
+        pieEntries = new ArrayList<>();
+        for (Map.Entry<String, Float> entry : aggregatedData.entrySet()) {
+            pieEntries.add(new PieEntry(entry.getValue(), entry.getKey()));
+        }
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Store Percentage");
+        pieChartAnimation(pieDataSet);
+    }
+
+    private void productTypePieChartShow(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+        Map<String, Float> aggregatedData = new HashMap<>();
+        for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+            float value = (float) dto.getAliasPercentage();
+            String label = dto.getStoreName();
+            pieEntries.add(new PieEntry(value, label));
+
+            if (aggregatedData.containsKey(label)) {
+                aggregatedData.put(label, aggregatedData.get(label) + value);
+            } else {
+                aggregatedData.put(label, value);
+            }
+        }
+        pieEntries = new ArrayList<>();
+        for (Map.Entry<String, Float> entry : aggregatedData.entrySet()) {
+            pieEntries.add(new PieEntry(entry.getValue(), entry.getKey()));
         }
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Store Percentage");
         pieChartAnimation(pieDataSet);
