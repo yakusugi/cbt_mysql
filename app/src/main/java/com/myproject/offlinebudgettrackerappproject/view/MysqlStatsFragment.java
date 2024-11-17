@@ -52,7 +52,6 @@ public class MysqlStatsFragment extends Fragment {
     RadioButton radioProductNameButton;
     RadioButton radioProductTypeButton;
     EditText searchName;
-
     EditText currencyCode;
     EditText dateFrom;
     EditText dateTo;
@@ -108,7 +107,6 @@ public class MysqlStatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mysql_stats, container, false);
-
         radioGroup = (RadioGroup) view.findViewById(R.id.mysql_stats_radio_group);
         radioStoreButton = (RadioButton) view.findViewById(R.id.mysql_stats_radio_store_name);
         radioProductNameButton = (RadioButton) view.findViewById(R.id.mysql_stats_radio_product_name);
@@ -174,7 +172,7 @@ public class MysqlStatsFragment extends Fragment {
                     budgetTrackerMysqlSpendingViewModel.getSearchStoreStatsList(storeDto, new MysqlSpendingListCallback() {
                         @Override
                         public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
-//                            Log.d("FragmentResponse", spendingList.toString());
+                            //todo make this part a method
                             if (spendingList == null || spendingList.isEmpty()) {
                                 Toast.makeText(getContext(), "No data found!", Toast.LENGTH_SHORT).show();
                                 return;
@@ -187,11 +185,24 @@ public class MysqlStatsFragment extends Fragment {
                             Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
                         }
                     });
-
                 } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_product_name){
-//                    deleteAliasSpendingTable(() ->
-//                            deleteSequence(() ->
-//                                    insertProductNameDataSpendingAlias(searchDateFrom, searchDateTo, searchKey, ()->productPieChartShow())));
+                    BudgetTrackerMysqlSpendingDto storeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_TYPE, searchKey, searchCurrencyCode, searchDateFrom, searchDateTo);
+                    budgetTrackerMysqlSpendingViewModel.getSearchProductTypeStatsList(storeDto, new MysqlSpendingListCallback() {
+                        @Override
+                        public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+                            //todo make this part a method
+                            if (spendingList == null || spendingList.isEmpty()) {
+                                Toast.makeText(getContext(), "No data found!", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            storePieChartShow(spendingList);
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_product_type){
 //                    deleteAliasSpendingTable(() ->
 //                            deleteSequence(() ->

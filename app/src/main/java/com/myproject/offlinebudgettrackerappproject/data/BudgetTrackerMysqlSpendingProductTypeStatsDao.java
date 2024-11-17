@@ -29,36 +29,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-public class BudgetTrackerMysqlSpendingStoreStatsDao {
+public class BudgetTrackerMysqlSpendingProductTypeStatsDao {
 
     private final Context context;
 
-    public BudgetTrackerMysqlSpendingStoreStatsDao(Context context) {
+    public BudgetTrackerMysqlSpendingProductTypeStatsDao(Context context) {
         this.context = context.getApplicationContext();
     }
 
-    public void getSearchStoreStatsList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+    public void getSearchProductTypeStatsList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
 
-        String storeName = budgetTrackerMysqlSpendingDto.getStoreName();
+        String productType = budgetTrackerMysqlSpendingDto.getProductType();
         String currencyCode = budgetTrackerMysqlSpendingDto.getCurrencyCode();
         String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
         String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
 
-        Log.d("TAG", "getSearchStoreNameList: " + storeName + " " + currencyCode  + " " + dateFrom + " " + dateTo);
+        Log.d("TAG", "getSearchStoreNameList: " + productType + " " + currencyCode  + " " + dateFrom + " " + dateTo);
 
         try {
             Properties properties = new Properties();
             InputStream inputStream = context.getAssets().open("server_config.properties");
             properties.load(inputStream);
             String serverUrl = properties.getProperty("server_url");
-            String phpSelectFile = properties.getProperty("bank_name_store_stats_search_php_file");
+            String phpSelectFile = properties.getProperty("bank_name_product_type_stats_search_php_file");
             String selectUrl = serverUrl + phpSelectFile;
             Log.d("select_url", selectUrl);
 
             // Create a map of parameters to send in the POST request
             final Map<String, String> params = new HashMap<>();
             params.put("email", SharedPreferencesManager.getUserEmail(context));
-            params.put("store_name", storeName);
+            params.put("product_type", productType);
             params.put("currency_code", currencyCode);
             params.put("date_from", dateFrom);
             params.put("date_to", dateTo);
