@@ -51,7 +51,7 @@ public class BudgetTrackerMysqlSpendingStoreStatsDao {
             InputStream inputStream = context.getAssets().open("server_config.properties");
             properties.load(inputStream);
             String serverUrl = properties.getProperty("server_url");
-            String phpSelectFile = properties.getProperty("bank_name_store_stats_search_php_file");
+            String phpSelectFile = properties.getProperty("store_stats_search_php_file");
             String selectUrl = serverUrl + phpSelectFile;
             Log.d("select_url", selectUrl);
 

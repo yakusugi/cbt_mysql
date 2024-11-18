@@ -249,12 +249,36 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
     }
 
     /**
-     * PieChart animation (store name)
+     * PieChart animation (product type)
      * @param budgetTrackerMysqlSpendingDto
      * @param callback
      */
     public void getSearchProductTypeStatsList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
         repository.getSearchProductTypeStatsList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+            @Override
+            public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+                //todo make this part a method
+                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                    Log.d("ViewModelResponse", dto.toString());
+                }
+                radioSearchStoreNameList = spendingList;
+                callback.onSuccess(spendingList);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
+    }
+
+    /**
+     * PieChart animation (product name)
+     * @param budgetTrackerMysqlSpendingDto
+     * @param callback
+     */
+    public void getSearchProductNameStatsList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+        repository.getSearchProductNameStatsList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
             @Override
             public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
                 //todo make this part a method

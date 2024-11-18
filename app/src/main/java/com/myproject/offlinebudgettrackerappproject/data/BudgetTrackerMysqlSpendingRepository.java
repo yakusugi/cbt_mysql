@@ -34,6 +34,7 @@ public class BudgetTrackerMysqlSpendingRepository {
     private BudgetTrackerMysqlSpendingProductTypeSumDao budgetTrackerMysqlSpendingProductTypeSumDao;
     private BudgetTrackerMysqlSpendingStoreStatsDao budgetTrackerMysqlSpendingStoreStatsDao;
     private BudgetTrackerMysqlSpendingProductTypeStatsDao budgetTrackerMysqlSpendingProductTypeStatsDao;
+    private BudgetTrackerMysqlSpendingProductNameStatsDao budgetTrackerMysqlSpendingProductNameStatsDao;
 
     BudgetTrackerDatabase budgetTrackerDatabase;
     private BudgetTrackerSpendingDao budgetTrackerSpendingDao;
@@ -63,6 +64,7 @@ public class BudgetTrackerMysqlSpendingRepository {
         budgetTrackerMysqlSpendingProductTypeSumDao = new BudgetTrackerMysqlSpendingProductTypeSumDao(application);
         budgetTrackerMysqlSpendingStoreStatsDao = new BudgetTrackerMysqlSpendingStoreStatsDao(application);
         budgetTrackerMysqlSpendingProductTypeStatsDao = new BudgetTrackerMysqlSpendingProductTypeStatsDao(application);
+        budgetTrackerMysqlSpendingProductNameStatsDao = new BudgetTrackerMysqlSpendingProductNameStatsDao(application);
     }
 
     public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
@@ -341,6 +343,40 @@ public class BudgetTrackerMysqlSpendingRepository {
      */
     public void getSearchProductTypeStatsList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
         budgetTrackerMysqlSpendingProductTypeStatsDao.getSearchProductTypeStatsList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
+            @Override
+            public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+                //todo make this part a method
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+                    try {
+                        Date date = dto.getDate();
+                        String formattedDate = DateUtils.dateToString(date);
+                        dto.setDate(DateUtils.stringToDate(formattedDate));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("RepositoryResponse", dto.toString());
+                }
+
+                radioSearchStoreNameList = spendingList;
+                callback.onSuccess(spendingList);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
+    }
+
+    /**
+     * PieChart animation (product name)
+     * @param budgetTrackerMysqlSpendingDto
+     * @param callback
+     */
+    public void getSearchProductNameStatsList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
+        budgetTrackerMysqlSpendingProductNameStatsDao.getSearchProductNameStatsList(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
             @Override
             public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
                 //todo make this part a method

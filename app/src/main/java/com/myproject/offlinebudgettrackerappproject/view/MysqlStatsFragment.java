@@ -188,7 +188,23 @@ public class MysqlStatsFragment extends Fragment {
                         }
                     });
                 } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_product_name){
+                    BudgetTrackerMysqlSpendingDto storeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_NAME, searchKey, searchCurrencyCode, searchDateFrom, searchDateTo);
+                    budgetTrackerMysqlSpendingViewModel.getSearchProductNameStatsList(storeDto, new MysqlSpendingListCallback() {
+                        @Override
+                        public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+                            //todo make this part a method
+                            if (spendingList == null || spendingList.isEmpty()) {
+                                Toast.makeText(getContext(), "No data found!", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            productNamePieChartShow(spendingList);
+                        }
 
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_product_type){
                     BudgetTrackerMysqlSpendingDto storeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_TYPE, searchKey, searchCurrencyCode, searchDateFrom, searchDateTo);
                     budgetTrackerMysqlSpendingViewModel.getSearchProductTypeStatsList(storeDto, new MysqlSpendingListCallback() {
@@ -214,6 +230,10 @@ public class MysqlStatsFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Show the store name pie chart
+     * @param spendingList
+     */
     private void storePieChartShow(List<BudgetTrackerMysqlSpendingDto> spendingList) {
         Map<String, Float> aggregatedData = new HashMap<>();
         for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
@@ -235,6 +255,10 @@ public class MysqlStatsFragment extends Fragment {
         pieChartAnimation(pieDataSet);
     }
 
+    /**
+     * Show the product type pie chart
+     * @param spendingList
+     */
     private void productTypePieChartShow(List<BudgetTrackerMysqlSpendingDto> spendingList) {
         Map<String, Float> aggregatedData = new HashMap<>();
         for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
@@ -256,6 +280,35 @@ public class MysqlStatsFragment extends Fragment {
         pieChartAnimation(pieDataSet);
     }
 
+    /**
+     * Show the product name pie chart
+     * @param spendingList
+     */
+    private void productNamePieChartShow(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+        Map<String, Float> aggregatedData = new HashMap<>();
+        for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+            float value = (float) dto.getAliasPercentage();
+            String label = dto.getStoreName();
+            pieEntries.add(new PieEntry(value, label));
+
+            if (aggregatedData.containsKey(label)) {
+                aggregatedData.put(label, aggregatedData.get(label) + value);
+            } else {
+                aggregatedData.put(label, value);
+            }
+        }
+        pieEntries = new ArrayList<>();
+        for (Map.Entry<String, Float> entry : aggregatedData.entrySet()) {
+            pieEntries.add(new PieEntry(entry.getValue(), entry.getKey()));
+        }
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Store Percentage");
+        pieChartAnimation(pieDataSet);
+    }
+
+    /**
+     * Pie chart animation
+     * @param pieDataSet
+     */
     private void pieChartAnimation(PieDataSet pieDataSet) {
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         pieDataSet.setValueTextSize(20f);
