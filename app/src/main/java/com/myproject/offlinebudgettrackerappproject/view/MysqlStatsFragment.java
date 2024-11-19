@@ -49,7 +49,7 @@ import java.util.Map;
 public class MysqlStatsFragment extends Fragment {
 
     private BudgetTrackerSpendingAliasViewModel budgetTrackerSpendingAliasViewModel;
-    RadioGroup radioGroup;
+    RadioGroup statsRadioGroup, dateRadioGroup ;
     RadioButton radioStoreButton;
     RadioButton radioProductNameButton;
     RadioButton radioProductTypeButton;
@@ -109,7 +109,8 @@ public class MysqlStatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mysql_stats, container, false);
-        radioGroup = (RadioGroup) view.findViewById(R.id.mysql_stats_radio_group);
+        statsRadioGroup  = (RadioGroup) view.findViewById(R.id.mysql_stats_radio_group);
+        dateRadioGroup  = (RadioGroup) view.findViewById(R.id.mysql_stats_radio_date_group);
         radioStoreButton = (RadioButton) view.findViewById(R.id.mysql_stats_radio_store_name);
         radioProductNameButton = (RadioButton) view.findViewById(R.id.mysql_stats_radio_product_name);
         radioProductTypeButton = (RadioButton) view.findViewById(R.id.mysql_stats_radio_product_type);
@@ -162,6 +163,20 @@ public class MysqlStatsFragment extends Fragment {
             }
         });
 
+        statsRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId != -1) { // If a button is selected
+                // Clear selection from the other RadioGroup
+                dateRadioGroup.clearCheck();
+            }
+        });
+
+        dateRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId != -1) { // If a button is selected
+                // Clear selection from the other RadioGroup
+                statsRadioGroup.clearCheck();
+            }
+        });
+
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,7 +184,7 @@ public class MysqlStatsFragment extends Fragment {
                 String searchCurrencyCode = currencyCode.getText().toString();
                 String searchDateFrom = dateFrom.getText().toString();
                 String searchDateTo = dateTo.getText().toString();
-                if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_store_name) {
+                if (statsRadioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_store_name) {
                     BudgetTrackerMysqlSpendingDto storeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.STORE, searchKey, searchCurrencyCode, searchDateFrom, searchDateTo);
                     budgetTrackerMysqlSpendingViewModel.getSearchStoreStatsList(storeDto, new MysqlSpendingListCallback() {
                         @Override
@@ -187,7 +202,7 @@ public class MysqlStatsFragment extends Fragment {
                             Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
                         }
                     });
-                } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_product_name){
+                } else if (statsRadioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_product_name){
                     BudgetTrackerMysqlSpendingDto storeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_NAME, searchKey, searchCurrencyCode, searchDateFrom, searchDateTo);
                     budgetTrackerMysqlSpendingViewModel.getSearchProductNameStatsList(storeDto, new MysqlSpendingListCallback() {
                         @Override
@@ -205,7 +220,7 @@ public class MysqlStatsFragment extends Fragment {
                             Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
                         }
                     });
-                } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_product_type){
+                } else if (statsRadioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_product_type){
                     BudgetTrackerMysqlSpendingDto storeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_TYPE, searchKey, searchCurrencyCode, searchDateFrom, searchDateTo);
                     budgetTrackerMysqlSpendingViewModel.getSearchProductTypeStatsList(storeDto, new MysqlSpendingListCallback() {
                         @Override
@@ -216,6 +231,50 @@ public class MysqlStatsFragment extends Fragment {
                                 return;
                             }
                             productTypePieChartShow(spendingList);
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else if (dateRadioGroup.getCheckedRadioButtonId() == R.id.mysql_stats_radio_date_store){
+                    BudgetTrackerMysqlSpendingDto storeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_TYPE, searchKey, searchCurrencyCode, searchDateFrom, searchDateTo);
+                    // Disable the searchName EditText
+                    searchName.setEnabled(false);
+                    searchName.setFocusable(false); // Prevents focus
+                    searchName.setFocusableInTouchMode(false); // Prevents interaction
+                    budgetTrackerMysqlSpendingViewModel.getSearchDateStatsList(storeDto, new MysqlSpendingListCallback() {
+                        @Override
+                        public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+                            //todo make this part a method
+                            if (spendingList == null || spendingList.isEmpty()) {
+                                Toast.makeText(getContext(), "No data found!", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            productTypePieChartShow(spendingList);
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else if (dateRadioGroup.getCheckedRadioButtonId() == R.id.mysql_staFts_radio_date_product_type){
+                    BudgetTrackerMysqlSpendingDto storeDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_TYPE, searchKey, searchCurrencyCode, searchDateFrom, searchDateTo);
+                    // Disable the searchName EditText
+                    searchName.setEnabled(false);
+                    searchName.setFocusable(false); // Prevents focus
+                    searchName.setFocusableInTouchMode(false); // Prevents interaction
+                    budgetTrackerMysqlSpendingViewModel.getSearchDateStatsList(storeDto, new MysqlSpendingListCallback() {
+                        @Override
+                        public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
+                            //todo make this part a method
+                            if (spendingList == null || spendingList.isEmpty()) {
+                                Toast.makeText(getContext(), "No data found!", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            storePieChartShow(spendingList);
                         }
 
                         @Override

@@ -87,6 +87,32 @@
 
         </RadioGroup>
 
+        <RadioGroup
+            android:id="@+id/mysql_stats_radio_date_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stats_pie_chart"
+            tools:ignore="MissingConstraints">
+
+            <RadioButton
+                android:id="@+id/mysql_stats_radio_date_store"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Date (Store)" />
+
+            <RadioButton
+                android:id="@+id/mysql_staFts_radio_date_product_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date (Product type)" />
+
+        </RadioGroup>
+
 <!--        <com.google.android.material.textfield.TextInputLayout-->
 <!--            android:layout_width="300dp"-->
 <!--            android:layout_height="wrap_content"-->
