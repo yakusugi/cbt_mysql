@@ -25,6 +25,9 @@
             android:name=".view.MysqlBankActivity"
             android:exported="false" />
         <activity
+            android:name=".view.MysqlIncomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.MysqlDateSearchActivity"
             android:exported="false" />
         <activity
