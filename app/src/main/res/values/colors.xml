@@ -12,4 +12,10 @@
     <color name="income">#FF6200EE</color>
     <color name="bank">#FF3700B3</color>
 
+    <color name="numberPickerBackground">#212121</color>
+    <color name="numberPickerBorder">#FF9800</color>
+    <color name="primaryTextColor">#FFFFFF</color>
+    <color name="gradientStart">#4CAF50</color>
+    <color name="gradientEnd">#8BC34A</color>
+
 </resources>

@@ -37,4 +37,10 @@
         <item name="android:colorAccent">@android:color/holo_blue_light</item>
         <item name="android:layout_gravity">center</item>
     </style>
+    <style name="ModernNumberPickerTheme" parent="Theme.AppCompat.Light">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:editTextColor">#FFFFFF</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>
