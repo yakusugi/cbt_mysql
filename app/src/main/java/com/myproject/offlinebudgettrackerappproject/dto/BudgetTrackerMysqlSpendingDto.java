@@ -26,7 +26,9 @@ public class BudgetTrackerMysqlSpendingDto {
 
     private Double taxRate;
 
-    private String notes;
+    // Make notes nullable and provide a default value if needed
+    private String notes = "No notes available";
+//    private String notes;
 
     private String currencyCode;
 

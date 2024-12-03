@@ -27,14 +27,14 @@
             app:boxStrokeColor="@color/black"
             app:hintTextColor="@color/black"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:startIconDrawable="@drawable/bank_18"
+            app:startIconDrawable="@drawable/calendar_day_18"
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mysql_add_bank_name"
+                android:id="@+id/mysql_income_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Bank name"
+                android:hint="Date"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textCursorDrawable="@null" />
@@ -48,14 +48,54 @@
             app:boxStrokeColor="@color/black"
             app:hintTextColor="@color/black"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:startIconDrawable="@drawable/price_18"
-            >
+            app:startIconDrawable="@drawable/ic_category">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mysql_bank_balance"
+                android:id="@+id/mysql_income_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Bank balance"
+                android:hint="Category"
+                android:focusable="false"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textCursorDrawable="@null" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/ic_money">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/mysql_income_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textCursorDrawable="@null" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/income_name_18">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/mysql_income"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Income"
                 android:inputType="number"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
@@ -73,7 +113,7 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mysql_bank_note_name"
+                android:id="@+id/mysql_income_note_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Note"
@@ -93,7 +133,7 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mysql_bank_currency_code"
+                android:id="@+id/mysql_income_currency_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Currency"
@@ -121,14 +161,14 @@
             android:layout_marginTop="12dp">
 
             <Button
-                android:id="@+id/mysql_bank_add_btn"
+                android:id="@+id/mysql_income_add_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corner"
                 android:text="Save" />
 
             <Button
-                android:id="@+id/mysql_bank_update_btn"
+                android:id="@+id/mysql_income_update_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corner"
@@ -136,7 +176,7 @@
                 android:layout_marginStart="16dp"/>
 
             <Button
-                android:id="@+id/mysql_bank_delete_btn"
+                android:id="@+id/mysql_income_delete_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corner"

@@ -43,4 +43,17 @@
     <string name="mysql_login_id_hint">Enter your  login id</string>
     <string name="mysql_login_pw_hint">Enter your login password</string>
     <string name="mysql_login_email_hint">Enter your login Email</string>
+
+
+    <!--  category items  -->
+    <string-array name="category_items">
+        <item>Salary</item>
+        <item>Merkari</item>
+        <item>Book-off</item>
+    </string-array>
+<!--    <string name="salary">Salary</string>-->
+<!--    <string name="merkari">Merkari</string>-->
+<!--    <string name="meetup">Meetup</string>-->
+<!--    <string name="book_off">Book-off</string>-->
+
 </resources>

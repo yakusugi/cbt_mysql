@@ -95,7 +95,7 @@ public class MysqlIncomeListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_mysql_bank_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_mysql_income_list, container, false);
 
         enterBankName = (EditText) view.findViewById(R.id.mysql_bank_search_name);
         searchButton = (Button) view.findViewById(R.id.mysql_bank_name_search_btn);
