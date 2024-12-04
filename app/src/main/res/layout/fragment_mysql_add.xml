@@ -66,6 +66,7 @@
                 android:id="@+id/mysql_add_date_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 android:hint="Date"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
@@ -127,6 +128,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Product type"
+                android:focusable="false"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textCursorDrawable="@null" />

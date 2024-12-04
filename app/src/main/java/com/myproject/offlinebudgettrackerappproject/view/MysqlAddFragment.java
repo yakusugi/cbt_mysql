@@ -21,10 +21,12 @@ import android.widget.Toast;
 
 import com.myproject.offlinebudgettrackerappproject.R;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
+import com.myproject.offlinebudgettrackerappproject.modal.DrumrollPickerFragment;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
+import com.myproject.offlinebudgettrackerappproject.util.DrumrollConstants;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingInsertCallback;
 
 import java.text.ParseException;
@@ -39,7 +41,7 @@ import java.util.Locale;
  * Use the {@link MysqlAddFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MysqlAddFragment extends Fragment {
+public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment.OnCategorySelectedListener{
 
     EditText enterDate, enterStoreName, enterProductName, enterProductType, enterVatRate, enterPrice, enterNotes, enterCurrencyCode, enterQuantity;
     RadioGroup radioGroup;
@@ -146,6 +148,12 @@ public class MysqlAddFragment extends Fragment {
                 }, year, month, day);
                 datePickerDialog.show();
             }
+        });
+
+        enterProductType.setOnClickListener(v -> {
+            DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_SPENDING);
+            dialogFragment.setOnCategorySelectedListener(this);
+            dialogFragment.show(getParentFragmentManager(), "SpendingTypeDialogFragment");
         });
 
         budgetTrackerMysqlSpendingViewModel = new ViewModelProvider(requireActivity()).get(BudgetTrackerMysqlSpendingViewModel.class);
@@ -276,5 +284,10 @@ public class MysqlAddFragment extends Fragment {
     private void handleDeleteButtonClick() {
         // Implement your delete logic here
         Toast.makeText(getActivity(), "Deleted Successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCategorySelected(String selectedCategory) {
+        enterProductType.setText(selectedCategory);
     }
 }

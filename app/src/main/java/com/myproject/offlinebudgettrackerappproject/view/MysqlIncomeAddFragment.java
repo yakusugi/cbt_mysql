@@ -23,6 +23,7 @@ import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlBank
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlIncomeViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
+import com.myproject.offlinebudgettrackerappproject.util.DrumrollConstants;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlBankInsertCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlIncomeInsertCallback;
 
@@ -90,15 +91,6 @@ public class MysqlIncomeAddFragment extends Fragment implements DrumrollPickerFr
         }
     }
 
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_your_layout, container, false);
-//
-//
-//
-//        return view;
-//    }
-
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -157,7 +149,7 @@ public class MysqlIncomeAddFragment extends Fragment implements DrumrollPickerFr
 
         // Set EditText non-editable to focus on dialog interaction
         enterIncomeCategory.setOnClickListener(v -> {
-            DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance();
+            DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_INCOME);
             dialogFragment.setOnCategorySelectedListener(this);
             dialogFragment.show(getParentFragmentManager(), "IncomeCategoryDialogFragment");
         });

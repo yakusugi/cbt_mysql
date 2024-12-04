@@ -56,7 +56,6 @@
                 android:layout_height="wrap_content"
                 android:hint="Category"
                 android:focusable="false"
-                android:inputType="number"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textCursorDrawable="@null" />

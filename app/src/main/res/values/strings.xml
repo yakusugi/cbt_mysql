@@ -51,9 +51,45 @@
         <item>Merkari</item>
         <item>Book-off</item>
     </string-array>
-<!--    <string name="salary">Salary</string>-->
-<!--    <string name="merkari">Merkari</string>-->
-<!--    <string name="meetup">Meetup</string>-->
-<!--    <string name="book_off">Book-off</string>-->
+
+    <!--  spending type items  -->
+    <string-array name="spending_type_items">
+        <item>app</item>
+        <item>apparel</item>
+        <item>bank</item>
+        <item>bicycle</item>
+        <item>cellphone bill</item>
+        <item>communication</item>
+        <item>dinner</item>
+        <item>domain</item>
+        <item>drinks</item>
+        <item>drugs</item>
+        <item>dvd</item>
+        <item>ebook</item>
+        <item>e-learning</item>
+        <item>e-ticket</item>
+        <item>finance</item>
+        <item>fitness</item>
+        <item>food</item>
+        <item>gadget</item>
+        <item>game</item>
+        <item>groceries</item>
+        <item>health</item>
+        <item>home</item>
+        <item>lifeline</item>
+        <item>lunch</item>
+        <item>medical</item>
+        <item>merch</item>
+        <item>plastic bag</item>
+        <item>public transportation</item>
+        <item>server</item>
+        <item>snack</item>
+        <item>social</item>
+        <item>tax</item>
+        <item>toy</item>
+        <item>transportation fee</item>
+        <item>unknown</item>
+        <item>utensils</item>
+    </string-array>
 
 </resources>
