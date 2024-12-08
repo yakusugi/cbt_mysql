@@ -1,5 +1,6 @@
 package com.myproject.offlinebudgettrackerappproject.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -21,7 +22,7 @@ import com.myproject.offlinebudgettrackerappproject.util.SharedPreferencesManage
  */
 public class MysqlDashFragment extends Fragment implements View.OnClickListener {
 
-    private CardView spendingCard, incomeCard, bankCard, dateCard, bulkExpensecard, bulkIncomeCard, adminCard, settingsCard, aboutCard;
+    private CardView spendingCard, incomeCard, bankCard, dateCard, bulkExpensecard, bulkIncomeCard, adminCard, settingsCard, aboutCard, userscard, datacard, systemcard, analyticscard;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -63,39 +64,69 @@ public class MysqlDashFragment extends Fragment implements View.OnClickListener 
         }
     }
 
+    @SuppressLint("CutPasteId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_mysql_dash, container, false);
-        spendingCard = (CardView) view.findViewById(R.id.mysql_spending_card);
-        incomeCard = (CardView) view.findViewById(R.id.mysql_income_card);
-        bankCard = (CardView) view.findViewById(R.id.mysql_bank_card);
-        dateCard = (CardView) view.findViewById(R.id.mysql_date_card);
-        bulkExpensecard = (CardView) view.findViewById(R.id.mysql_replace_card);
-        bulkIncomeCard = (CardView) view.findViewById(R.id.mysql_replace_card_income);
-        adminCard = (CardView) view.findViewById(R.id.mysql_admin_card);
-        settingsCard = (CardView) view.findViewById(R.id.mysql_settings_card);
-        aboutCard = (CardView) view.findViewById(R.id.mysql_about_card);
 
-        spendingCard.setOnClickListener(this);
-        incomeCard.setOnClickListener(this);
-        bankCard.setOnClickListener(this);
-        dateCard.setOnClickListener(this);
-        bulkExpensecard.setOnClickListener(this);
-        bulkIncomeCard.setOnClickListener(this);
-        adminCard.setOnClickListener(this);
-        settingsCard.setOnClickListener(this);
-        aboutCard.setOnClickListener(this);
-
+        View view;
         boolean isAdmin = checkIfUserIsAdmin();
         if (isAdmin) {
-            adminCard.setVisibility(View.VISIBLE);
+            view = inflater.inflate(R.layout.fragment_mysql_admin_dash, container, false);
+            //admin
+            userscard = (CardView) view.findViewById(R.id.mysql_admin_users_card);
+            if (userscard != null) {
+                userscard.setOnClickListener(this);
+            }
+            datacard = (CardView) view.findViewById(R.id.mysql_admin_data_card);
+            if (datacard != null) {
+                datacard.setOnClickListener(this);
+            }
+            systemcard = (CardView) view.findViewById(R.id.mysql_admin_analytics_card);
+            if (systemcard != null) {
+                systemcard.setOnClickListener(this);
+            }
+            analyticscard = (CardView) view.findViewById(R.id.mysql_spending_card);
+            if (analyticscard != null) {
+                analyticscard.setOnClickListener(this);
+            }
         } else {
-            adminCard.setVisibility(View.GONE);
-            settingsCard.setVisibility(View.VISIBLE);
-        }
+            view = inflater.inflate(R.layout.fragment_mysql_dash, container, false);
+            //default users
+            spendingCard = (CardView) view.findViewById(R.id.mysql_spending_card);
+            if (spendingCard != null) {
+                spendingCard.setOnClickListener(this);
+            }
+            incomeCard = (CardView) view.findViewById(R.id.mysql_income_card);
+            if (incomeCard != null) {
+                incomeCard.setOnClickListener(this);
+            }
+            bankCard = (CardView) view.findViewById(R.id.mysql_bank_card);
+            if (bankCard != null) {
+                bankCard.setOnClickListener(this);
+            }
+            dateCard = (CardView) view.findViewById(R.id.mysql_date_card);
+            if (dateCard != null) {
+                dateCard.setOnClickListener(this);
+            }
+            bulkExpensecard = (CardView) view.findViewById(R.id.mysql_replace_card);
+            if (bulkExpensecard != null) {
+                bulkExpensecard.setOnClickListener(this);
+            }
+            bulkIncomeCard = (CardView) view.findViewById(R.id.mysql_replace_card_income);
+            if (bulkIncomeCard != null) {
+                bulkIncomeCard.setOnClickListener(this);
+            }
+            settingsCard = (CardView) view.findViewById(R.id.mysql_settings_card);
+            if (settingsCard != null) {
 
+                settingsCard.setOnClickListener(this);
+            }
+            aboutCard = (CardView) view.findViewById(R.id.mysql_about_card);
+            if (aboutCard != null) {
+                aboutCard.setOnClickListener(this);
+            }
+        }
         return view;
     }
 
