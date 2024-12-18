@@ -1,6 +1,7 @@
 package com.myproject.offlinebudgettrackerappproject.view;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -147,6 +149,26 @@ public class MysqlIncomeAddFragment extends Fragment implements DrumrollPickerFr
         //open drumroll modal
         EditText enterIncomeCategory = view.findViewById(R.id.mysql_income_category);
 
+        Calendar calendar = Calendar.getInstance();
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+        enterIncomeDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                        month = month + 1;
+                        String date = year + "-" + month + "-" + dayOfMonth;
+                        enterIncomeDate.setText(date);
+                    }
+                }, year, month, day);
+                datePickerDialog.show();
+            }
+        });
+
         // Set EditText non-editable to focus on dialog interaction
         enterIncomeCategory.setOnClickListener(v -> {
             DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_INCOME);
@@ -159,11 +181,6 @@ public class MysqlIncomeAddFragment extends Fragment implements DrumrollPickerFr
         Currency currency = Currency.getCurrencyArrayList().get(currentCurrencyNum);
 
         enterIncome.setCompoundDrawablesWithIntrinsicBounds(currency.getCurrencyImage(), 0, 0, 0);
-
-        Calendar calendar = Calendar.getInstance();
-        final int year = calendar.get(Calendar.YEAR);
-        final int month = calendar.get(Calendar.MONTH);
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         budgetTrackerMysqlIncomeViewModel = new ViewModelProvider(requireActivity()).get(BudgetTrackerMysqlIncomeViewModel.class);
 

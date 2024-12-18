@@ -31,7 +31,7 @@ public class MysqlIncomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new MysqlIncomeListFragment())
+                        .replace(R.id.fragment_container, new MysqlIncomeAddFragment())
                         .addToBackStack(null) // Optional: add to back stack to enable back navigation
                         .commit();
             }

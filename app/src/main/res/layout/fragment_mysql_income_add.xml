@@ -26,6 +26,7 @@
             android:layout_marginTop="10dp"
             app:boxStrokeColor="@color/black"
             app:hintTextColor="@color/black"
+            android:focusable="false"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconDrawable="@drawable/calendar_day_18"
             >
@@ -75,7 +76,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Name"
-                android:inputType="number"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textCursorDrawable="@null" />

@@ -477,11 +477,9 @@ public class BudgetTrackerMysqlSpendingRepository {
         budgetTrackerMysqlSpendingInsertDao.insertIntoSpending(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
             @Override
             public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
-//                Log.d("ViewModelResponse", spendingList.toString());
                 for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
                     Log.d("ViewModelResponse", dto.toString());
                 }
-//                radioSearchStoreNameList = spendingList;
                 callback.onSuccess(spendingList);
             }
 
