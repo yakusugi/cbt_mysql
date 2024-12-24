@@ -44,6 +44,10 @@ public class BudgetTrackerMysqlIncomeDto {
         this.dateTo = dateTo;
     }
 
+    public BudgetTrackerMysqlIncomeDto(String incomeName) {
+        this.dateTo = incomeName;
+    }
+
     public Date getDate() {
         return date;
     }

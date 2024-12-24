@@ -32,10 +32,10 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mysql_bank_search_name"
+                android:id="@+id/mysql_income_search_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Bank name"
+                android:hint="Income name"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textCursorDrawable="@null" />
@@ -46,13 +46,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/stats_table_row"
-            >
+            android:id="@+id/stats_table_row">
 
         </TableLayout>
 
         <Button
-            android:id="@+id/mysql_bank_name_search_btn"
+            android:id="@+id/mysql_income_name_search_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -67,7 +66,7 @@
 
         <ListView
             android:layout_marginTop="12dp"
-            android:id="@+id/mysql_bank_name_search_listview"
+            android:id="@+id/mysql_income_name_search_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

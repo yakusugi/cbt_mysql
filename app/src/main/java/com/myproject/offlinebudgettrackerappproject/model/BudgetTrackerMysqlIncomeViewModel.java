@@ -8,9 +8,11 @@ import androidx.lifecycle.AndroidViewModel;
 
 import com.myproject.offlinebudgettrackerappproject.data.BudgetTrackerMysqlIncomeRepository;
 import com.myproject.offlinebudgettrackerappproject.data.BudgetTrackerMysqlSpendingRepository;
+import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlBankDto;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlIncomeDto;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlIncomeInsertCallback;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlIncomeListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
 
@@ -18,6 +20,7 @@ import java.util.List;
 
 public class BudgetTrackerMysqlIncomeViewModel extends AndroidViewModel {
 
+    public List<BudgetTrackerMysqlIncomeDto> incomeNameList;
     public List<BudgetTrackerMysqlSpendingDto> radioSearchStoreNameList;
     public List<BudgetTrackerMysqlSpendingDto> radioSearchProductNameList;
 
@@ -58,6 +61,26 @@ public class BudgetTrackerMysqlIncomeViewModel extends AndroidViewModel {
             @Override
             public void onError(String error) {
                 callback.onError(error);
+            }
+        });
+    }
+
+    public void getSearchIncomeNameList(BudgetTrackerMysqlIncomeDto budgetTrackerMysqlIncomeDto, MysqlIncomeListCallback callback) {
+        repository.getIncomeList(budgetTrackerMysqlIncomeDto, new MysqlIncomeListCallback() {
+
+            @Override
+            public void onSuccess(List<BudgetTrackerMysqlIncomeDto> incomeList) {
+                //                Log.d("ViewModelResponse", spendingList.toString());
+                for (BudgetTrackerMysqlIncomeDto dto : incomeList) {
+                    Log.d("ViewModelResponse", dto.toString());
+                }
+                incomeNameList = incomeList;
+                callback.onSuccess(incomeList);
+            }
+
+            @Override
+            public void onError(String error) {
+
             }
         });
     }

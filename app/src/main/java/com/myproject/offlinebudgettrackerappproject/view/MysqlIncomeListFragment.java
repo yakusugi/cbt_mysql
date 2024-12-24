@@ -16,12 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.myproject.offlinebudgettrackerappproject.R;
-import com.myproject.offlinebudgettrackerappproject.adapter.MysqlBankListViewAdapter;
-import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlBankDto;
-import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlBankViewModel;
+import com.myproject.offlinebudgettrackerappproject.adapter.MysqlIncomeListViewAdapter;
+import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlIncomeDto;
+import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlIncomeViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
-import com.myproject.offlinebudgettrackerappproject.util.MysqlBankListCallback;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlIncomeListCallback;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class MysqlIncomeListFragment extends Fragment {
 
-    EditText enterBankName;
+    EditText enterIncomeName;
     Button searchButton;
     SharedPreferences sharedPreferences;
     private static final String PREF_CURRENCY_FILENAME = "CURRENCY_SHARED";
@@ -42,13 +42,13 @@ public class MysqlIncomeListFragment extends Fragment {
     double vatRate;
     boolean spdBool = false;
 
-    private ListView bankListView;
+    private ListView incomeListView;
 
     BudgetTrackerMysqlSpendingViewModel budgetTrackerMysqlSpendingViewModel;
 
-    BudgetTrackerMysqlBankViewModel budgetTrackerMysqlBankViewModel;
+    BudgetTrackerMysqlIncomeViewModel budgetTrackerMysqlIncomeViewModel;
 
-    List<BudgetTrackerMysqlBankDto> searchedBankList = new ArrayList<>();
+    List<BudgetTrackerMysqlIncomeDto> searchedIncomeList = new ArrayList<>();
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -97,62 +97,49 @@ public class MysqlIncomeListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mysql_income_list, container, false);
 
-        enterBankName = (EditText) view.findViewById(R.id.mysql_bank_search_name);
-        searchButton = (Button) view.findViewById(R.id.mysql_bank_name_search_btn);
+        enterIncomeName = (EditText) view.findViewById(R.id.mysql_income_search_name);
+        searchButton = (Button) view.findViewById(R.id.mysql_income_name_search_btn);
         sharedPreferences = getActivity().getSharedPreferences(PREF_CURRENCY_FILENAME, 0);
-        bankListView = (ListView) view.findViewById(R.id.mysql_bank_name_search_listview);
-//        budgetTrackerSpinner = (Spinner) view.findViewById(R.id.icm_budget_tracker_spinner);
-
-        // Set the click listeners for the buttons
-
+        incomeListView = (ListView) view.findViewById(R.id.mysql_income_name_search_listview);
 
         //選択された通貨表示
         int currentCurrencyNum = sharedPreferences.getInt(PREF_CURRENCY_VALUE, 0);
         Currency currency = Currency.getCurrencyArrayList().get(currentCurrencyNum);
-
-//        enterPrice.setCompoundDrawablesWithIntrinsicBounds(currency.getCurrencyImage(), 0, 0, 0);
-//        enterVatRate.setCompoundDrawablesWithIntrinsicBounds(currency.getCurrencyImage(), 0, 0, 0);
 
         Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH);
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        budgetTrackerMysqlSpendingViewModel = new ViewModelProvider(requireActivity()).get(BudgetTrackerMysqlSpendingViewModel.class);
-
-        budgetTrackerMysqlBankViewModel = new ViewModelProvider(requireActivity()).get(BudgetTrackerMysqlBankViewModel.class);
+        budgetTrackerMysqlIncomeViewModel = new ViewModelProvider(requireActivity()).get(BudgetTrackerMysqlIncomeViewModel.class);
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String bankName = enterBankName.getText().toString();
-                BudgetTrackerMysqlBankDto budgetTrackerMysqlBankDto = new BudgetTrackerMysqlBankDto(bankName);
-                budgetTrackerMysqlBankViewModel.getBankList(budgetTrackerMysqlBankDto, new MysqlBankListCallback() {
+                String income = enterIncomeName.getText().toString();
+                BudgetTrackerMysqlIncomeDto budgetTrackerMysqlIncomeDto = new BudgetTrackerMysqlIncomeDto(income);
+                budgetTrackerMysqlIncomeViewModel.getSearchIncomeNameList(budgetTrackerMysqlIncomeDto, new MysqlIncomeListCallback() {
+
                     @Override
-                    public void onSuccess(List<BudgetTrackerMysqlBankDto> bankList) {
-//                            Log.d("FragmentResponse", spendingList.toString());
-                        for (BudgetTrackerMysqlBankDto dto : bankList) {
+                    public void onSuccess(List<BudgetTrackerMysqlIncomeDto> incomeList) {
+                        for (BudgetTrackerMysqlIncomeDto dto : incomeList) {
                             Log.d("FragmentResponse", dto.toString());
                         }
-                        searchedBankList = bankList;
-//                            spendingSum = String.valueOf(budgetTrackerMysqlSpendingViewModel.getSearchStoreSum(budgetTrackerMysqlBankDto));
-                        // Update the UI with the search results
-                        MysqlBankListViewAdapter adapter = new MysqlBankListViewAdapter(getActivity(), searchedBankList);
-                        bankListView.setAdapter(adapter);
+                        searchedIncomeList = incomeList;
+                        MysqlIncomeListViewAdapter adapter = new MysqlIncomeListViewAdapter(getActivity(), searchedIncomeList);
+                        incomeListView.setAdapter(adapter);
                         adapter.notifyDataSetChanged(); // Notify the adapter about the data change
                     }
 
                     @Override
                     public void onError(String error) {
-                        Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+
                     }
                 });
 
-//                getActivity().finish();
             }
         });
 
-        // Inflate the layout for this fragment
         return view;
     }
 
