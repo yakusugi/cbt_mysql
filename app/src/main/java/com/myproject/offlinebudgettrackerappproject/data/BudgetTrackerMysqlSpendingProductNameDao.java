@@ -29,9 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-public class BudgetTrackerMysqlSpendingProductNameDao {
+public class BudgetTrackerMysqlSpendingProductNameDao extends BaseSpendingDao {
 
-    private final Context context;
     private List<BudgetTrackerMysqlSpendingDto> radioSearchStoreNameList;
     private List<BudgetTrackerMysqlSpendingDto> radioSearchProductNameList;
     private List<BudgetTrackerMysqlSpendingDto> radioSearchProductTypeList;
@@ -41,111 +40,22 @@ public class BudgetTrackerMysqlSpendingProductNameDao {
     Double searchProductTypeSum;
 
     public BudgetTrackerMysqlSpendingProductNameDao(Context context) {
-        this.context = context.getApplicationContext();
+        super(context);
     }
 
-    public void getSearchProductNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
-
-        String productName = budgetTrackerMysqlSpendingDto.getProductName();
-        String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
-        String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
-
-        Log.d("TAG", "getSearchStoreNameList: " + productName + " " + dateFrom + " " + dateTo);
-
+    public void getSearchProductNameList(BudgetTrackerMysqlSpendingDto dto, MysqlSpendingListCallback callback) {
         try {
-            Properties properties = new Properties();
-            InputStream inputStream = context.getAssets().open("server_config.properties");
-            properties.load(inputStream);
-            String serverUrl = properties.getProperty("server_url");
-            String phpSelectFile = properties.getProperty("spending_product_name_search_php_file");
-            String selectUrl = serverUrl + phpSelectFile;
-            Log.d("select_url", selectUrl);
+            String serverUrl = loadServerConfig("server_url");
+            String phpFile = loadServerConfig("spending_product_name_search_php_file");
+            String endpoint = serverUrl + phpFile;
 
-            // Create a map of parameters to send in the POST request
-            final Map<String, String> params = new HashMap<>();
+            Map<String, String> params = new HashMap<>();
             params.put("email", SharedPreferencesManager.getUserEmail(context));
-            params.put("product_name", budgetTrackerMysqlSpendingDto.getProductName());
-            params.put("date_from", budgetTrackerMysqlSpendingDto.getDateFrom().toString());
-            params.put("date_to", budgetTrackerMysqlSpendingDto.getDateTo().toString());
+            params.put("product_name", dto.getProductName());
+            params.put("date_from", dto.getDateFrom());
+            params.put("date_to", dto.getDateTo());
 
-            StringRequest stringRequest = new StringRequest(
-                    Request.Method.POST, selectUrl,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.d("ProductNameJSONResponse", response);
-                            try {
-                                JSONObject jsonObject = new JSONObject(response);
-                                String success = jsonObject.optString("success", "");
-
-                                if (success.equals("1")) {
-                                    JSONArray jsonArray = jsonObject.optJSONArray("result");
-                                    if (jsonArray != null) {
-                                        List<BudgetTrackerMysqlSpendingDto> spendingList = new ArrayList<>();
-                                        for (int i = 0; i < jsonArray.length(); i++) {
-                                            JSONObject jsonObjectItem = jsonArray.getJSONObject(i);
-                                            String dateStr = jsonObjectItem.getString("spending_date");
-                                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                                            Date date = null;
-                                            try {
-                                                date = dateFormat.parse(dateStr);
-                                            } catch (ParseException e) {
-                                                e.printStackTrace();
-                                            }
-                                            String storeName = jsonObjectItem.getString("store_name");
-                                            String productName = jsonObjectItem.getString("product_name");
-                                            String productType = jsonObjectItem.getString("product_type");
-                                            String vatRateString = jsonObjectItem.getString("vat_rate");
-                                            String priceString = jsonObjectItem.getString("price");
-                                            String note = jsonObjectItem.getString("note");
-                                            String currencyCode = jsonObjectItem.getString("currency_code");
-                                            int quantity = Integer.parseInt(jsonObjectItem.getString("quantity"));
-                                            double vatRate = vatRateString.isEmpty() ? 0.0 : Double.parseDouble(vatRateString);
-                                            double price = priceString.isEmpty() ? 0.0 : Double.parseDouble(priceString);
-
-                                            BudgetTrackerMysqlSpendingDto spendingDto = new BudgetTrackerMysqlSpendingDto(
-                                                    date,
-                                                    storeName,
-                                                    productName,
-                                                    productType,
-                                                    price,
-                                                    vatRate,
-                                                    note,
-                                                    currencyCode,
-                                                    quantity
-                                            );
-                                            spendingList.add(spendingDto);
-                                        }
-                                        callback.onSuccess(spendingList);
-                                    } else {
-                                        callback.onError("No spending data found");
-                                    }
-                                } else {
-                                    String errorMessage = jsonObject.optString("error_message", "Error parsing JSON");
-                                    callback.onError(errorMessage);
-                                }
-                            } catch (JSONException e) {
-                                Log.e("JSONException", e.toString());
-                                e.printStackTrace();
-                                callback.onError("Error parsing JSON");
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.e("VolleyError", error.toString());
-                            callback.onError("Unable to fetch data: " + error.getMessage());
-                        }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    return params;
-                }
-            };
-            RequestQueue requestQueue = Volley.newRequestQueue(context);
-            requestQueue.add(stringRequest);
-
+            sendRequest(endpoint, params, callback);
         } catch (IOException e) {
             e.printStackTrace();
             callback.onError("Error loading server configuration");
