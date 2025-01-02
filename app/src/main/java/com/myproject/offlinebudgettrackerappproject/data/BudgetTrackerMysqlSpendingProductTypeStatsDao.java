@@ -29,133 +29,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-public class BudgetTrackerMysqlSpendingProductTypeStatsDao {
-
-    private final Context context;
+public class BudgetTrackerMysqlSpendingProductTypeStatsDao extends BaseSpendingStatsDao{
 
     public BudgetTrackerMysqlSpendingProductTypeStatsDao(Context context) {
-        this.context = context.getApplicationContext();
+        super(context);
     }
 
     public void getSearchProductTypeStatsList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
 
-        String productType = budgetTrackerMysqlSpendingDto.getProductType();
-        String currencyCode = budgetTrackerMysqlSpendingDto.getCurrencyCode();
-        String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
-        String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
-
-        Log.d("TAG", "getSearchStoreNameList: " + productType + " " + currencyCode  + " " + dateFrom + " " + dateTo);
-
         try {
-            Properties properties = new Properties();
-            InputStream inputStream = context.getAssets().open("server_config.properties");
-            properties.load(inputStream);
-            String serverUrl = properties.getProperty("server_url");
-            String phpSelectFile = properties.getProperty("product_type_stats_search_php_file");
-            String selectUrl = serverUrl + phpSelectFile;
-            Log.d("select_url", selectUrl);
+            String serverUrl = loadServerConfig("server_url");
+            String phpFile = loadServerConfig("product_type_stats_search_php_file");
+            String endpoint = serverUrl + phpFile;
 
-            // Create a map of parameters to send in the POST request
-            final Map<String, String> params = new HashMap<>();
+            Map<String, String> params = new HashMap<>();
             params.put("email", SharedPreferencesManager.getUserEmail(context));
-            params.put("product_type", productType);
-            params.put("currency_code", currencyCode);
-            params.put("date_from", dateFrom);
-            params.put("date_to", dateTo);
+            params.put("product_type", budgetTrackerMysqlSpendingDto.getProductType());
+            params.put("currency_code", budgetTrackerMysqlSpendingDto.getCurrencyCode());
+            params.put("date_from", budgetTrackerMysqlSpendingDto.getDateFrom());
+            params.put("date_to", budgetTrackerMysqlSpendingDto.getDateTo());
 
-            StringRequest stringRequest = new StringRequest(
-                    Request.Method.POST, selectUrl,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.d("JSONResponse", response);
-                            try {
-                                JSONObject jsonObject = new JSONObject(response);
-                                String success = jsonObject.optString("success", "");
-
-                                if (success.equals("1")) {
-                                    JSONArray jsonArray = jsonObject.optJSONArray("result");
-                                    if (jsonArray != null) {
-                                        List<BudgetTrackerMysqlSpendingDto> spendingList = new ArrayList<>();
-                                        for (int i = 0; i < jsonArray.length(); i++) {
-                                            JSONObject jsonObjectItem = jsonArray.getJSONObject(i);
-                                            String dateStr = jsonObjectItem.getString("spending_date");
-                                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                                            Date date = null;
-                                            try {
-                                                date = dateFormat.parse(dateStr);
-                                            } catch (ParseException e) {
-                                                e.printStackTrace();
-                                            }
-                                            String storeName = jsonObjectItem.getString("store_name");
-                                            String productName = jsonObjectItem.getString("product_name");
-                                            String productType = jsonObjectItem.getString("product_type");
-                                            String vatRateString = jsonObjectItem.getString("vat_rate");
-                                            String priceString = jsonObjectItem.getString("price");
-                                            String aliasPercentageString = jsonObjectItem.getString("alias_percentage");
-                                            String currencyCode = jsonObjectItem.getString("currency_code");
-                                            int quantity = Integer.parseInt(jsonObjectItem.getString("quantity"));
-                                            double vatRate = vatRateString.isEmpty() ? 0.0 : Double.parseDouble(vatRateString);
-                                            double price = priceString.isEmpty() ? 0.0 : Double.parseDouble(priceString);
-                                            double aliasPercentage = aliasPercentageString.isEmpty() ? 0.0 : Double.parseDouble(aliasPercentageString);
-
-                                            BudgetTrackerMysqlSpendingDto spendingDto = new BudgetTrackerMysqlSpendingDto(
-                                                    date,
-                                                    storeName,
-                                                    productName,
-                                                    productType,
-                                                    price,
-                                                    vatRate,
-                                                    currencyCode,
-                                                    quantity,
-                                                    aliasPercentage
-                                            );
-                                            spendingList.add(spendingDto);
-                                        }
-                                        callback.onSuccess(spendingList);
-                                    } else {
-                                        callback.onError("No spending data found");
-                                    }
-                                } else {
-                                    String errorMessage = jsonObject.optString("error_message", "Error parsing JSON");
-                                    callback.onError(errorMessage);
-                                }
-                            } catch (JSONException e) {
-                                Log.e("JSONException", e.toString());
-                                e.printStackTrace();
-                                callback.onError("Error parsing JSON");
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.e("VolleyError", error.toString());
-                            callback.onError("Unable to fetch data: " + error.getMessage());
-                        }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    return params;
-                }
-            };
-            RequestQueue requestQueue = Volley.newRequestQueue(context);
-            requestQueue.add(stringRequest);
-
+            sendRequest(endpoint, params, callback);
         } catch (IOException e) {
             e.printStackTrace();
             callback.onError("Error loading server configuration");
         }
-    }
-
-    public Date dateTypeReturner(String dateStr) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = null;
-        try {
-            date = dateFormat.parse(dateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
     }
 }
