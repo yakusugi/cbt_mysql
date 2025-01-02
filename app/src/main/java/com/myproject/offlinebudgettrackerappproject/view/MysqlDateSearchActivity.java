@@ -3,12 +3,14 @@ package com.myproject.offlinebudgettrackerappproject.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -22,17 +24,22 @@ import com.myproject.offlinebudgettrackerappproject.adapter.MysqlSearchListViewA
 import com.myproject.offlinebudgettrackerappproject.adapter.StoreSearchListViewAdapter;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.enums.SpendingType;
+import com.myproject.offlinebudgettrackerappproject.modal.DrumrollPickerFragment;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
+import com.myproject.offlinebudgettrackerappproject.util.DrumrollConstants;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MysqlDateSearchActivity extends AppCompatActivity {
+public class MysqlDateSearchActivity extends AppCompatActivity implements DrumrollPickerFragment.OnCategorySelectedListener{
+
+    EditText currencyTxt, searchDateFrom, searchDateTo;
+    Button searchBtn, syncBtn;
 
     List<BudgetTrackerMysqlSpendingDto> searchedSpendingList = new ArrayList<>();
 
@@ -51,16 +58,17 @@ public class MysqlDateSearchActivity extends AppCompatActivity {
     private static final String PREF_CURRENCY_VALUE = "currencyValue";
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mysql_date_search);
 
-        EditText currencyTxt = (EditText) findViewById(R.id.mysql_date_search_currency_txt);
-        EditText searchDateFrom = (EditText) findViewById(R.id.mysql_date_search_date_from_txt);
-        EditText searchDateTo = (EditText) findViewById(R.id.mysql_date_search_date_to_txt);
-        Button searchBtn = (Button) findViewById(R.id.mysql_date_search_btn);
-        Button syncBtn = (Button) findViewById(R.id.mysql_date_sync_btn);
+        currencyTxt = (EditText) findViewById(R.id.mysql_date_search_currency_txt);
+        searchDateFrom = (EditText) findViewById(R.id.mysql_date_search_date_from_txt);
+        searchDateTo = (EditText) findViewById(R.id.mysql_date_search_date_to_txt);
+        searchBtn = (Button) findViewById(R.id.mysql_date_search_btn);
+        syncBtn = (Button) findViewById(R.id.mysql_date_sync_btn);
         TextView searchCalcResultTxt = (TextView) findViewById(R.id.mysql_date_search_calc_result_txt);
         searchListView = (ListView) findViewById(R.id.mysql_date_search_listview);
 
@@ -76,6 +84,16 @@ public class MysqlDateSearchActivity extends AppCompatActivity {
         int currentCurrencyNum = sharedPreferences.getInt(PREF_CURRENCY_VALUE, 0);
         Currency currency = Currency.getCurrencyArrayList().get(currentCurrencyNum);
         searchCalcResultTxt.setCompoundDrawablesWithIntrinsicBounds(currency.getCurrencyImage(), 0, 0, 0);
+
+        currencyTxt.setOnTouchListener((v, event) -> {
+            if (currencyTxt != null && event.getAction() == MotionEvent.ACTION_DOWN) {
+                @SuppressLint("ClickableViewAccessibility") DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_CURRENCY);
+                dialogFragment.setOnCategorySelectedListener((DrumrollPickerFragment.OnCategorySelectedListener) this);
+                dialogFragment.show(getSupportFragmentManager(), "MySqlCurrencyActivity");
+                return true;
+            }
+            return false;
+        });
 
         Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
@@ -202,4 +220,8 @@ public class MysqlDateSearchActivity extends AppCompatActivity {
         });
         }
 
+    @Override
+    public void onCategorySelected(String selectedCategory) {
+        currencyTxt.setText(selectedCategory);
     }
+}

@@ -67,6 +67,8 @@ public class DrumrollPickerFragment extends DialogFragment {
             categories = getSelectionStrings(requireContext(), R.array.category_items).toArray(new String[0]);
         } else if (DrumrollConstants.LIST_KEY_MYSQL_SPENDING.equals(listKey)) {
             categories = getSelectionStrings(requireContext(), R.array.spending_type_items).toArray(new String[0]);
+        }else if (DrumrollConstants.LIST_KEY_MYSQL_CURRENCY.equals(listKey)) {
+            categories = getSelectionStrings(requireContext(), R.array.currency_items).toArray(new String[0]);
         } else {
             categories = new String[] {"Default Item"}; // Fallback in case of no key
         }
