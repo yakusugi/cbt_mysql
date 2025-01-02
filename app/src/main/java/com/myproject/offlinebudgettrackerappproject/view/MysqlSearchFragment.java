@@ -246,6 +246,21 @@ public class MysqlSearchFragment extends Fragment {
                             Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
                         }
                     });
+
+                    budgetTrackerMysqlSpendingViewModel.getCalculatedProductNameSum(productDto, new MysqlSpendingSumCallback(){
+
+                        @Override
+                        public void onSuccess(Double spendingSum) {
+                            String spendingSumString = String.valueOf(spendingSum);
+                            searchCalcResultTxt.setText(spendingSumString);
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    });
+
                 } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_search_radio_product_type) {
                     BudgetTrackerMysqlSpendingDto productDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_TYPE, searchKey, dateFrom, dateTo);
                     budgetTrackerMysqlSpendingViewModel.getSearchProductTypeList(productDto, new MysqlSpendingListCallback() {

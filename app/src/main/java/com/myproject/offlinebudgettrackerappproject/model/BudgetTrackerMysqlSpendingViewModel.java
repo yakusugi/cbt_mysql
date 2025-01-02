@@ -184,8 +184,25 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
     }
 
     public void getCalculatedProductTypeSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingSumCallback callback) {
-        Log.d("PRODUCT_TYPE_TAG", "getCalculatedStoreNameSum: " + budgetTrackerMysqlSpendingDto);
+        Log.d("PRODUCT_TYPE_TAG", "getCalculatedProductTypeSum: " + budgetTrackerMysqlSpendingDto);
         repository.getCalculatedProductTypeSum(budgetTrackerMysqlSpendingDto, new MysqlSpendingSumCallback() {
+
+            @Override
+            public void onSuccess(Double spendingSum) {
+                Log.d("RepositoryResponse", "Total Spending: " + spendingSum);
+                callback.onSuccess(spendingSum); // Pass the total spending to the callback
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error); // Pass the error to the callback
+            }
+        });
+    }
+
+    public void getCalculatedProductNameSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingSumCallback callback) {
+        Log.d("PRODUCT_TYPE_TAG", "getCalculatedProductNameSum: " + budgetTrackerMysqlSpendingDto);
+        repository.getCalculatedProductNameSum(budgetTrackerMysqlSpendingDto, new MysqlSpendingSumCallback() {
 
             @Override
             public void onSuccess(Double spendingSum) {
