@@ -1,5 +1,6 @@
 package com.myproject.offlinebudgettrackerappproject.view;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.icu.util.Calendar;
@@ -12,6 +13,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,9 +33,11 @@ import com.myproject.offlinebudgettrackerappproject.adapter.MysqlSearchListViewA
 import com.myproject.offlinebudgettrackerappproject.databinding.ActivityMainBinding;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.enums.SpendingType;
+import com.myproject.offlinebudgettrackerappproject.modal.DrumrollPickerFragment;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingAlias;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingAliasViewModel;
+import com.myproject.offlinebudgettrackerappproject.util.DrumrollConstants;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 
 import java.util.ArrayList;
@@ -46,7 +50,7 @@ import java.util.Map;
  * Use the {@link MysqlStatsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MysqlStatsFragment extends Fragment {
+public class MysqlStatsFragment extends Fragment implements DrumrollPickerFragment.OnCategorySelectedListener{
 
     private BudgetTrackerSpendingAliasViewModel budgetTrackerSpendingAliasViewModel;
     RadioGroup statsRadioGroup, dateRadioGroup ;
@@ -125,6 +129,13 @@ public class MysqlStatsFragment extends Fragment {
         budgetTrackerMysqlSpendingViewModel = new ViewModelProvider(requireActivity()).get(BudgetTrackerMysqlSpendingViewModel.class);
 
         pieEntries = new ArrayList<>();
+
+        currencyCode.setOnClickListener(v -> {
+            DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_CURRENCY);
+            dialogFragment.setOnCategorySelectedListener(this);
+            dialogFragment.show(getParentFragmentManager(), "MySqlCurrencyActivity");
+        });
+
 
         Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
@@ -377,5 +388,10 @@ public class MysqlStatsFragment extends Fragment {
         pieChart.animateXY(5000, 5000);
         pieChart.setEntryLabelColor(Color.BLACK);
         pieChart.getDescription().setEnabled(false);
+    }
+
+    @Override
+    public void onCategorySelected(String selectedCategory) {
+        currencyCode.setText(selectedCategory);
     }
 }

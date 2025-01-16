@@ -76,8 +76,6 @@ public class MysqlDateSearchActivity extends AppCompatActivity implements Drumro
                 .getApplication())
                 .create(BudgetTrackerMysqlSpendingViewModel.class);
 
-
-
         sharedPreferences = getSharedPreferences(PREF_CURRENCY_FILENAME, 0);
 
         //選択された通貨の設定

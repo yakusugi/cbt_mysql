@@ -171,7 +171,9 @@
                     app:hintTextColor="@color/black"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:startIconDrawable="@drawable/usd_circle_18"
-                    >
+                    android:focusable="false"
+                    android:clickable="true">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/mysql_stats_currency_code"
                         android:layout_width="match_parent"

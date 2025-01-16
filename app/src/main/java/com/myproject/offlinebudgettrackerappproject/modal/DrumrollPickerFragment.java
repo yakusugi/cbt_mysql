@@ -29,10 +29,6 @@ public class DrumrollPickerFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-//    public static DrumrollPickerFragment newInstance() {
-//        return new DrumrollPickerFragment();
-//    }
-
     // Create a new instance with the list key
     public static DrumrollPickerFragment newInstance(String listKey) {
         DrumrollPickerFragment fragment = new DrumrollPickerFragment();
@@ -96,8 +92,6 @@ public class DrumrollPickerFragment extends DialogFragment {
                 listener.onCategorySelected(selectedCategory);
             }
         });
-
-
         return view;
     }
 
@@ -112,11 +106,6 @@ public class DrumrollPickerFragment extends DialogFragment {
             return Arrays.asList("Error loading items");
         }
     }
-
-//    private void disableTouchInteraction(NumberPicker numberPicker) {
-//        numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS); // Prevent focus and keyboard interaction
-//        numberPicker.setOnTouchListener((v, event) -> true); // Block all touch events
-//    }
 
     private void openIncomeCategoryDialog(EditText editText) {
         // Create a simple dialog with a list or other UI
