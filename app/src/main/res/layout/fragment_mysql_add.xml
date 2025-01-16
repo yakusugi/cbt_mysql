@@ -121,7 +121,8 @@
             app:hintTextColor="@color/black"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconDrawable="@drawable/product_type_18"
-            >
+            android:focusable="false"
+            android:clickable="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/mysql_add_product_type"
@@ -247,7 +248,8 @@
             app:hintTextColor="@color/black"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconDrawable="@drawable/usd_circle_18"
-            >
+            android:focusable="false"
+            android:clickable="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/mysql_add_currency_code"

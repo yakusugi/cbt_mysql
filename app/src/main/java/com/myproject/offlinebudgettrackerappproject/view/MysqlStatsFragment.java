@@ -50,7 +50,7 @@ import java.util.Map;
  * Use the {@link MysqlStatsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MysqlStatsFragment extends Fragment implements DrumrollPickerFragment.OnCategorySelectedListener{
+public class MysqlStatsFragment extends Fragment implements DrumrollPickerFragment.OnCategorySelectedListener {
 
     private BudgetTrackerSpendingAliasViewModel budgetTrackerSpendingAliasViewModel;
     RadioGroup statsRadioGroup, dateRadioGroup ;
@@ -131,7 +131,7 @@ public class MysqlStatsFragment extends Fragment implements DrumrollPickerFragme
         pieEntries = new ArrayList<>();
 
         currencyCode.setOnClickListener(v -> {
-            DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_CURRENCY);
+            DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_CURRENCY, "CURRENCY");
             dialogFragment.setOnCategorySelectedListener(this);
             dialogFragment.show(getParentFragmentManager(), "MySqlCurrencyActivity");
         });
@@ -391,7 +391,12 @@ public class MysqlStatsFragment extends Fragment implements DrumrollPickerFragme
     }
 
     @Override
-    public void onCategorySelected(String selectedCategory) {
+    public void onCategorySelected(String selectedCategory,String dialogType) {
         currencyCode.setText(selectedCategory);
+    }
+
+    @Override
+    public void onCategorySelected(String selectedCategory) {
+
     }
 }

@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DrumrollPickerFragment extends DialogFragment {
-
+    private String dialogType;
     private static final String ARG_LIST_KEY = "LIST_KEY";
     private NumberPicker.OnValueChangeListener valueChangeListener;
     public DrumrollPickerFragment() {
@@ -30,14 +30,18 @@ public class DrumrollPickerFragment extends DialogFragment {
     }
 
     // Create a new instance with the list key
-    public static DrumrollPickerFragment newInstance(String listKey) {
+    public static DrumrollPickerFragment newInstance(String listKey, String dialogType) {
         DrumrollPickerFragment fragment = new DrumrollPickerFragment();
         Bundle args = new Bundle();
         args.putString(ARG_LIST_KEY, listKey);
+        args.putString("DIALOG_TYPE", dialogType);
         fragment.setArguments(args);
         return fragment;
     }
     public interface OnCategorySelectedListener {
+        void onCategorySelected(String selectedCategory, String dialogType);
+
+        //pass the selectedCategory from the modal to this fragment
         void onCategorySelected(String selectedCategory);
     }
 
@@ -51,6 +55,10 @@ public class DrumrollPickerFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.drumroll_picker_dialog, container, false);
+
+        if (getArguments() != null) {
+            dialogType = getArguments().getString("DIALOG_TYPE");
+        }
 
         NumberPicker numberPicker = view.findViewById(R.id.category_picker);
         // Disable touch interaction
@@ -85,14 +93,24 @@ public class DrumrollPickerFragment extends DialogFragment {
         numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
             // Get the selected string value
             String selectedCategory = categories[newVal];
+
+            // Pass the selected category and dialog type to the parent fragment
+            if (listener != null) {
+                listener.onCategorySelected(selectedCategory, dialogType);
+            }
+
             System.out.println("Selected Category: " + selectedCategory);
 
             // Pass the selected category to the parent fragment
             if (listener != null) {
-                listener.onCategorySelected(selectedCategory);
+                listener.onCategorySelected(selectedCategory, dialogType);
             }
         });
         return view;
+    }
+
+    public String getDialogType() {
+        return dialogType;
     }
 
     public static List<String> getSelectionStrings(Context context, int resId) {

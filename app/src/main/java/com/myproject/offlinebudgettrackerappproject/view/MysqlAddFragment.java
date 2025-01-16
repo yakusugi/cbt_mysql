@@ -52,6 +52,9 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
     double vatRate;
     boolean spdBool = false;
 
+    boolean isProductTypeSelected = false;
+    boolean isCurrencyCodeSelected = false;
+
     BudgetTrackerMysqlSpendingViewModel budgetTrackerMysqlSpendingViewModel;
 
 
@@ -151,10 +154,20 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
         });
 
         enterProductType.setOnClickListener(v -> {
-            DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_SPENDING);
+            isProductTypeSelected = true;
+            DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_SPENDING, "PRODUCT_TYPE");
             dialogFragment.setOnCategorySelectedListener(this);
             dialogFragment.show(getParentFragmentManager(), "SpendingTypeDialogFragment");
         });
+        isProductTypeSelected = false;
+
+        enterCurrencyCode.setOnClickListener(v -> {
+            isCurrencyCodeSelected = true;
+            DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_CURRENCY, "CURRENCY_CODE");
+            dialogFragment.setOnCategorySelectedListener(this);
+            dialogFragment.show(getParentFragmentManager(), "SpendingTypeDialogFragment");
+        });
+        isCurrencyCodeSelected = false;
 
         budgetTrackerMysqlSpendingViewModel = new ViewModelProvider(requireActivity()).get(BudgetTrackerMysqlSpendingViewModel.class);
 
@@ -176,40 +189,6 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
         } else if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_vat_yes) {
             enterVatRate.setEnabled(true);
         }
-
-//        saveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Date date = (Date) enterDate.getText();
-//                String storeName = enterStoreName.getText().toString();
-//                String productName = enterProductName.getText().toString();
-//                String productType = enterProductType.getText().toString();
-//                vatRate = Double.parseDouble(enterVatRate.getText().toString());
-//                double price = Double.parseDouble(enterPrice.getText().toString());
-//                if (radioGroup.getCheckedRadioButtonId() == R.id.mysql_vat_no) {
-//                    vatRate = 0.0;
-//                    enterVatRate.setEnabled(false);
-//                } else {
-//                    spdBool = true;
-//                    vatRate = Double.parseDouble(enterVatRate.getText().toString());
-//                    price = price * vatRate;
-//                }
-//                String notes = enterNotes.getText().toString();
-//                String currencyCode = enterCurrencyCode.getText().toString();
-//                int quantity = Integer.parseInt(enterQuantity.getText().toString());
-//
-//                BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(date, storeName, productName, productType, price, vatRate, notes, currencyCode, quantity);
-//                budgetTrackerSpendingViewModel.insert(budgetTrackerSpending);
-//                if (spinnerText != null) {
-//                    double spendingNum = budgetTrackerSpending.getPrice();
-//                    budgetTrackerBankingViewModel.updateSubtraction(spendingNum, spinnerText);
-//                } else {
-//                    //Todo Need to make this a snackbar
-//                    Toast.makeText(getActivity(), "Insert a bank record", Toast.LENGTH_SHORT).show();
-//                }
-//                getActivity().finish();
-//            }
-//        });
 
         // Inflate the layout for this fragment
         return view;
@@ -287,7 +266,24 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
     }
 
     @Override
+    public void onCategorySelected(String selectedCategory, String dialogType) {
+        switch (dialogType) {
+            case "PRODUCT_TYPE":
+                enterProductType.setText(selectedCategory);
+                isProductTypeSelected = false;
+                break;
+            case "CURRENCY_CODE":
+                enterCurrencyCode.setText(selectedCategory);
+                isCurrencyCodeSelected = false;
+                break;
+            default:
+                // Handle unknown dialog type
+                break;
+        }
+    }
+
+    @Override
     public void onCategorySelected(String selectedCategory) {
-        enterProductType.setText(selectedCategory);
+
     }
 }

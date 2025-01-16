@@ -13,20 +13,15 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.myproject.offlinebudgettrackerappproject.R;
-import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlBankDto;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlIncomeDto;
 import com.myproject.offlinebudgettrackerappproject.modal.DrumrollPickerFragment;
-import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlBankViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlIncomeViewModel;
-import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
 import com.myproject.offlinebudgettrackerappproject.util.DrumrollConstants;
-import com.myproject.offlinebudgettrackerappproject.util.MysqlBankInsertCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlIncomeInsertCallback;
 
 import java.text.ParseException;
@@ -171,7 +166,7 @@ public class MysqlIncomeAddFragment extends Fragment implements DrumrollPickerFr
 
         // Set EditText non-editable to focus on dialog interaction
         enterIncomeCategory.setOnClickListener(v -> {
-            DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_INCOME);
+            DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_INCOME, "PRODUCT_TYPE");
             dialogFragment.setOnCategorySelectedListener(this);
             dialogFragment.show(getParentFragmentManager(), "IncomeCategoryDialogFragment");
         });
@@ -235,10 +230,14 @@ public class MysqlIncomeAddFragment extends Fragment implements DrumrollPickerFr
         });
     }
 
-    //pass the selectedCategory from the modal to this fragment
+    @Override
+    public void onCategorySelected(String selectedCategory, String dialogType) {
+        enterIncomeCategory.setText(selectedCategory);
+    }
+
     @Override
     public void onCategorySelected(String selectedCategory) {
-        enterIncomeCategory.setText(selectedCategory);
+
     }
 
 //    private void handleUpdateButtonClick() {

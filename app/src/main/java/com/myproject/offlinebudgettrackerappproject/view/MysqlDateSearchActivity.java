@@ -85,7 +85,7 @@ public class MysqlDateSearchActivity extends AppCompatActivity implements Drumro
 
         currencyTxt.setOnTouchListener((v, event) -> {
             if (currencyTxt != null && event.getAction() == MotionEvent.ACTION_DOWN) {
-                @SuppressLint("ClickableViewAccessibility") DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_CURRENCY);
+                DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_CURRENCY, "CURRENCY");
                 dialogFragment.setOnCategorySelectedListener((DrumrollPickerFragment.OnCategorySelectedListener) this);
                 dialogFragment.show(getSupportFragmentManager(), "MySqlCurrencyActivity");
                 return true;
@@ -219,7 +219,12 @@ public class MysqlDateSearchActivity extends AppCompatActivity implements Drumro
         }
 
     @Override
-    public void onCategorySelected(String selectedCategory) {
+    public void onCategorySelected(String selectedCategory, String dialogType) {
         currencyTxt.setText(selectedCategory);
+    }
+
+    @Override
+    public void onCategorySelected(String selectedCategory) {
+
     }
 }
