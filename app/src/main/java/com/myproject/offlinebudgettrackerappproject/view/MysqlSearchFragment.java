@@ -23,13 +23,16 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.myproject.offlinebudgettrackerappproject.R;
 import com.myproject.offlinebudgettrackerappproject.adapter.MysqlSearchListViewAdapter;
 import com.myproject.offlinebudgettrackerappproject.databinding.ActivityMainBinding;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
+import com.myproject.offlinebudgettrackerappproject.modal.DrumrollPickerFragment;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
+import com.myproject.offlinebudgettrackerappproject.util.DrumrollConstants;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 import com.myproject.offlinebudgettrackerappproject.enums.SpendingType;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
@@ -43,7 +46,7 @@ import java.util.Objects;
  * Use the {@link MysqlSearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MysqlSearchFragment extends Fragment {
+public class MysqlSearchFragment extends Fragment implements DrumrollPickerFragment.OnCategorySelectedListener {
 
     List<BudgetTrackerMysqlSpendingDto> searchedSpendingList = new ArrayList<>();
 
@@ -74,6 +77,10 @@ public class MysqlSearchFragment extends Fragment {
     SharedPreferences sharedPreferences;
 
     BudgetTrackerMysqlSpendingViewModel budgetTrackerMysqlSpendingViewModel;
+
+    EditText searchProductType;
+
+    boolean isProductTypeSelected = false;
 
     public MysqlSearchFragment() {
         // Required empty public constructor
@@ -124,12 +131,16 @@ public class MysqlSearchFragment extends Fragment {
 //        view = inflater.inflate(R.layout.fragment_mysql_search, container, false);
         Log.d("TAG", "onCreateView: test");
         EditText searchName = (EditText) view.findViewById(R.id.mysql_search_name);
+        searchProductType = (EditText) view.findViewById(R.id.mysql_product_type_search);
         EditText searchDateFrom = (EditText) view.findViewById(R.id.mysql_search_date_from_txt);
         EditText searchDateTo = (EditText) view.findViewById(R.id.mysql_search_date_to_txt);
         Button searchBtn = (Button) view.findViewById(R.id.mysql_search_btn);
         Button syncBtn = (Button) view.findViewById(R.id.mysql_sync_btn);
         TextView searchCalcResultTxt = (TextView) view.findViewById(R.id.mysql_search_calc_result_txt);
-        EditText searchProductType = (EditText) view.findViewById(R.id.mysql_product_type_search);
+
+
+        TextInputLayout searchNameLayout = (TextInputLayout) view.findViewById(R.id.mysql_search_name_layout);
+        TextInputLayout searchProductTypeLayout = (TextInputLayout) view.findViewById(R.id.mysql_product_type_layout);
 
         Log.d("VisibilityDebug", "searchName: " + searchName);
         Log.d("VisibilityDebug", "searchProductType: " + searchProductType);
@@ -190,20 +201,26 @@ public class MysqlSearchFragment extends Fragment {
                     case R.id.mysql_search_radio_store_name:
                     case R.id.mysql_search_radio_product_name:
                         // Make editText1 visible and editText2 gone
-                        searchName.setVisibility(View.VISIBLE);
-//                        searchName.setEnabled(true);
-                        searchProductType.setVisibility(View.GONE);
+                        searchNameLayout.setVisibility(View.VISIBLE);
+                        searchProductTypeLayout.setVisibility(View.GONE);
                         break;
                     case R.id.mysql_search_radio_product_type:
                         // Make editText2 visible and editText1 gone
-                        searchName.setVisibility(View.GONE);
-//                        searchName.setEnabled(true);
-                        searchProductType.setVisibility(View.VISIBLE);
-                        searchName.getParent().requestLayout();
+                        searchProductTypeLayout.setVisibility(View.VISIBLE);
+                        searchNameLayout.setVisibility(View.GONE);
+//                        searchName.getParent().requestLayout();
                         break;
                 }
             }
         });
+
+        searchProductType.setOnClickListener(v -> {
+            isProductTypeSelected = true;
+            DrumrollPickerFragment dialogFragment = DrumrollPickerFragment.newInstance(DrumrollConstants.LIST_KEY_MYSQL_SPENDING, "PRODUCT_TYPE");
+            dialogFragment.setOnCategorySelectedListener(this);
+            dialogFragment.show(getParentFragmentManager(), "SpendingTypeDialogFragment");
+        });
+        isProductTypeSelected = false;
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NonConstantResourceId")
@@ -418,5 +435,19 @@ public class MysqlSearchFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public void onCategorySelected(String selectedCategory, String dialogType) {
+        // Handle unknown dialog type
+        if (dialogType.equals("PRODUCT_TYPE")) {
+            searchProductType.setText(selectedCategory);
+            isProductTypeSelected = false;
+        }
+    }
+
+    @Override
+    public void onCategorySelected(String selectedCategory) {
+
     }
 }
