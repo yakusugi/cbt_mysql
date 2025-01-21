@@ -230,8 +230,6 @@ public class MysqlSearchFragment extends Fragment implements DrumrollPickerFragm
                 String dateFrom = searchDateFrom.getText().toString();
                 String dateTo = searchDateTo.getText().toString();
 
-
-
                 switch (radioGroup.getCheckedRadioButtonId()) {
                     case R.id.mysql_search_radio_store_name:
                         Log.d("Condition", "Condition met, executing block");
@@ -309,12 +307,8 @@ public class MysqlSearchFragment extends Fragment implements DrumrollPickerFragm
                         Log.d("VisibilityChange", "Before if condition");
                         break;
                     case R.id.mysql_search_radio_product_type:
-                        Log.d("VisibilityDebug", "Condition met for product type");
-                        requireActivity().runOnUiThread(() -> {
-                            searchName.setVisibility(View.GONE);
-                            searchProductType.setVisibility(View.VISIBLE);
-                        });
-                        productDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_TYPE, searchKey, dateFrom, dateTo);
+                        String productType = searchProductType.getText().toString();
+                        productDto = new BudgetTrackerMysqlSpendingDto(SpendingType.PRODUCT_TYPE, productType, dateFrom, dateTo);
                         budgetTrackerMysqlSpendingViewModel.getSearchProductTypeList(productDto, new MysqlSpendingListCallback() {
                             @Override
                             public void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList) {
