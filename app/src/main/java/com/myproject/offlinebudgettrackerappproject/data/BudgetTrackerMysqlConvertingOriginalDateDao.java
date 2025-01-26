@@ -35,7 +35,7 @@ public class BudgetTrackerMysqlConvertingOriginalDateDao extends BaseSpendingDao
     public void getSearchDateForeignList(BudgetTrackerMysqlForeignSpendingDto dto, MysqlSpendingForeignListCallback callback) {
         try {
             String serverUrl = loadServerConfig("server_url");
-            String phpFile = loadServerConfig("spending_date_search_php_file");
+            String phpFile = loadServerConfig("converting_date_search_original_php_file");
             String endpoint = serverUrl + phpFile;
 
             Map<String, String> params = new HashMap<>();

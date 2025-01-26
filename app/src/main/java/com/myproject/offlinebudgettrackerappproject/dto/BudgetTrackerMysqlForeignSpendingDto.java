@@ -74,8 +74,8 @@ public class BudgetTrackerMysqlForeignSpendingDto {
         this.dateTo = dateTo;
     }
 
-    public BudgetTrackerMysqlForeignSpendingDto(String storeName, String dateFrom, String dateTo) {
-        this.storeName = storeName;
+    public BudgetTrackerMysqlForeignSpendingDto(String currencyCode, String dateFrom, String dateTo) {
+        this.currencyCode = currencyCode;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
 
