@@ -4,10 +4,12 @@ package com.myproject.offlinebudgettrackerappproject.data;
 import android.app.Application;
 import android.util.Log;
 
+import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlForeignSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.enums.SpendingType;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 import com.myproject.offlinebudgettrackerappproject.util.BudgetTrackerDatabase;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingForeignListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingInsertCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.DateUtils;
@@ -26,10 +28,10 @@ public class BudgetTrackerMysqlSpendingRepository {
     private BudgetTrackerMysqlSpendingProductNameDao budgetTrackerMysqlSpendingProductNameDao;
     private BudgetTrackerMysqlSpendingProductTypeDao budgetTrackerMysqlSpendingProductTypeDao;
     private BudgetTrackerMysqlSpendingDateSumDao budgetTrackerMysqlSpendingDateSumDao;
-//    private BudgetTrackerMysqlSpendingStoreNameSyncDao budgetTrackerMysqlSpendingStoreNameSyncDao;
-
     private BudgetTrackerMysqlSpendingStoreNameSumDao budgetTrackerMysqlSpendingStoreNameSumDao;
     private BudgetTrackerMysqlSpendingDateDao budgetTrackerMysqlSpendingDateDao;
+
+    private BudgetTrackerMysqlConvertingOriginalDateDao budgetTrackerMysqlConvertingOriginalDateDao;
     private BudgetTrackerMysqlSpendingInsertDao budgetTrackerMysqlSpendingInsertDao;
     private BudgetTrackerMysqlSpendingProductTypeSumDao budgetTrackerMysqlSpendingProductTypeSumDao;
     private BudgetTrackerMysqlSpendingStoreStatsDao budgetTrackerMysqlSpendingStoreStatsDao;
@@ -42,6 +44,8 @@ public class BudgetTrackerMysqlSpendingRepository {
     private BudgetTrackerSpendingDao budgetTrackerSpendingDao;
 
     private List<BudgetTrackerMysqlSpendingDto> radioSearchStoreNameList;
+
+    private List<BudgetTrackerMysqlForeignSpendingDto> searchForeignOriginalList;
 
     private List<BudgetTrackerSpending> budgetTrackerSpendingList;
     private List<BudgetTrackerMysqlSpendingDto> radioSearchProductNameList;
@@ -69,6 +73,7 @@ public class BudgetTrackerMysqlSpendingRepository {
         budgetTrackerMysqlSpendingProductNameStatsDao = new BudgetTrackerMysqlSpendingProductNameStatsDao(application);
         budgetTrackerMysqlSpendingDateStatsDao = new BudgetTrackerMysqlSpendingDateStatsDao(application);
         budgetTrackerMysqlSpendingProductNameSumDao = new BudgetTrackerMysqlSpendingProductNameSumDao(application);
+        budgetTrackerMysqlConvertingOriginalDateDao = new BudgetTrackerMysqlConvertingOriginalDateDao(application);
     }
 
     public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
@@ -127,6 +132,40 @@ public class BudgetTrackerMysqlSpendingRepository {
                 }
 
                 radioSearchStoreNameList = spendingList;
+                callback.onSuccess(spendingList);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
+    }
+
+    public void getDateForeignList(BudgetTrackerMysqlForeignSpendingDto budgetTrackerMysqlForeignSpendingDto, MysqlSpendingForeignListCallback callback) {
+
+        Log.d("TAG_DTO", "getDateList: " + budgetTrackerMysqlForeignSpendingDto);
+        budgetTrackerMysqlConvertingOriginalDateDao.getSearchDateForeignList(budgetTrackerMysqlForeignSpendingDto, new MysqlSpendingForeignListCallback() {
+            @Override
+            public void onSuccess(List<BudgetTrackerMysqlForeignSpendingDto> spendingList) {
+//                Log.d("RepositoryResponse", spendingList.toString());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//                for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
+//                    Log.d("RepositoryResponse", dto.toString());
+//                }
+
+                for (BudgetTrackerMysqlForeignSpendingDto dto : spendingList) {
+                    try {
+                        Date date = dto.getDate();
+                        String formattedDate = DateUtils.dateToString(date);
+                        dto.setDate(DateUtils.stringToDate(formattedDate));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("RepositoryResponse", dto.toString());
+                }
+
+                searchForeignOriginalList = spendingList;
                 callback.onSuccess(spendingList);
             }
 

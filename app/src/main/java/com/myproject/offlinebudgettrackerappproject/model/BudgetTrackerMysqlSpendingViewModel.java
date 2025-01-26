@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
 import com.myproject.offlinebudgettrackerappproject.data.BudgetTrackerMysqlSpendingRepository;
+import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlForeignSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.util.ListCallback;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingForeignListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingInsertCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
@@ -19,6 +21,7 @@ public class BudgetTrackerMysqlSpendingViewModel extends AndroidViewModel {
 
     public List<BudgetTrackerMysqlSpendingDto> radioSearchStoreNameList;
     public List<BudgetTrackerMysqlSpendingDto> radioSearchProductNameList;
+    public List<BudgetTrackerMysqlForeignSpendingDto> dateForeignList;
 
     public List<BudgetTrackerMysqlSpendingDto> radioSearchProductTypeList;
 
@@ -121,6 +124,25 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
                     Log.d("ViewModelResponse", dto.toString());
                 }
                 radioSearchStoreNameList = spendingList;
+                callback.onSuccess(spendingList);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
+    }
+
+    public void getDateForeignList(BudgetTrackerMysqlForeignSpendingDto budgetTrackerMysqlForeignSpendingDto, MysqlSpendingForeignListCallback callback) {
+        repository.getDateForeignList(budgetTrackerMysqlForeignSpendingDto, new MysqlSpendingForeignListCallback() {
+            @Override
+            public void onSuccess(List<BudgetTrackerMysqlForeignSpendingDto> spendingList) {
+//                Log.d("ViewModelResponse", spendingList.toString());
+                for (BudgetTrackerMysqlForeignSpendingDto dto : spendingList) {
+                    Log.d("ViewModelResponse", dto.toString());
+                }
+                dateForeignList = spendingList;
                 callback.onSuccess(spendingList);
             }
 

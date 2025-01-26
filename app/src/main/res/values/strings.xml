@@ -44,6 +44,11 @@
     <string name="mysql_login_pw_hint">Enter your login password</string>
     <string name="mysql_login_email_hint">Enter your login Email</string>
 
+    <string name="mysql_transfer_title">MySQL Convert </string>
+
+    <string name="mysql_transfer_original_currency_sum">Original currency</string>
+    <string name="mysql_transfer_converted_currency_sum">Converted currency</string>
+    <string name="mysql_transfer_origin_convert_sum">Converted sum</string>
 
     <!--  category items  -->
     <string-array name="category_items">
