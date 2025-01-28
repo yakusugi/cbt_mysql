@@ -6,14 +6,17 @@ import android.util.Log;
 
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlForeignSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
+import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlTargetSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.enums.SpendingType;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 import com.myproject.offlinebudgettrackerappproject.util.BudgetTrackerDatabase;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingForeignListCallback;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingForeignSumCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingInsertCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.DateUtils;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingTargetSumCallback;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +42,8 @@ public class BudgetTrackerMysqlSpendingRepository {
     private BudgetTrackerMysqlSpendingProductNameStatsDao budgetTrackerMysqlSpendingProductNameStatsDao;
     private BudgetTrackerMysqlSpendingDateStatsDao budgetTrackerMysqlSpendingDateStatsDao;
     private BudgetTrackerMysqlSpendingProductNameSumDao budgetTrackerMysqlSpendingProductNameSumDao;
+    private BudgetTrackerMysqlSpendingForeignDateSumDao budgetTrackerMysqlSpendingForeignDateSumDao;
+    private BudgetTrackerMysqlSpendingTargetDateSumDao budgetTrackerMysqlSpendingTargetDateSumDao;
 
     BudgetTrackerDatabase budgetTrackerDatabase;
     private BudgetTrackerSpendingDao budgetTrackerSpendingDao;
@@ -74,6 +79,8 @@ public class BudgetTrackerMysqlSpendingRepository {
         budgetTrackerMysqlSpendingDateStatsDao = new BudgetTrackerMysqlSpendingDateStatsDao(application);
         budgetTrackerMysqlSpendingProductNameSumDao = new BudgetTrackerMysqlSpendingProductNameSumDao(application);
         budgetTrackerMysqlConvertingOriginalDateDao = new BudgetTrackerMysqlConvertingOriginalDateDao(application);
+        budgetTrackerMysqlSpendingForeignDateSumDao = new BudgetTrackerMysqlSpendingForeignDateSumDao(application);
+        budgetTrackerMysqlSpendingTargetDateSumDao = new BudgetTrackerMysqlSpendingTargetDateSumDao(application);
     }
 
     public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
@@ -212,6 +219,36 @@ public class BudgetTrackerMysqlSpendingRepository {
             public void onSuccess(Double spendingSum) {
                 Log.d("RepositoryResponse", "Total Spending: " + spendingSum);
                 callback.onSuccess(spendingSum); // Pass the total spending to the callback
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error); // Pass the error to the callback
+            }
+        });
+    }
+
+    public void getSearchForeignDateSum(BudgetTrackerMysqlForeignSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingForeignSumCallback callback) {
+        budgetTrackerMysqlSpendingForeignDateSumDao.getSearchForeignDateSum(budgetTrackerMysqlSpendingDto, new MysqlSpendingForeignSumCallback() {
+            @Override
+            public void onSuccess(Double spendingSum) {
+                Log.d("RepositoryResponse", "Total Spending: " + spendingSum);
+                callback.onSuccess(spendingSum); // Pass the total spending to the callback
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error); // Pass the error to the callback
+            }
+        });
+    }
+
+    public void getSearchTargetDateSum(BudgetTrackerMysqlTargetSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingTargetSumCallback callback) {
+        budgetTrackerMysqlSpendingTargetDateSumDao.getSearchTargetDateSum(budgetTrackerMysqlSpendingDto, new MysqlSpendingTargetSumCallback() {
+            @Override
+            public void onSuccess(Double targetSum) {
+                Log.d("RepositoryResponse", "Total Spending: " + targetSum);
+                callback.onSuccess(targetSum); // Pass the total spending to the callback
             }
 
             @Override

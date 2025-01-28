@@ -25,14 +25,17 @@ import com.myproject.offlinebudgettrackerappproject.adapter.MysqlSearchListViewA
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlForeignSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlIncomeDto;
 import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlSpendingDto;
+import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlTargetSpendingDto;
 import com.myproject.offlinebudgettrackerappproject.enums.SpendingType;
 import com.myproject.offlinebudgettrackerappproject.modal.DrumrollPickerFragment;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlIncomeViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
 import com.myproject.offlinebudgettrackerappproject.util.DrumrollConstants;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingForeignListCallback;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingForeignSumCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
+import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingTargetSumCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +55,7 @@ public class MysqlConvertFragment extends Fragment implements DrumrollPickerFrag
 
     BudgetTrackerMysqlSpendingViewModel budgetTrackerMysqlSpendingViewModel;
     BudgetTrackerMysqlForeignSpendingDto budgetTrackerMysqlForeignSpendingDto;
+    BudgetTrackerMysqlTargetSpendingDto budgetTrackerMysqlTargetSpendingDto;
     List<BudgetTrackerMysqlForeignSpendingDto> budgetTrackerMysqlForeignDtoList = new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
@@ -165,6 +169,7 @@ public class MysqlConvertFragment extends Fragment implements DrumrollPickerFrag
 //                dateQuery(searchKey, dateFrom, dateTo);
 //                //todo clicking each item to intent to add activity
                 budgetTrackerMysqlForeignSpendingDto = new BudgetTrackerMysqlForeignSpendingDto(searchKey, dateFrom, dateTo);
+                budgetTrackerMysqlTargetSpendingDto = new BudgetTrackerMysqlTargetSpendingDto(searchKey, dateFrom, dateTo);
                 budgetTrackerMysqlSpendingViewModel.getDateForeignList(budgetTrackerMysqlForeignSpendingDto, new MysqlSpendingForeignListCallback() {
                     @Override
                     public void onSuccess(List<BudgetTrackerMysqlForeignSpendingDto> spendingList) {
@@ -184,6 +189,34 @@ public class MysqlConvertFragment extends Fragment implements DrumrollPickerFrag
                     public void onError(String error) {
                         Toast.makeText(requireContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
                         Log.d("Error Now", "onError: " + error);
+                    }
+                });
+
+                budgetTrackerMysqlSpendingViewModel.getSearchForeignDateSum(budgetTrackerMysqlForeignSpendingDto, new MysqlSpendingForeignSumCallback(){
+
+                    @Override
+                    public void onSuccess(Double spendingSum) {
+                        String spendingSumString = String.valueOf(spendingSum);
+                        originalCalcResultTxt.setText(spendingSumString);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+
+                budgetTrackerMysqlSpendingViewModel.getSearchTargetDateSum(budgetTrackerMysqlTargetSpendingDto, new MysqlSpendingTargetSumCallback(){
+
+                    @Override
+                    public void onSuccess(Double targetSum) {
+                        String spendingSumString = String.valueOf(targetSum);
+                        convertedCalcResultTxt.setText(spendingSumString);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
                     }
                 });
 
