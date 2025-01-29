@@ -21,6 +21,7 @@ import com.myproject.offlinebudgettrackerappproject.data.BudgetTrackerProductTyp
 import com.myproject.offlinebudgettrackerappproject.data.BudgetTrackerSpendingAliasDao;
 import com.myproject.offlinebudgettrackerappproject.data.BudgetTrackerSpendingDao;
 import com.myproject.offlinebudgettrackerappproject.data.CurrencyConverterDao;
+import com.myproject.offlinebudgettrackerappproject.data.UserCurrencyDao;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTracker;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerAlias;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerBank;
@@ -33,11 +34,12 @@ import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerProductTy
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpending;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingAlias;
 import com.myproject.offlinebudgettrackerappproject.model.CurrencyConverter;
+import com.myproject.offlinebudgettrackerappproject.model.UserCurrency;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {BudgetTracker.class, BudgetTrackerIncome.class, BudgetTrackerBank.class, BudgetTrackerAlias.class, BudgetTrackerProductType.class, BudgetTrackerIncomeType.class, BudgetTrackerSpending.class, BudgetTrackerSpendingAlias.class, BudgetTrackerBanking.class, BudgetTrackerIncomes.class, CurrencyConverter.class, BudgetTrackerConverter.class}, version = 15, exportSchema = false
+@Database(entities = {BudgetTracker.class, BudgetTrackerIncome.class, BudgetTrackerBank.class, BudgetTrackerAlias.class, BudgetTrackerProductType.class, BudgetTrackerIncomeType.class, BudgetTrackerSpending.class, BudgetTrackerSpendingAlias.class, BudgetTrackerBanking.class, BudgetTrackerIncomes.class, CurrencyConverter.class, BudgetTrackerConverter.class, UserCurrency.class}, version = 16, exportSchema = false
 )
 public abstract class BudgetTrackerDatabase extends RoomDatabase {
     public abstract BudgetTrackerDao budgetTrackerDao();
@@ -52,6 +54,7 @@ public abstract class BudgetTrackerDatabase extends RoomDatabase {
     public abstract BudgetTrackerIncomesDao budgetTrackerIncomesDao();
     public abstract CurrencyConverterDao currencyConverterDao();
     public abstract BudgetTrackerConverterDao budgetTrackerConverterDao();
+    public abstract UserCurrencyDao userCurrencyDao();
 
     public static final int NUMBER_OF_THREADS = 4;
 
@@ -82,7 +85,9 @@ public abstract class BudgetTrackerDatabase extends RoomDatabase {
                             .addMigrations(MIGRATION_12_13)
                             .addMigrations(MIGRATION_13_14)
                             .addMigrations(MIGRATION_14_15)
+                            .addMigrations(MIGRATION_15_16)
                             .addCallback(sRoomDatabaseSpendingCallback)
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
@@ -292,5 +297,20 @@ public abstract class BudgetTrackerDatabase extends RoomDatabase {
             database.execSQL("ALTER TABLE budget_tracker_spending_table ADD COLUMN creation_date TEXT");
         }
     };
+
+    public static final Migration MIGRATION_15_16 = new Migration(15, 16) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS user_currency (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "email TEXT NOT NULL UNIQUE, " +  // Make sure it's NOT NULL
+                    "primary_currency TEXT NOT NULL, " +  // Ensuring consistency
+                    "conversion_rate REAL NOT NULL DEFAULT 1.0, " +  // Provide a default value
+                    "last_updated INTEGER NOT NULL DEFAULT 0, " +  // INTEGER instead of TEXT for timestamp
+                    "country_code TEXT NOT NULL DEFAULT '', " +  // Default empty string
+                    "is_active INTEGER NOT NULL DEFAULT 1)");  // Default active (1)
+        }
+    };
+
 
 }
