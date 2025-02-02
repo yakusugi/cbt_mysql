@@ -96,14 +96,22 @@ public class BudgetTrackerMysqlUserCurrencyInsertDao {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
+                    //todo debug
+                    String email = SharedPreferencesManager.getUserEmail(context);
+                    if (email == null || email.isEmpty()) {
+                        Log.e("API_ERROR", "Email is NULL or EMPTY!");
+                    } else {
+                        Log.d("API_SUCCESS", "Email found: " + email);
+                    }
                     params.put("email", SharedPreferencesManager.getUserEmail(context).toString());
-                    params.put("currency_code", budgetTrackerMysqlUserCurrencyDto.getCurrencyCode());
+                    params.put("primary_currency", budgetTrackerMysqlUserCurrencyDto.getCurrencyCode());
                     return params;
                 }
             };
 
             com.android.volley.RequestQueue requestQueue = Volley.newRequestQueue(context);
             requestQueue.add(stringRequest);
+            Log.d("API_REQUEST", "Request added to queue");
         } catch (IOException e) {
             e.printStackTrace();
             callback.onError("IOException: " + e.getMessage());
@@ -118,7 +126,7 @@ public class BudgetTrackerMysqlUserCurrencyInsertDao {
             JSONObject spendingObject = jsonArray.getJSONObject(i);
             BudgetTrackerMysqlUserCurrencyDto userCurrencyDto = new BudgetTrackerMysqlUserCurrencyDto();
             dateUtil = new DateUtil();
-            userCurrencyDto.setCurrencyCode(spendingObject.getString("currency_code"));
+            userCurrencyDto.setCurrencyCode(spendingObject.getString(""));
             userCurrencyList.add(userCurrencyDto);
         }
         return userCurrencyList;

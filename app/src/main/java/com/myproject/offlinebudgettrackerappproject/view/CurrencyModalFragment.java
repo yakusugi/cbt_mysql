@@ -95,6 +95,9 @@ public class CurrencyModalFragment extends DialogFragment {
 
                 String searchKey = searchName.getText().toString();
 
+                budgetTrackerMysqlUserCurrencyDto = new BudgetTrackerMysqlUserCurrencyDto(searchKey);
+
+
                 budgetTrackerMysqlUserCurrencyViewModel.insert(budgetTrackerMysqlUserCurrencyDto, new MysqlUserCurrencyCallback(){
 
                     @Override
