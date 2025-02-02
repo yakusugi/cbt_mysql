@@ -5,6 +5,7 @@ import android.icu.util.Calendar;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -48,7 +49,7 @@ import java.util.List;
 public class MysqlConvertFragment extends Fragment implements DrumrollPickerFragment.OnCategorySelectedListener {
 
     private EditText searchName, searchDateFrom, searchDateTo;
-    private Button searchBtn,syncBtn;
+    private Button searchBtn,syncBtn, currencyBtn;
     private TextView originalCalcResultTxt, convertedCalcResultTxt,convertedSumResultTxt;
     private ListView searchListView;
     boolean isProductTypeSelected = false;
@@ -106,6 +107,7 @@ public class MysqlConvertFragment extends Fragment implements DrumrollPickerFrag
         searchDateFrom = (EditText) view.findViewById(R.id.mysql_transfer_search_currency_date_from);
         searchDateTo = (EditText) view.findViewById(R.id.mysql_transfer_search_currency_date_to);
         searchBtn = (Button) view.findViewById(R.id.mysql_transfer_date_search_btn);
+        currencyBtn = (Button) view.findViewById(R.id.mysql_transfer_base_currency_sync_btn);
         originalCalcResultTxt = (TextView) view.findViewById(R.id.mysql_transfer_search_calc_result_txt1);
         convertedCalcResultTxt = (TextView) view.findViewById(R.id.mysql_transfer_search_calc_result_txt2);
         convertedSumResultTxt = (TextView) view.findViewById(R.id.mysql_transfer_search_calc_result_txt3);
@@ -234,6 +236,15 @@ public class MysqlConvertFragment extends Fragment implements DrumrollPickerFrag
 //                    }
 //                });
 
+            }
+        });
+
+        currencyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show the modal fragment
+                CurrencyModalFragment modalFragment = new CurrencyModalFragment();
+                modalFragment.show(getParentFragmentManager(), "modal_fragment");
             }
         });
 
