@@ -5,8 +5,7 @@ import com.myproject.offlinebudgettrackerappproject.dto.BudgetTrackerMysqlUserPr
 
 import java.util.List;
 
-public interface MysqlSpendingListCallback {
-    void onSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList);
-
+public interface MysqlUserPrimaryCurrencyCallback {
+    void onSuccess(BudgetTrackerMysqlUserPrimaryCurrency budgetTrackerMysqlUserPrimaryCurrency);
     void onError(String error);
 }

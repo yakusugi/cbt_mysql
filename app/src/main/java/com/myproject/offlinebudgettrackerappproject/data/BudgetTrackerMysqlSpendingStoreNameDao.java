@@ -85,39 +85,6 @@ public class BudgetTrackerMysqlSpendingStoreNameDao extends BaseSpendingDao {
         return searchStoreSum;
     }
 
-    public List<BudgetTrackerMysqlSpendingDto> getSearchProductNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-
-        String storeName = budgetTrackerMysqlSpendingDto.getStoreName();
-        String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
-        String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
-
-        Log.d("TAG", "getSearchStoreNameList: " + storeName + " " + dateFrom + " " + dateTo);
-
-        return radioSearchProductNameList;
-    }
-
-    public Double getSearchProductNameSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-
-        String storeName = budgetTrackerMysqlSpendingDto.getStoreName();
-        String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
-        String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
-
-        Log.d("TAG", "getSearchStoreNameList: " + storeName + " " + dateFrom + " " + dateTo);
-
-        return searchProductNameSum;
-    }
-
-    public List<BudgetTrackerMysqlSpendingDto> getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
-
-        String storeName = budgetTrackerMysqlSpendingDto.getStoreName();
-        String dateFrom = budgetTrackerMysqlSpendingDto.getDateFrom();
-        String dateTo = budgetTrackerMysqlSpendingDto.getDateTo();
-
-        Log.d("TAG", "getSearchStoreNameList: " + storeName + " " + dateFrom + " " + dateTo);
-
-        return radioSearchProductTypeList;
-    }
-
     public Double getSearchProductTypeSum(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
 
         String storeName = budgetTrackerMysqlSpendingDto.getStoreName();

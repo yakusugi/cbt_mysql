@@ -1,9 +1,11 @@
 package com.myproject.offlinebudgettrackerappproject.view;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,12 +33,14 @@ import com.myproject.offlinebudgettrackerappproject.enums.SpendingType;
 import com.myproject.offlinebudgettrackerappproject.modal.DrumrollPickerFragment;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlIncomeViewModel;
 import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlSpendingViewModel;
+import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerMysqlUserPrimaryCurrencyViewModel;
 import com.myproject.offlinebudgettrackerappproject.util.DrumrollConstants;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingForeignListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingForeignSumCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingTargetSumCallback;
+import com.myproject.offlinebudgettrackerappproject.util.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +58,12 @@ public class MysqlConvertFragment extends Fragment implements DrumrollPickerFrag
     private ListView searchListView;
     boolean isProductTypeSelected = false;
 
+    private Context mContext;
+
     BudgetTrackerMysqlSpendingViewModel budgetTrackerMysqlSpendingViewModel;
+
+    BudgetTrackerMysqlUserPrimaryCurrencyViewModel budgetTrackerMysqlUserPrimaryCurrencyViewModel;
+
     BudgetTrackerMysqlForeignSpendingDto budgetTrackerMysqlForeignSpendingDto;
     BudgetTrackerMysqlTargetSpendingDto budgetTrackerMysqlTargetSpendingDto;
     List<BudgetTrackerMysqlForeignSpendingDto> budgetTrackerMysqlForeignDtoList = new ArrayList<>();
@@ -91,6 +100,12 @@ public class MysqlConvertFragment extends Fragment implements DrumrollPickerFrag
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context; // ✅ Assign context safely
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -102,6 +117,7 @@ public class MysqlConvertFragment extends Fragment implements DrumrollPickerFrag
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_mysql_convert, container, false);
         searchName = (EditText) view.findViewById(R.id.mysql_transfer_search_currency_txt);
         searchDateFrom = (EditText) view.findViewById(R.id.mysql_transfer_search_currency_date_from);
@@ -127,6 +143,7 @@ public class MysqlConvertFragment extends Fragment implements DrumrollPickerFrag
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         budgetTrackerMysqlSpendingViewModel = new ViewModelProvider(requireActivity()).get(BudgetTrackerMysqlSpendingViewModel.class);
+        budgetTrackerMysqlUserPrimaryCurrencyViewModel = new ViewModelProvider(requireActivity()).get(BudgetTrackerMysqlUserPrimaryCurrencyViewModel.class);
 
         searchDateFrom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,6 +238,21 @@ public class MysqlConvertFragment extends Fragment implements DrumrollPickerFrag
 
                     }
                 });
+
+//                String email = SharedPreferencesManager.getUserEmail(context);
+
+                String email = SharedPreferencesManager.getUserEmail(mContext).toString();
+                budgetTrackerMysqlUserPrimaryCurrencyViewModel.fetchUserPrimaryCurrency(email);
+                Log.d("Fragment", "Calling fetchUserPrimaryCurrency for email: " + email);
+
+                budgetTrackerMysqlUserPrimaryCurrencyViewModel.getUserPrimaryCurrency()
+                        .observe(getViewLifecycleOwner(), primaryCurrency -> {
+                            if (primaryCurrency != null) {
+                                Log.d("PrimaryCurrency2", "onClick: " + primaryCurrency);
+                            } else {
+                                Log.d("PrimaryCurrency2", "No data received");
+                            }
+                        });
 
 //                budgetTrackerMysqlSpendingViewModel.getCalculatedDateSum(budgetTrackerMysqlSpendingDto, new MysqlSpendingSumCallback(){
 //
