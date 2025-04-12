@@ -148,16 +148,12 @@ public class MysqlDashFragment extends Fragment implements View.OnClickListener 
                 startActivity(i);
                 break;
             case R.id.mysql_date_card:
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.mysql_main_container, new MysqlDateSearchFragment())
-//                        .addToBackStack(null)
-//                        .commit();
                 i = new Intent(view.getContext(), MysqlDateSearchActivity.class);
                 startActivity(i);
                 break;
             case R.id.mysql_replace_card:
-//                i = new Intent(view.getContext(), MysqlLoginActivity.class);
-//                startActivity(i);
+                i = new Intent(view.getContext(), MysqlReplaceActivity.class);
+                startActivity(i);
                 break;
             case R.id.mysql_replace_card_income:
 //                i = new Intent(view.getContext(), SpendingReplacementActivity.class);
