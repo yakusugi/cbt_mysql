@@ -17,6 +17,9 @@ import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingInsertCall
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingTargetSumCallback;
+import com.myproject.offlinebudgettrackerappproject.util.ProductNameReplaceCallback;
+import com.myproject.offlinebudgettrackerappproject.util.ProductTypeReplaceCallback;
+import com.myproject.offlinebudgettrackerappproject.util.StoreNameReplaceCallback;
 
 import java.util.List;
 
@@ -390,6 +393,68 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
             @Override
             public void onError(String error) {
                 callback.onError(error);
+            }
+        });
+    }
+
+    /**
+     *
+     * @param storeNameFrom
+     * @param storeNameTo
+     * @param callback
+     */
+    public void replaceStoreName(String storeNameFrom, String storeNameTo, StoreNameReplaceCallback callback) {
+        repository.replaceStoreName(storeNameFrom, storeNameTo, new StoreNameReplaceCallback() {
+            @Override
+            public void onSuccess(int affectedRows) {
+                Log.d("ViewModelReplace", "Successfully updated " + affectedRows + " rows.");
+                callback.onSuccess(affectedRows);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("ViewModelReplace", "Failed to replace store name: " + errorMessage);
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+
+    /**
+     *
+     * @param productNameFrom
+     * @param productNameTo
+     * @param callback
+     */
+    public void replaceProductName(String productNameFrom, String productNameTo, ProductNameReplaceCallback callback) {
+        repository.replaceProductName(productNameFrom, productNameTo, new ProductNameReplaceCallback() {
+            @Override
+            public void onSuccess(int affectedRows) {
+                Log.d("ViewModelReplace", "Successfully updated " + affectedRows + " rows.");
+                callback.onSuccess(affectedRows);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("ViewModelReplace", "Failed to replace store name: " + errorMessage);
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+
+    public void replaceProductType(String productTypeFrom, String productTypeTo, ProductTypeReplaceCallback callback) {
+        repository.replaceProductType(productTypeFrom, productTypeTo, new ProductTypeReplaceCallback() {
+            @Override
+            public void onSuccess(int affectedRows) {
+                Log.d("ViewModelReplace", "Successfully updated " + affectedRows + " rows.");
+                callback.onSuccess(affectedRows);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("ViewModelReplace", "Failed to replace store name: " + errorMessage);
+                callback.onError(errorMessage);
             }
         });
     }

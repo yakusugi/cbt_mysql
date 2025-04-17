@@ -32,6 +32,9 @@ import com.myproject.offlinebudgettrackerappproject.model.Currency;
 import com.myproject.offlinebudgettrackerappproject.util.DrumrollConstants;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
+import com.myproject.offlinebudgettrackerappproject.util.ProductNameReplaceCallback;
+import com.myproject.offlinebudgettrackerappproject.util.ProductTypeReplaceCallback;
+import com.myproject.offlinebudgettrackerappproject.util.StoreNameReplaceCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,13 +123,86 @@ public class MysqlReplaceActivity extends AppCompatActivity implements DrumrollP
         });
         isProductTypeSelected = false;
 
+        replaceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String replaceFrom = searchReplaceFrom.getText().toString();
+                String replaceTo = searchReplaceTo.getText().toString();
+                String replaceToProductType = searchReplaceToProductType.getText().toString();
+
+                switch (radioGroup.getCheckedRadioButtonId()) {
+                    case R.id.mysql_replace_radio_store_name:
+                        if (replaceFrom.isEmpty() || replaceTo.isEmpty()) {
+                            Toast.makeText(MysqlReplaceActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        budgetTrackerMysqlSpendingViewModel.replaceStoreName(
+                                replaceFrom,
+                                replaceTo,
+                                new StoreNameReplaceCallback() {
+                                    @Override
+                                    public void onSuccess(int affectedRows) {
+                                        Toast.makeText(MysqlReplaceActivity.this, "Replaced in " + affectedRows + " rows", Toast.LENGTH_LONG).show();
+                                    }
+
+                                    @Override
+                                    public void onError(String errorMessage) {
+                                        Toast.makeText(MysqlReplaceActivity.this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                        );
+                        break;
+
+                    case R.id.mysql_replace_radio_product_name:
+                        budgetTrackerMysqlSpendingViewModel.replaceProductName(
+                                replaceFrom,
+                                replaceTo,
+                                new ProductNameReplaceCallback() {
+                                    @Override
+                                    public void onSuccess(int affectedRows) {
+                                        Toast.makeText(MysqlReplaceActivity.this, "Replaced in " + affectedRows + " rows", Toast.LENGTH_LONG).show();
+                                    }
+
+                                    @Override
+                                    public void onError(String errorMessage) {
+                                        Toast.makeText(MysqlReplaceActivity.this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                        );
+                        break;
+
+                    case R.id.mysql_replace_radio_product_type:
+                        budgetTrackerMysqlSpendingViewModel.replaceProductType(
+                                replaceFrom,
+                                replaceTo,
+                                new ProductTypeReplaceCallback() {
+                                    @Override
+                                    public void onSuccess(int affectedRows) {
+                                        Toast.makeText(MysqlReplaceActivity.this, "Replaced in " + affectedRows + " rows", Toast.LENGTH_LONG).show();
+                                    }
+
+                                    @Override
+                                    public void onError(String errorMessage) {
+                                        Toast.makeText(MysqlReplaceActivity.this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                        );
+                        break;
+                }
+
+            }
+        });
+
     }
+
+
 
 
 
     @Override
     public void onCategorySelected(String selectedCategory, String dialogType) {
-
+        searchReplaceToProductType.setText(selectedCategory);
     }
 
     @Override

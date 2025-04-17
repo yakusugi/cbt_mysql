@@ -17,6 +17,9 @@ import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingListCallba
 import com.myproject.offlinebudgettrackerappproject.util.DateUtils;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingTargetSumCallback;
+import com.myproject.offlinebudgettrackerappproject.util.ProductNameReplaceCallback;
+import com.myproject.offlinebudgettrackerappproject.util.ProductTypeReplaceCallback;
+import com.myproject.offlinebudgettrackerappproject.util.StoreNameReplaceCallback;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,6 +47,9 @@ public class BudgetTrackerMysqlSpendingRepository {
     private BudgetTrackerMysqlSpendingProductNameSumDao budgetTrackerMysqlSpendingProductNameSumDao;
     private BudgetTrackerMysqlSpendingForeignDateSumDao budgetTrackerMysqlSpendingForeignDateSumDao;
     private BudgetTrackerMysqlSpendingTargetDateSumDao budgetTrackerMysqlSpendingTargetDateSumDao;
+    private BudgetTrackerMysqlSpendingStoreNameReplaceDao budgetTrackerMysqlSpendingStoreNameReplaceDao;
+    private BudgetTrackerMysqlSpendingProductNameReplaceDao budgetTrackerMysqlSpendingProductNameReplaceDao;
+    private BudgetTrackerMysqlSpendingProductTypeReplaceDao budgetTrackerMysqlSpendingProductTypeReplaceDao;
 
     BudgetTrackerDatabase budgetTrackerDatabase;
     private BudgetTrackerSpendingDao budgetTrackerSpendingDao;
@@ -81,6 +87,9 @@ public class BudgetTrackerMysqlSpendingRepository {
         budgetTrackerMysqlConvertingOriginalDateDao = new BudgetTrackerMysqlConvertingOriginalDateDao(application);
         budgetTrackerMysqlSpendingForeignDateSumDao = new BudgetTrackerMysqlSpendingForeignDateSumDao(application);
         budgetTrackerMysqlSpendingTargetDateSumDao = new BudgetTrackerMysqlSpendingTargetDateSumDao(application);
+        budgetTrackerMysqlSpendingStoreNameReplaceDao = new BudgetTrackerMysqlSpendingStoreNameReplaceDao(application);
+        budgetTrackerMysqlSpendingProductNameReplaceDao = new BudgetTrackerMysqlSpendingProductNameReplaceDao(application);
+        budgetTrackerMysqlSpendingProductTypeReplaceDao = new BudgetTrackerMysqlSpendingProductTypeReplaceDao(application);
     }
 
     public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
@@ -530,6 +539,11 @@ public class BudgetTrackerMysqlSpendingRepository {
         });
     }
 
+    /**
+     *
+     * @param spendingList
+     * @param callback
+     */
     private void handleSuccess(List<BudgetTrackerMysqlSpendingDto> spendingList, MysqlSpendingListCallback callback) {
         for (BudgetTrackerMysqlSpendingDto dto : spendingList) {
             Log.d("RepositoryResponse", dto.toString());
@@ -548,6 +562,11 @@ public class BudgetTrackerMysqlSpendingRepository {
         callback.onSuccess(spendingList);
     }
 
+    /**
+     *
+     * @param budgetTrackerMysqlSpendingDto
+     * @return
+     */
     private SpendingType determineSpendingType(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto) {
         if (budgetTrackerMysqlSpendingDto.getStoreName() != null) {
             return SpendingType.STORE;
@@ -563,6 +582,11 @@ public class BudgetTrackerMysqlSpendingRepository {
 
     }
 
+    /**
+     *
+     * @param budgetTrackerMysqlSpendingDto
+     * @param callback
+     */
     public void insert(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingInsertCallback callback) {
         budgetTrackerMysqlSpendingInsertDao.insertIntoSpending(budgetTrackerMysqlSpendingDto, new MysqlSpendingListCallback() {
             @Override
@@ -579,4 +603,97 @@ public class BudgetTrackerMysqlSpendingRepository {
             }
         });
     }
+
+    /**
+     *
+     * @param storeNameFrom
+     * @param storeNameTo
+     * @param callback
+     */
+    public void replaceStoreName(
+            String storeNameFrom,
+            String storeNameTo,
+            StoreNameReplaceCallback callback
+    ) {
+        budgetTrackerMysqlSpendingStoreNameReplaceDao.replaceStoreName(
+                storeNameFrom,
+                storeNameTo,
+                new StoreNameReplaceCallback() {
+                    @Override
+                    public void onSuccess(int affectedRows) {
+                        Log.d("RepositoryReplace", "Store name updated: " + affectedRows + " rows affected");
+                        callback.onSuccess(affectedRows);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        Log.e("RepositoryReplace", "Error replacing store name: " + errorMessage);
+                        callback.onError(errorMessage);
+                    }
+                }
+        );
+    }
+
+
+    /**
+     *
+     * @param productNameFrom
+     * @param productNameTo
+     * @param callback
+     */
+    public void replaceProductName(
+            String productNameFrom,
+            String productNameTo,
+            ProductNameReplaceCallback callback
+    ) {
+        budgetTrackerMysqlSpendingProductNameReplaceDao.replaceProductName(
+                productNameFrom,
+                productNameTo,
+                new ProductNameReplaceCallback() {
+                    @Override
+                    public void onSuccess(int affectedRows) {
+                        Log.d("RepositoryReplace", "Product name updated: " + affectedRows + " rows affected");
+                        callback.onSuccess(affectedRows);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        Log.e("RepositoryReplace", "Error replacing product name: " + errorMessage);
+                        callback.onError(errorMessage);
+                    }
+                }
+        );
+    }
+
+    /**
+     *
+     * @param productTypeFrom
+     * @param productTypeTo
+     * @param callback
+     */
+    public void replaceProductType(
+            String productTypeFrom,
+            String productTypeTo,
+            ProductTypeReplaceCallback callback
+    ) {
+        budgetTrackerMysqlSpendingProductTypeReplaceDao.replaceProductType(
+                productTypeFrom,
+                productTypeTo,
+                new ProductTypeReplaceCallback() {
+                    @Override
+                    public void onSuccess(int affectedRows) {
+                        Log.d("RepositoryReplace", "Product type updated: " + affectedRows + " rows affected");
+                        callback.onSuccess(affectedRows);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        Log.e("RepositoryReplace", "Error replacing product name: " + errorMessage);
+                        callback.onError(errorMessage);
+                    }
+                }
+        );
+    }
+
+
 }
