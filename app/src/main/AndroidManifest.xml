@@ -16,6 +16,9 @@
         android:theme="@style/Theme.OfflineBudgetTrackerAppProject"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.MysqlSpendingActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.MysqlReplaceActivity"
             android:exported="false" />
         <activity
