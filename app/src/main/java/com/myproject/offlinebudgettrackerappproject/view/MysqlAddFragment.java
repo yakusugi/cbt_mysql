@@ -1,10 +1,17 @@
 package com.myproject.offlinebudgettrackerappproject.view;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,6 +36,7 @@ import com.myproject.offlinebudgettrackerappproject.model.BudgetTrackerSpendingV
 import com.myproject.offlinebudgettrackerappproject.model.Currency;
 import com.myproject.offlinebudgettrackerappproject.util.DrumrollConstants;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingInsertCallback;
+import com.myproject.offlinebudgettrackerappproject.util.CameraPermissionControl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,6 +55,7 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
     EditText enterDate, enterStoreName, enterProductName, enterProductType, enterVatRate, enterPrice, enterNotes, enterCurrencyCode, enterQuantity;
     RadioGroup radioGroup;
     Button saveButton, updateButton, deleteButton;
+    ImageButton imageButton;
     SharedPreferences sharedPreferences;
     private static final String PREF_CURRENCY_FILENAME = "CURRENCY_SHARED";
     private static final String PREF_CURRENCY_VALUE = "currencyValue";
@@ -57,6 +67,10 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
 
     BudgetTrackerMysqlSpendingViewModel budgetTrackerMysqlSpendingViewModel;
 
+    private static final int REQUEST_CAMERA_CAPTURE = 2002;
+    private Bitmap capturedPhoto;
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,6 +80,7 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private static final int REQUEST_CAMERA_PERMISSION = 1001;
 
     public MysqlAddFragment() {
         // Required empty public constructor
@@ -95,6 +110,11 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
+//            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//                requestCameraPermission();
+//            }
+
         }
     }
 
@@ -124,6 +144,7 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
         saveButton.setOnClickListener(buttonClickListener);
         updateButton.setOnClickListener(buttonClickListener);
         deleteButton.setOnClickListener(buttonClickListener);
+        imageButton = view.findViewById(R.id.mysql_image_button);
 
         //選択された通貨表示
         int currentCurrencyNum = sharedPreferences.getInt(PREF_CURRENCY_VALUE, 0);
@@ -136,6 +157,14 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
         final int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH);
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+//        imageButton.setOnClickListener(v -> requestCameraPermission());
+        imageButton.setOnClickListener(v -> requestPermissions(
+                new String[]{Manifest.permission.CAMERA},
+                CameraPermissionControl.REQUEST_CAMERA_PERMISSION
+        ));
+
+
 
         enterDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,4 +315,30 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
     public void onCategorySelected(String selectedCategory) {
 
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean granted = CameraPermissionControl.handlePermissionResult(requestCode, grantResults, getContext());
+
+        if (granted) {
+            // Launch the camera activity here
+            launchCameraActivity();
+        }
+    }
+
+    private void launchCameraActivity() {
+        Intent intent = new Intent(getActivity(), CameraCaptureActivity.class);
+        startActivityForResult(intent, REQUEST_CAMERA_CAPTURE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CAMERA_CAPTURE && resultCode == Activity.RESULT_OK && data != null) {
+            capturedPhoto = (Bitmap) data.getParcelableExtra("capturedImage");
+            Toast.makeText(getContext(), "Photo captured successfully", Toast.LENGTH_SHORT).show();
+            // Optionally preview or store temporarily here
+        }
+    }
+
 }

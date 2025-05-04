@@ -282,6 +282,17 @@
                 android:textCursorDrawable="@null" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ImageButton
+            android:id="@+id/mysql_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_margin="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/camera_64"
+            android:onClick="onCameraButtonClick" />
+
+
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
