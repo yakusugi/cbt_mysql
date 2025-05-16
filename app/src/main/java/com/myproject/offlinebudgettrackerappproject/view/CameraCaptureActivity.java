@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
@@ -26,6 +27,9 @@ import androidx.core.content.ContextCompat;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.myproject.offlinebudgettrackerappproject.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -94,12 +98,29 @@ public class CameraCaptureActivity extends ComponentActivity {
                     @Override
                     public void onCaptureSuccess(@NonNull ImageProxy image) {
                         Bitmap bitmap = imageProxyToBitmap(image);
-                        Intent resultIntent = new Intent();
-                        resultIntent.putExtra("capturedImage", bitmap);
-                        setResult(Activity.RESULT_OK, resultIntent);
                         image.close();
+
+                        try {
+                            // Save bitmap to temporary file
+                            File file = new File(getCacheDir(), "captured_photo.jpg");
+                            FileOutputStream fos = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                            fos.flush();
+                            fos.close();
+
+                            // Send back URI instead of bitmap
+                            Intent resultIntent = new Intent();
+                            resultIntent.putExtra("capturedImageUri", Uri.fromFile(file).toString());
+                            setResult(Activity.RESULT_OK, resultIntent);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(CameraCaptureActivity.this, "Failed to save image", Toast.LENGTH_SHORT).show();
+                            setResult(Activity.RESULT_CANCELED);
+                        }
+
                         finish();
                     }
+
 
                     @Override
                     public void onError(@NonNull ImageCaptureException exception) {

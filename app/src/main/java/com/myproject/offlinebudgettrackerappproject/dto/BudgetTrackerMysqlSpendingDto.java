@@ -35,6 +35,8 @@ public class BudgetTrackerMysqlSpendingDto {
     //new column
     private int quantity;
 
+    private String receiptImageUri;
+
     //new column
     private String creationDate;
 
@@ -127,6 +129,20 @@ public class BudgetTrackerMysqlSpendingDto {
         this.quantity = quantity;
         this.aliasPercentage = aliasPercentage;
     }
+
+    public BudgetTrackerMysqlSpendingDto(Date date, String storeName, String productName, String productType, Double price, Double taxRate, String notes, String currencyCode, int quantity, String receiptImageUri) {
+        this.date = date;
+        this.storeName = storeName;
+        this.productName = productName;
+        this.productType = productType;
+        this.price = price;
+        this.taxRate = taxRate;
+        this.notes = notes;
+        this.currencyCode = currencyCode;
+        this.quantity = quantity;
+        this.receiptImageUri = receiptImageUri;
+    }
+
 
     public Date getDate() {
         return date;
@@ -230,6 +246,14 @@ public class BudgetTrackerMysqlSpendingDto {
 
     public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public String getReceiptImageUri() {
+        return receiptImageUri;
+    }
+
+    public void setReceiptImageUri(String receiptImageUri) {
+        this.receiptImageUri = receiptImageUri;
     }
 
     public double getAliasPercentage() {

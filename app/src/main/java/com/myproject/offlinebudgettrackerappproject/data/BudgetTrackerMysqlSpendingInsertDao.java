@@ -1,6 +1,7 @@
 package com.myproject.offlinebudgettrackerappproject.data;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -110,6 +113,16 @@ public class BudgetTrackerMysqlSpendingInsertDao {
                     params.put("currency_code", budgetTrackerMysqlSpendingDto.getCurrencyCode());
                     params.put("quantity", String.valueOf(budgetTrackerMysqlSpendingDto.getQuantity()));
 
+                    // Only add if it's not null
+                    String base64Image = null;
+                    if (budgetTrackerMysqlSpendingDto.getReceiptImageUri() != null) {
+                        base64Image = encodeImageToBase64(budgetTrackerMysqlSpendingDto.getReceiptImageUri());
+                    }
+
+                    if (base64Image != null) {
+                        params.put("receipt_image_base64", base64Image);
+                    }
+
                     return params;
                 }
             };
@@ -143,4 +156,19 @@ public class BudgetTrackerMysqlSpendingInsertDao {
         }
         return spendingList;
     }
+
+    private String encodeImageToBase64(String uriPath) {
+        try {
+            File imageFile = new File(uriPath);
+            FileInputStream fis = new FileInputStream(imageFile);
+            byte[] bytes = new byte[(int) imageFile.length()];
+            fis.read(bytes);
+            fis.close();
+            return Base64.encodeToString(bytes, Base64.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

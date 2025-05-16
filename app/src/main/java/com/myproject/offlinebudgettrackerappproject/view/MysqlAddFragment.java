@@ -70,6 +70,8 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
     private static final int REQUEST_CAMERA_CAPTURE = 2002;
     private Bitmap capturedPhoto;
 
+    private String capturedImageUri;
+
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -267,7 +269,11 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
         String currencyCode = enterCurrencyCode.getText().toString();
         int quantity = Integer.parseInt(enterQuantity.getText().toString());
 
-        BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(date, storeName, productName, productType, price, vatRate, notes, currencyCode, quantity);
+//        BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(date, storeName, productName, productType, price, vatRate, notes, currencyCode, quantity);
+        BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto = new BudgetTrackerMysqlSpendingDto(
+                date, storeName, productName, productType, price, vatRate, notes, currencyCode, quantity, capturedImageUri
+        );
+
 
         budgetTrackerMysqlSpendingViewModel.insert(budgetTrackerMysqlSpendingDto, new MysqlSpendingInsertCallback() {
             @Override
@@ -335,10 +341,14 @@ public class MysqlAddFragment extends Fragment implements DrumrollPickerFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CAMERA_CAPTURE && resultCode == Activity.RESULT_OK && data != null) {
-            capturedPhoto = (Bitmap) data.getParcelableExtra("capturedImage");
-            Toast.makeText(getContext(), "Photo captured successfully", Toast.LENGTH_SHORT).show();
-            // Optionally preview or store temporarily here
+            String uriString = data.getStringExtra("capturedImageUri");
+            if (uriString != null) {
+                Toast.makeText(getContext(), "Photo captured successfully", Toast.LENGTH_SHORT).show();
+                // Save the URI as a member variable or in a hidden field
+                capturedImageUri = uriString;
+            }
         }
     }
+
 
 }
