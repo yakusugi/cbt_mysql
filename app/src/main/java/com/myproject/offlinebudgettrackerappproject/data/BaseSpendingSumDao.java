@@ -9,6 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallback;
+import com.myproject.offlinebudgettrackerappproject.util.StoreNameAverageCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +36,51 @@ public abstract class BaseSpendingSumDao {
     }
 
     protected void sendSumRequest(String endpoint, Map<String, String> params, MysqlSpendingSumCallback callback) {
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST, endpoint,
+                response -> {
+                    try {
+                        Log.d("JSONResponse", response);
+                        JSONObject jsonObject = new JSONObject(response);
+                        String success = jsonObject.optString("success", "");
+
+                        if ("1".equals(success)) {
+                            JSONArray jsonArray = jsonObject.optJSONArray("result");
+                            if (jsonArray != null) {
+                                double totalSpending = 0.0;
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject spendingObject = jsonArray.getJSONObject(i);
+                                    String spendingCalcSum = spendingObject.getString("total_sum");
+                                    totalSpending += Double.parseDouble(spendingCalcSum);
+                                }
+                                callback.onSuccess(totalSpending);
+                            } else {
+                                callback.onError("No spending data found");
+                            }
+                        } else {
+                            String errorMessage = jsonObject.optString("error_message", "Error parsing JSON");
+                            callback.onError(errorMessage);
+                        }
+                    } catch (JSONException e) {
+                        Log.e("JSONException", e.toString());
+                        callback.onError("Error parsing JSON");
+                    }
+                },
+                error -> {
+                    Log.e("VolleyError", error.toString());
+                    callback.onError("Unable to fetch data: " + error.getMessage());
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+    protected void sendAverageRequest(String endpoint, Map<String, String> params, StoreNameAverageCallback callback) {
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST, endpoint,
                 response -> {

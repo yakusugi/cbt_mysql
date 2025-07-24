@@ -22,6 +22,9 @@
         android:theme="@style/Theme.OfflineBudgetTrackerAppProject"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.MysqlAverageActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.CameraCaptureActivity"
             android:exported="false" />
         <activity

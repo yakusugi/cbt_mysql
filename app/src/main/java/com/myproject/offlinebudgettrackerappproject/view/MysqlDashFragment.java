@@ -22,7 +22,7 @@ import com.myproject.offlinebudgettrackerappproject.util.SharedPreferencesManage
  */
 public class MysqlDashFragment extends Fragment implements View.OnClickListener {
 
-    private CardView spendingCard, incomeCard, bankCard, dateCard, bulkExpensecard, bulkIncomeCard, adminCard, settingsCard, aboutCard, userscard, datacard, systemcard, analyticscard;
+    private CardView spendingCard, incomeCard, bankCard, dateCard, bulkExpensecard, bulkIncomeCard, adminCard, settingsCard, aboutCard, userscard, datacard, systemcard, analyticscard, averageCard;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -113,6 +113,10 @@ public class MysqlDashFragment extends Fragment implements View.OnClickListener 
             if (bulkExpensecard != null) {
                 bulkExpensecard.setOnClickListener(this);
             }
+            averageCard = (CardView) view.findViewById(R.id.mysql_average_card);
+            if (averageCard != null) {
+                averageCard.setOnClickListener(this);
+            }
             bulkIncomeCard = (CardView) view.findViewById(R.id.mysql_replace_card_income);
             if (bulkIncomeCard != null) {
                 bulkIncomeCard.setOnClickListener(this);
@@ -158,6 +162,10 @@ public class MysqlDashFragment extends Fragment implements View.OnClickListener 
             case R.id.mysql_replace_card_income:
 //                i = new Intent(view.getContext(), SpendingReplacementActivity.class);
 //                startActivity(i);
+                break;
+            case R.id.mysql_average_card:
+                i = new Intent(view.getContext(), MysqlAverageActivity.class);
+                startActivity(i);
                 break;
             case R.id.mysql_settings_card:
 //                i = new Intent(view.getContext(), IncomeReplacementActivity.class);

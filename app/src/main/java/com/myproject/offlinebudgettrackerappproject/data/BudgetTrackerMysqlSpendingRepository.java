@@ -19,12 +19,12 @@ import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallbac
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingTargetSumCallback;
 import com.myproject.offlinebudgettrackerappproject.util.ProductNameReplaceCallback;
 import com.myproject.offlinebudgettrackerappproject.util.ProductTypeReplaceCallback;
+import com.myproject.offlinebudgettrackerappproject.util.StoreNameAverageCallback;
 import com.myproject.offlinebudgettrackerappproject.util.StoreNameReplaceCallback;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -50,6 +50,7 @@ public class BudgetTrackerMysqlSpendingRepository {
     private BudgetTrackerMysqlSpendingStoreNameReplaceDao budgetTrackerMysqlSpendingStoreNameReplaceDao;
     private BudgetTrackerMysqlSpendingProductNameReplaceDao budgetTrackerMysqlSpendingProductNameReplaceDao;
     private BudgetTrackerMysqlSpendingProductTypeReplaceDao budgetTrackerMysqlSpendingProductTypeReplaceDao;
+    private BudgetTrackerMysqlSpendingStoreNameAverageDao budgetTrackerMysqlSpendingStoreNameAverageDao;
 
     BudgetTrackerDatabase budgetTrackerDatabase;
     private BudgetTrackerSpendingDao budgetTrackerSpendingDao;
@@ -90,6 +91,7 @@ public class BudgetTrackerMysqlSpendingRepository {
         budgetTrackerMysqlSpendingStoreNameReplaceDao = new BudgetTrackerMysqlSpendingStoreNameReplaceDao(application);
         budgetTrackerMysqlSpendingProductNameReplaceDao = new BudgetTrackerMysqlSpendingProductNameReplaceDao(application);
         budgetTrackerMysqlSpendingProductTypeReplaceDao = new BudgetTrackerMysqlSpendingProductTypeReplaceDao(application);
+        budgetTrackerMysqlSpendingStoreNameAverageDao = new BudgetTrackerMysqlSpendingStoreNameAverageDao(application);
     }
 
     public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
@@ -693,6 +695,27 @@ public class BudgetTrackerMysqlSpendingRepository {
                     }
                 }
         );
+    }
+
+    /**
+     *
+     * @param budgetTrackerMysqlSpendingDto
+     * @param callback
+     */
+    public void getStoreNameAverage(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, StoreNameAverageCallback callback) {
+        budgetTrackerMysqlSpendingStoreNameAverageDao.getStoreNameAverage(budgetTrackerMysqlSpendingDto, new StoreNameAverageCallback() {
+
+            @Override
+            public void onSuccess(Double average) {
+                Log.d("RepositoryResponse", "Total Spending: " + average);
+                callback.onSuccess(average); // Pass the total spending to the callback
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error); // Pass the error to the callback
+            }
+        });
     }
 
 

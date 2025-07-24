@@ -19,6 +19,7 @@ import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingSumCallbac
 import com.myproject.offlinebudgettrackerappproject.util.MysqlSpendingTargetSumCallback;
 import com.myproject.offlinebudgettrackerappproject.util.ProductNameReplaceCallback;
 import com.myproject.offlinebudgettrackerappproject.util.ProductTypeReplaceCallback;
+import com.myproject.offlinebudgettrackerappproject.util.StoreNameAverageCallback;
 import com.myproject.offlinebudgettrackerappproject.util.StoreNameReplaceCallback;
 
 import java.util.List;
@@ -455,6 +456,27 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
             public void onError(String errorMessage) {
                 Log.e("ViewModelReplace", "Failed to replace store name: " + errorMessage);
                 callback.onError(errorMessage);
+            }
+        });
+    }
+
+    /**
+     *
+     * @param budgetTrackerMysqlSpendingDto
+     * @param callback
+     */
+    public void getStoreNameAverage(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, StoreNameAverageCallback callback) {
+        repository.getStoreNameAverage(budgetTrackerMysqlSpendingDto, new StoreNameAverageCallback() {
+
+            @Override
+            public void onSuccess(Double average) {
+//                Log.d("RepositoryResponse", "Total Spending: " + spendingSum);
+                callback.onSuccess(average); // Pass the total spending to the callback
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error); // Pass the error to the callback
             }
         });
     }
