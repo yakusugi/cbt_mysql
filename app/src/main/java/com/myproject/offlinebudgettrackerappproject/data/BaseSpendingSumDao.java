@@ -51,7 +51,11 @@ public abstract class BaseSpendingSumDao {
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject spendingObject = jsonArray.getJSONObject(i);
                                     String spendingCalcSum = spendingObject.getString("total_sum");
-                                    totalSpending += Double.parseDouble(spendingCalcSum);
+                                    if (spendingCalcSum != null && !spendingCalcSum.equals("null")) {
+                                        totalSpending += Double.parseDouble(spendingCalcSum);
+                                    } else {
+                                        Log.w("sendAverageRequest", "Received null or invalid total_sum from server");
+                                    }
                                 }
                                 callback.onSuccess(totalSpending);
                             } else {

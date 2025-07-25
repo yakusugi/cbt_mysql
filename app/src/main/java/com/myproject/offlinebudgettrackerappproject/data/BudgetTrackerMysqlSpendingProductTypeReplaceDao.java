@@ -37,6 +37,12 @@ public class BudgetTrackerMysqlSpendingProductTypeReplaceDao extends BaseSpendin
         super(context);
     }
 
+    /**
+     *
+     * @param productTypeFrom
+     * @param productTypeTo
+     * @param callback
+     */
     public void replaceProductType(String productTypeFrom, String productTypeTo, ProductTypeReplaceCallback callback) {
         try {
             String serverUrl = loadServerConfig("server_url");

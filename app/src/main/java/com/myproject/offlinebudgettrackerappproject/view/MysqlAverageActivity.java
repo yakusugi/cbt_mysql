@@ -190,23 +190,29 @@ public class MysqlAverageActivity extends AppCompatActivity implements DrumrollP
                         break;
 
 
-//                    case R.id.mysql_replace_radio_product_name:
-//                        budgetTrackerMysqlSpendingViewModel.replaceProductName(
-//                                replaceFrom,
-//                                replaceTo,
-//                                new ProductNameReplaceCallback() {
-//                                    @Override
-//                                    public void onSuccess(int affectedRows) {
-//                                        Toast.makeText(MysqlAverageActivity.this, "Replaced in " + affectedRows + " rows", Toast.LENGTH_LONG).show();
-//                                    }
-//
-//                                    @Override
-//                                    public void onError(String errorMessage) {
-//                                        Toast.makeText(MysqlAverageActivity.this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
-//                                    }
-//                                }
-//                        );
-//                        break;
+                    case R.id.mysql_average_radio_product_name:
+                        if (dateFrom.isEmpty() || dateTo.isEmpty()) {
+                            Toast.makeText(MysqlAverageActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        budgetTrackerMysqlSpendingViewModel.getProductNameAverage(
+                                budgetTrackerMysqlSpendingDto,
+                                new StoreNameAverageCallback() {
+
+                                    @Override
+                                    public void onSuccess(Double average) {
+                                        String spendingAverageString = String.valueOf(average);
+                                        searchCalcResultTxt.setText(spendingAverageString);
+                                    }
+
+                                    @Override
+                                    public void onError(String errorMessage) {
+                                        Toast.makeText(MysqlAverageActivity.this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                        );
+                        break;
 //
 //                    case R.id.mysql_replace_radio_product_type:
 //                        budgetTrackerMysqlSpendingViewModel.replaceProductType(
