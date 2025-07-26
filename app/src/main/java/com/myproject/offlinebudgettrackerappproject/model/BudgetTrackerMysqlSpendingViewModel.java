@@ -502,6 +502,22 @@ public void getSearchProductTypeList(BudgetTrackerMysqlSpendingDto budgetTracker
         });
     }
 
+    public void getProductTypeAverage(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, StoreNameAverageCallback callback) {
+        repository.getProductTypeAverage(budgetTrackerMysqlSpendingDto, new StoreNameAverageCallback() {
+
+            @Override
+            public void onSuccess(Double average) {
+//                Log.d("RepositoryResponse", "Total Spending: " + spendingSum);
+                callback.onSuccess(average); // Pass the total spending to the callback
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error); // Pass the error to the callback
+            }
+        });
+    }
+
 
 
 //    public void syncFromMysql(List<BudgetTrackerMysqlSpendingDto> dtoList) {

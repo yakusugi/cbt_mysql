@@ -52,6 +52,7 @@ public class BudgetTrackerMysqlSpendingRepository {
     private BudgetTrackerMysqlSpendingProductTypeReplaceDao budgetTrackerMysqlSpendingProductTypeReplaceDao;
     private BudgetTrackerMysqlSpendingStoreNameAverageDao budgetTrackerMysqlSpendingStoreNameAverageDao;
     private BudgetTrackerMysqlSpendingProductNameAverageDao budgetTrackerMysqlSpendingProductNameAverageDao;
+    private BudgetTrackerMysqlSpendingProductTypeAverageDao budgetTrackerMysqlSpendingProductTypeAverageDao;
 
     BudgetTrackerDatabase budgetTrackerDatabase;
     private BudgetTrackerSpendingDao budgetTrackerSpendingDao;
@@ -94,6 +95,7 @@ public class BudgetTrackerMysqlSpendingRepository {
         budgetTrackerMysqlSpendingProductTypeReplaceDao = new BudgetTrackerMysqlSpendingProductTypeReplaceDao(application);
         budgetTrackerMysqlSpendingStoreNameAverageDao = new BudgetTrackerMysqlSpendingStoreNameAverageDao(application);
         budgetTrackerMysqlSpendingProductNameAverageDao = new BudgetTrackerMysqlSpendingProductNameAverageDao(application);
+        budgetTrackerMysqlSpendingProductTypeAverageDao = new BudgetTrackerMysqlSpendingProductTypeAverageDao(application);
     }
 
     public void getSearchStoreNameList(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, MysqlSpendingListCallback callback) {
@@ -720,8 +722,34 @@ public class BudgetTrackerMysqlSpendingRepository {
         });
     }
 
+    /**
+     *
+     * @param budgetTrackerMysqlSpendingDto
+     * @param callback
+     */
     public void getProductNameAverage(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, StoreNameAverageCallback callback) {
         budgetTrackerMysqlSpendingProductNameAverageDao.getProductNameAverage(budgetTrackerMysqlSpendingDto, new StoreNameAverageCallback() {
+
+            @Override
+            public void onSuccess(Double average) {
+                Log.d("RepositoryResponse", "Total Spending: " + average);
+                callback.onSuccess(average); // Pass the total spending to the callback
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error); // Pass the error to the callback
+            }
+        });
+    }
+
+    /**
+     *
+     * @param budgetTrackerMysqlSpendingDto
+     * @param callback
+     */
+    public void getProductTypeAverage(BudgetTrackerMysqlSpendingDto budgetTrackerMysqlSpendingDto, StoreNameAverageCallback callback) {
+        budgetTrackerMysqlSpendingProductTypeAverageDao.getProductTypeAverage(budgetTrackerMysqlSpendingDto, new StoreNameAverageCallback() {
 
             @Override
             public void onSuccess(Double average) {
